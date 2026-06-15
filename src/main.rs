@@ -23,8 +23,9 @@ fn main() -> Result<()> {
     let text = std::fs::read_to_string(&args.text)?;
 
     let samples = audio::load_audio(&args.audio, 16_000)?;
+    let duration_secs = samples.len() as f32 / 16_000.0;
     let emissions = model::run_inference(&samples)?;
-    let words = align::align(&emissions, &text)?;
+    let words = align::align(&emissions, &text, duration_secs)?;
 
     let result = output::AlignmentResult {
         segments: vec![output::Segment {
