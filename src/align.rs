@@ -33,7 +33,15 @@ pub fn align(emissions: &Emissions, text: &str, audio_duration_secs: f32) -> Res
         .get("|")
         .ok_or_else(|| anyhow!("vocab has no '|' word-separator token"))?;
 
-    let words: Vec<&str> = text.split_whitespace().collect();
+    // Drop words with no alignable characters (e.g. markdown artifacts like "##" or "---").
+    let words: Vec<&str> = text
+        .split_whitespace()
+        .filter(|w| {
+            w.to_uppercase()
+                .chars()
+                .any(|ch| vocab_map.contains_key(ch.to_string().as_str()))
+        })
+        .collect();
     if words.is_empty() {
         return Ok(vec![]);
     }

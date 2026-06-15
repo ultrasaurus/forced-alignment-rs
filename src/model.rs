@@ -308,10 +308,56 @@ impl Wav2Vec2Ctc {
     }
 }
 
+// Total stride of the conv feature extractor: 5*2*2*2*2*2*2 = 320 samples/frame.
+const SAMPLES_PER_FRAME: usize = 320;
+const SAMPLE_RATE: usize = 16_000;
+// wav2vec2 self-attention is O(T^2), so long audio must be processed in chunks.
+const CHUNK_SECONDS: usize = 20;
+const OVERLAP_SECONDS: usize = 1;
+
 /// Load the wav2vec2 model and run inference on audio samples (16kHz mono).
+///
+/// Long audio is processed in overlapping chunks (attention is O(T^2), so a single
+/// multi-minute pass is infeasible); the overlap is trimmed from each chunk's
+/// emissions before concatenation so frame timing stays uniform.
 pub fn run_inference(samples: &[f32]) -> Result<Emissions> {
     let model = Wav2Vec2Ctc::load()?;
-    model.forward(samples)
+
+    let chunk_samples = CHUNK_SECONDS * SAMPLE_RATE;
+    let overlap_samples = OVERLAP_SECONDS * SAMPLE_RATE;
+    let overlap_frames = overlap_samples / SAMPLES_PER_FRAME;
+
+    if samples.len() <= chunk_samples {
+        return model.forward(samples);
+    }
+
+    let stride_samples = chunk_samples - overlap_samples;
+    let mut log_probs = Vec::new();
+    let mut vocab = Vec::new();
+
+    let mut start = 0;
+    while start < samples.len() {
+        let end = (start + chunk_samples).min(samples.len());
+        let chunk = &samples[start..end];
+        let is_first = start == 0;
+        let is_last = end == samples.len();
+
+        let emissions = model.forward(chunk)?;
+        vocab = emissions.vocab;
+
+        let n = emissions.log_probs.len();
+        let half_overlap = overlap_frames / 2;
+        let trim_start = if is_first { 0 } else { half_overlap };
+        let trim_end = if is_last { n } else { n.saturating_sub(half_overlap) };
+        log_probs.extend(emissions.log_probs[trim_start..trim_end].iter().cloned());
+
+        if is_last {
+            break;
+        }
+        start += stride_samples;
+    }
+
+    Ok(Emissions { log_probs, vocab })
 }
 
 #[cfg(test)]
