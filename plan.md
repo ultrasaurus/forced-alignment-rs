@@ -24,7 +24,7 @@ transcription accuracy.
 ### wav2vec2-rs
 - No maintained published crate with alignment support found.
 
-## Recommended approach
+## Forced Alignment Plan
 No drop-in Rust crate exists. Combine:
 1. `candle` (HF's Rust ML framework) has wav2vec2 model
      implementations and can run CTC inference directly, no ONNX export
@@ -34,12 +34,9 @@ No drop-in Rust crate exists. Combine:
    tutorial.
    - https://docs.pytorch.org/audio/main/tutorials/ctc_forced_alignment_api_tutorial.html
 
-## Next steps
-- New standalone repo for isolated experimentation.
-- Prototype: export a small wav2vec2/MMS CTC model to ONNX, run via `ort`
-  in Rust, implement Viterbi alignment, validate against known
-  text + audio pairs.
-
+## Additional concerns
+- Sometimes readers add words.  Like for "As We May Think", the reader said "Chapter 6" but the original text just reads "6" -- happens with lists, footnotes, etc.  To handle human readers where the added words often make the text easier to listen to, there will have to be a way to flag those as not in the text and still do the forced alignment.
+- normalization/expansion pass before alignment (e.g. → "for example", numerals → words or vice versa, footnote markers → skippable?)
 
 ## Alternatives considered
 
