@@ -26,10 +26,7 @@ transcription accuracy.
 
 ## Recommended approach
 No drop-in Rust crate exists. Combine:
-1. **ONNX-exported wav2vec2/MMS CTC model** — one-time export from Python,
-   then run inference in Rust via `ort` (ONNX Runtime bindings). Avoids
-   Python in the runtime pipeline.
-   - Alternative: `candle` (HF's Rust ML framework) has wav2vec2 model
+1. `candle` (HF's Rust ML framework) has wav2vec2 model
      implementations and can run CTC inference directly, no ONNX export
      needed.
 2. **Hand-written trellis/Viterbi alignment routine** (~100 lines) following
@@ -42,3 +39,10 @@ No drop-in Rust crate exists. Combine:
 - Prototype: export a small wav2vec2/MMS CTC model to ONNX, run via `ort`
   in Rust, implement Viterbi alignment, validate against known
   text + audio pairs.
+
+
+## Alternatives considered
+
+Step 1. **ONNX-exported wav2vec2/MMS CTC model** — one-time export from Python,
+   then run inference in Rust via `ort` (ONNX Runtime bindings). Avoids
+   Python in the runtime pipeline. -- chose all-rust approach to start
