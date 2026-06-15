@@ -43,6 +43,13 @@ No drop-in Rust crate exists. Combine:
 
 ## Alternatives considered
 
-Step 1. **ONNX-exported wav2vec2/MMS CTC model** — one-time export from Python,
+Step 1. 
+
+**ONNX-exported wav2vec2/MMS CTC model** — one-time export from Python,
    then run inference in Rust via `ort` (ONNX Runtime bindings). Avoids
    Python in the runtime pipeline. -- chose all-rust approach to start
+
+**MMS** (chose wav2vec to start, English only)
+   * The only MMS checkpoints with a CTC head (i.e., ready for forced alignment) are facebook/mms-1b-all and similar — 1B params, same weight class as the VibeVoice model your plan already ruled out as too heavy for M1.
+   * facebook/mms-300m is the pretrained backbone only — no vocab/CTC head, needs fine-tuning to be usable.
+   * By contrast, facebook/wav2vec2-base-960h (95M params, English CTC) uses a simpler architecture (group-norm feature extractor + post-norm encoder) — much lighter to implement and run.
