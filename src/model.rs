@@ -367,6 +367,7 @@ mod tests {
     use std::path::Path;
 
     #[test]
+    #[ignore = "slow in debug builds (~90s); run with `cargo test --release -- --ignored`"]
     fn runs_on_short_sentence() {
         let samples = load_audio(Path::new("samples/short-sentence.mp3"), 16_000).unwrap();
         let emissions = run_inference(&samples).unwrap();
