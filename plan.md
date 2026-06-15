@@ -1,0 +1,44 @@
+# Forced Alignment Plan (Rust)
+
+## Goal
+Get sentence/word-level timestamps for audio where we already have the
+ground-truth text (human-read or TTS-generated), without relying on ASR
+transcription accuracy.
+
+## Why not ASR
+- Whisper transcription errors make forced alignment against known text
+  unreliable.
+- VibeVoice-ASR (9B params) is too heavy for M1, and only gives
+  speaker/segment-level timestamps anyway, not word-level, and doesn't do
+  forced alignment against known text.
+
+## Options considered
+
+### ctc-forced-aligner (Python)
+- https://github.com/MahmoudAshraf97/ctc-forced-aligner
+- Takes known text + audio directly, aligns via CTC segmentation using
+  wav2vec2/MMS models through torchaudio.
+- Well-tested, handles long audio, multilingual via MMS.
+- No Rust port exists.
+
+### wav2vec2-rs
+- No maintained published crate with alignment support found.
+
+## Recommended approach
+No drop-in Rust crate exists. Combine:
+1. **ONNX-exported wav2vec2/MMS CTC model** — one-time export from Python,
+   then run inference in Rust via `ort` (ONNX Runtime bindings). Avoids
+   Python in the runtime pipeline.
+   - Alternative: `candle` (HF's Rust ML framework) has wav2vec2 model
+     implementations and can run CTC inference directly, no ONNX export
+     needed.
+2. **Hand-written trellis/Viterbi alignment routine** (~100 lines) following
+   the CTC-segmentation algorithm from the torchaudio CTC forced alignment
+   tutorial.
+   - https://docs.pytorch.org/audio/main/tutorials/ctc_forced_alignment_api_tutorial.html
+
+## Next steps
+- New standalone repo for isolated experimentation.
+- Prototype: export a small wav2vec2/MMS CTC model to ONNX, run via `ort`
+  in Rust, implement Viterbi alignment, validate against known
+  text + audio pairs.
