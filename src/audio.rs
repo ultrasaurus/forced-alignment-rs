@@ -101,7 +101,7 @@ mod tests {
 
     #[test]
     fn decodes_short_sentence() {
-        let samples = load_audio(Path::new("samples/short-sentence.mp3"), 16_000).unwrap();
+        let samples = load_audio(Path::new("validation-samples/short-sentence.mp3"), 16_000).unwrap();
         assert!(!samples.is_empty());
         println!("decoded {} samples ({:.2}s)", samples.len(), samples.len() as f32 / 16_000.0);
     }
