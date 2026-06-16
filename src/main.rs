@@ -1,8 +1,3 @@
-mod align;
-mod audio;
-mod model;
-mod output;
-
 use anyhow::Result;
 use clap::Parser;
 use std::path::PathBuf;
@@ -21,21 +16,8 @@ struct Args {
 fn main() -> Result<()> {
     let args = Args::parse();
     let text = std::fs::read_to_string(&args.text)?;
-
-    let samples = audio::load_audio(&args.audio, 16_000)?;
-    let duration_secs = samples.len() as f32 / 16_000.0;
-    let emissions = model::run_inference(&samples)?;
-    let words = align::align(&emissions, &text, duration_secs)?;
-
-    let result = output::AlignmentResult {
-        segments: vec![output::Segment {
-            start: words.first().map(|w| w.start).unwrap_or(0.0),
-            end: words.last().map(|w| w.end).unwrap_or(0.0),
-            text,
-            words,
-        }],
-    };
-
+    let samples = forced_alignment::audio::load_audio(&args.audio, forced_alignment::SAMPLE_RATE)?;
+    let result = forced_alignment::align(&samples, &text)?;
     std::fs::write(&args.output, serde_json::to_string_pretty(&result)?)?;
     Ok(())
 }

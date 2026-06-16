@@ -3,15 +3,30 @@ name = "forced-alignment"
 version = "0.1.0"
 edition = "2024"
 
+[lib]
+name = "forced_alignment"
+path = "src/lib.rs"
+
+[[bin]]
+name = "forced-alignment"
+path = "src/main.rs"
+
 [dependencies]
+anyhow = "1"
 candle-core = "0.10"
 candle-nn = "0.10"
 candle-transformers = "0.10"
+clap = { version = "4", features = ["derive"] }
 hf-hub = "0.5"
-tokenizers = "0.23"
-symphonia = { version = "0.5", features = ["mp3"] }
-rubato = "0.16"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-anyhow = "1"
-clap = { version = "4", features = ["derive"] }
+tokenizers = "0.23"
+
+# pin symphonia & rubato to 0.5 and 0.16
+# Both symphonia 0.6 & rubato 3.0 are very recent rewrites with
+# substantially different APIs
+# (no SampleBuffer, no SincFixedIn at top level, etc.)
+symphonia = { version = "0.5", features = ["mp3"] }
+rubato = "0.16"
+
+

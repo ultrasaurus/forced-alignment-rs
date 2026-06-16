@@ -1,14 +1,7 @@
 use crate::model::Emissions;
+use crate::transcript::Word;
 use anyhow::{anyhow, Result};
 use std::collections::HashMap;
-
-#[derive(Debug, serde::Serialize)]
-pub struct WordTiming {
-    pub word: String,
-    pub start: f32,
-    pub end: f32,
-    pub score: f32,
-}
 
 /// One character of the normalized transcript, mapped to a vocab token id.
 struct CharToken {
@@ -19,7 +12,7 @@ struct CharToken {
 }
 
 /// Viterbi forced alignment between CTC emissions and the reference text.
-pub fn align(emissions: &Emissions, text: &str, audio_duration_secs: f32) -> Result<Vec<WordTiming>> {
+pub fn viterbi_align(emissions: &Emissions, text: &str, audio_duration_secs: f32) -> Result<Vec<Word>> {
     let vocab_map: HashMap<&str, usize> = emissions
         .vocab
         .iter()
@@ -80,11 +73,12 @@ pub fn align(emissions: &Emissions, text: &str, audio_duration_secs: f32) -> Res
     for (word, span) in words.iter().zip(word_spans.into_iter()) {
         let (start, end, score_sum, count) =
             span.ok_or_else(|| anyhow!("word '{word}' produced no alignable characters"))?;
-        out.push(WordTiming {
+        out.push(Word {
             word: word.to_string(),
-            start: start as f32 * seconds_per_frame,
-            end: end as f32 * seconds_per_frame,
-            score: score_sum / count as f32,
+            start: Some((start as f32 * seconds_per_frame) as f64),
+            end: Some((end as f32 * seconds_per_frame) as f64),
+            score: Some((score_sum / count as f32) as f64),
+            speaker: None,
         });
     }
     Ok(out)
