@@ -7,7 +7,7 @@ Unlike ASR-based timestamping, this doesn't rely on transcription accuracy —
 the text is already known (e.g. a human reading or TTS narration of a
 document), and the model only needs to find *when* each word was spoken.
 
-For more details, see [overview.md](overview.md)
+For more details, see [overview.md](overview.md) and [report.md](report.md).
 
 ## How it works
 
@@ -17,7 +17,8 @@ For more details, see [overview.md](overview.md)
    attention is O(T²)).
 3. Run a Viterbi forced-alignment DP between the CTC output and the known
    text to find each word's frame span.
-4. Write a WhisperX-style JSON file with per-word `start`/`end`/`score`.
+4. Return a `Transcript` with per-word `start`/`end`/`score` (seconds, 0.0–1.0)
+   and an `AlignReport` describing filtered and suspect words.
 
 Currently English only.
 
@@ -30,34 +31,25 @@ cargo build --release
 The wav2vec2 model weights (~360MB) are downloaded from Hugging Face Hub on
 first run and cached locally.
 
-## Run
+## CLI
 
 ```sh
 ./target/release/forced-alignment <audio> <text> -o <output.json>
 ```
 
-Example, using the included sample:
+Suspect words and filtered word counts are printed to stderr. Example:
 
 ```sh
-./target/release/forced-alignment samples/short-sentence.mp3 samples/short-sentence.md -o out.json
+./target/release/forced-alignment validation-samples/short-sentence.mp3 \
+  validation-samples/short-sentence.md -o out.json
 ```
 
-`out.json`:
+## Library API
 
-```json
-{
-  "segments": [
-    {
-      "start": 0.100273654,
-      "end": 3.4895232,
-      "text": "it may contain annotations, additions and footnotes",
-      "words": [
-        { "word": "it", "start": 0.100273654, "end": 0.14038312, "score": 0.9979633 },
-        { "word": "may", "start": 0.22060205, "end": 0.3208757, "score": 0.99977773 },
-        { "word": "contain", "start": 0.40109462, "end": 0.7019156, "score": 0.99519664 },
-        ...
-      ]
-    }
-  ]
-}
+```rust
+let samples = forced_alignment::audio::load_audio(&path, forced_alignment::SAMPLE_RATE)?;
+let (transcript, report) = forced_alignment::align(&samples, &text)?;
 ```
+
+See `cargo doc --open` for full API documentation, and [report.md](report.md)
+for preprocessing requirements and score interpretation.

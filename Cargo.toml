@@ -1,6 +1,6 @@
 [package]
 name = "forced-alignment"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 
 [lib]
@@ -28,5 +28,6 @@ tokenizers = "0.23"
 # (no SampleBuffer, no SincFixedIn at top level, etc.)
 symphonia = { version = "0.5", features = ["mp3"] }
 rubato = "0.16"
+unicode-segmentation = "1"
 
 
