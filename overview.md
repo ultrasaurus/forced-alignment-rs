@@ -1,14 +1,22 @@
-# Forced Alignment Plan (Rust)
+# Forced Alignment in Rust
 
 ## Goal
 Get sentence/word-level timestamps for audio where we already have the
 ground-truth text (human-read or TTS-generated), without relying on ASR
 transcription accuracy.
 
+Current implementation English-only, low footprint.
+Future: multilingual
+
+## Additional concerns
+- Sometimes readers add words. For "As We May Think", the reader said "Chapter 6" but the original text just reads "6" -- this happens with lists, footnotes, etc.  To support human listeners where the added words often make the text easier to listen to, there will have to be a way to flag those as not in the text and still do the forced alignment.
+- Consider normalization/expansion pass before alignment (e.g. → "for example", numerals → words or vice versa, footnote markers → skippable?)
+
+
 ## Why not ASR
 - Whisper transcription errors make forced alignment against known text
   unreliable.
-- VibeVoice-ASR (9B params) is too heavy for M1, and only gives
+- VibeVoice-ASR (9B params) is too heavy for target dev env (M1 Mac), and only gives
   speaker/segment-level timestamps anyway, not word-level, and doesn't do
   forced alignment against known text.
 
@@ -24,8 +32,8 @@ transcription accuracy.
 ### wav2vec2-rs
 - No maintained published crate with alignment support found.
 
-## Forced Alignment Plan
-No drop-in Rust crate exists. Combine:
+# Forced Alignment Approach
+No drop-in well-maintained, published Rust crate exists. Combine:
 1. `candle` (HF's Rust ML framework) has wav2vec2 model
      implementations and can run CTC inference directly, no ONNX export
      needed.
@@ -34,13 +42,7 @@ No drop-in Rust crate exists. Combine:
    tutorial.
    - https://docs.pytorch.org/audio/main/tutorials/ctc_forced_alignment_api_tutorial.html
 
-## Additional concerns
-- Sometimes readers add words.  Like for "As We May Think", the reader said "Chapter 6" but the original text just reads "6" -- happens with lists, footnotes, etc.  To handle human readers where the added words often make the text easier to listen to, there will have to be a way to flag those as not in the text and still do the forced alignment.
-- normalization/expansion pass before alignment (e.g. → "for example", numerals → words or vice versa, footnote markers → skippable?)
-
 ## Alternatives considered
-
-Step 1. 
 
 **ONNX-exported wav2vec2/MMS CTC model** — one-time export from Python,
    then run inference in Rust via `ort` (ONNX Runtime bindings). Avoids

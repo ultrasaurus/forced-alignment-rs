@@ -7,6 +7,8 @@ Unlike ASR-based timestamping, this doesn't rely on transcription accuracy —
 the text is already known (e.g. a human reading or TTS narration of a
 document), and the model only needs to find *when* each word was spoken.
 
+For more details, see [overview.md](overview.md)
+
 ## How it works
 
 1. Decode audio to 16kHz mono (`symphonia` + `rubato`).
