@@ -1,5 +1,5 @@
 use crate::model::Emissions;
-use crate::transcript::Word;
+use crate::transcript::{FilteredWord, Word};
 use anyhow::{anyhow, Result};
 use std::collections::HashMap;
 
@@ -12,7 +12,14 @@ struct CharToken {
 }
 
 /// Viterbi forced alignment between CTC emissions and the reference text.
-pub fn viterbi_align(emissions: &Emissions, text: &str, audio_duration_secs: f32) -> Result<Vec<Word>> {
+///
+/// Returns the aligned words and a list of words that were dropped before
+/// alignment because they contained no characters in the wav2vec2 vocabulary.
+pub fn viterbi_align(
+    emissions: &Emissions,
+    text: &str,
+    audio_duration_secs: f32,
+) -> Result<(Vec<Word>, Vec<FilteredWord>)> {
     let vocab_map: HashMap<&str, usize> = emissions
         .vocab
         .iter()
@@ -27,16 +34,25 @@ pub fn viterbi_align(emissions: &Emissions, text: &str, audio_duration_secs: f32
         .ok_or_else(|| anyhow!("vocab has no '|' word-separator token"))?;
 
     // Drop words with no alignable characters (e.g. markdown artifacts like "##" or "---").
+    // Record filtered words with their original position for the AlignReport.
+    let mut filtered: Vec<FilteredWord> = Vec::new();
     let words: Vec<&str> = text
         .split_whitespace()
-        .filter(|w| {
-            w.to_uppercase()
+        .enumerate()
+        .filter_map(|(i, w)| {
+            if w.to_uppercase()
                 .chars()
                 .any(|ch| vocab_map.contains_key(ch.to_string().as_str()))
+            {
+                Some(w)
+            } else {
+                filtered.push(FilteredWord { word: w.to_string(), original_index: i });
+                None
+            }
         })
         .collect();
     if words.is_empty() {
-        return Ok(vec![]);
+        return Ok((vec![], filtered));
     }
 
     let mut tokens: Vec<CharToken> = Vec::new();
@@ -81,7 +97,7 @@ pub fn viterbi_align(emissions: &Emissions, text: &str, audio_duration_secs: f32
             speaker: None,
         });
     }
-    Ok(out)
+    Ok((out, filtered))
 }
 
 /// Forced alignment via dynamic programming over (frame, token) states.
