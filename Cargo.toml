@@ -11,6 +11,10 @@ path = "src/lib.rs"
 name = "forced-alignment"
 path = "src/main.rs"
 
+[features]
+metal = ["candle-core/metal", "candle-nn/metal", "candle-transformers/metal"]
+cuda = ["candle-core/cuda", "candle-nn/cuda", "candle-transformers/cuda"]
+
 [dependencies]
 anyhow = "1"
 candle-core = "0.10"
