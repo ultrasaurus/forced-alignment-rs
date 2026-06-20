@@ -1,5 +1,36 @@
 use anyhow::Result;
 use candle_core::{DType, Device, Tensor, D};
+
+/// Select the compute device.
+///
+/// Reads `FORCED_ALIGNMENT_DEVICE` env var: `cpu`, `metal`, or `cuda`.
+/// If unset, auto-selects: CUDA → Metal → CPU.
+///
+/// **Metal on M1 Mac does not meaningfully speed up inference.** wav2vec2-base
+/// (95M params) is small enough that M1 CPU SIMD is competitive with Metal
+/// kernel dispatch overhead — benchmarked at ~12s CPU vs ~12s Metal for a 100s
+/// audio segment. The `metal` feature is available and correct, just not faster
+/// locally. CUDA on a dedicated GPU has not yet been benchmarked.
+pub fn best_device() -> Result<Device> {
+    match std::env::var("FORCED_ALIGNMENT_DEVICE").as_deref() {
+        Ok("cpu") => return Ok(Device::Cpu),
+        #[cfg(feature = "cuda")]
+        Ok("cuda") => return Ok(Device::new_cuda(0)?),
+        #[cfg(feature = "metal")]
+        Ok("metal") => return Ok(Device::new_metal(0)?),
+        Ok(other) => anyhow::bail!("unknown FORCED_ALIGNMENT_DEVICE={other:?}; expected cpu, metal, or cuda"),
+        Err(_) => {}
+    }
+    #[cfg(feature = "cuda")]
+    if candle_core::utils::cuda_is_available() {
+        return Ok(Device::new_cuda(0)?);
+    }
+    #[cfg(feature = "metal")]
+    if candle_core::utils::metal_is_available() {
+        return Ok(Device::new_metal(0)?);
+    }
+    Ok(Device::Cpu)
+}
 use candle_nn::{
     conv1d_no_bias, group_norm, layer_norm, linear, ops::softmax_last_dim, Conv1d, Conv1dConfig,
     GroupNorm, LayerNorm, Linear, Module, VarBuilder,
@@ -250,6 +281,7 @@ pub struct Wav2Vec2Ctc {
     encoder: Encoder,
     lm_head: Linear,
     vocab: Vec<String>,
+    device: Device,
 }
 
 impl Wav2Vec2Ctc {
@@ -268,8 +300,9 @@ impl Wav2Vec2Ctc {
             vocab[id] = token;
         }
 
+        let device = best_device()?;
         let vb = unsafe {
-            VarBuilder::from_mmaped_safetensors(&[weights_path], DType::F32, &Device::Cpu)?
+            VarBuilder::from_mmaped_safetensors(&[weights_path], DType::F32, &device)?
         };
         let vb = vb.pp("wav2vec2");
 
@@ -279,6 +312,7 @@ impl Wav2Vec2Ctc {
             encoder: Encoder::load(vb.pp("encoder"))?,
             lm_head: linear(HIDDEN_SIZE, vocab_size, vb.root().pp("lm_head"))?,
             vocab,
+            device,
         })
     }
 
@@ -289,7 +323,7 @@ impl Wav2Vec2Ctc {
         let std = var.sqrt();
         let normalized: Vec<f32> = samples.iter().map(|s| (s - mean) / (std + 1e-7)).collect();
 
-        let x = Tensor::from_vec(normalized, (1, 1, samples.len()), &Device::Cpu)?;
+        let x = Tensor::from_vec(normalized, (1, 1, samples.len()), &self.device)?;
         let x = self.feature_extractor.forward(&x)?;
         let x = self.feature_projection.forward(&x)?;
         let x = self.encoder.forward(&x)?;
