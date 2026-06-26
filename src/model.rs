@@ -286,7 +286,12 @@ pub struct Wav2Vec2Ctc {
 
 impl Wav2Vec2Ctc {
     pub fn load() -> Result<Self> {
-        let api = hf_hub::api::sync::Api::new()?;
+        // `Api::new()` uses `Cache::default()`, which ignores HF_HOME and
+        // always resolves to ~/.cache/huggingface — silently missing any
+        // model pre-downloaded into a custom HF_HOME at image build time
+        // `from_env()` honors HF_HOME when set, falling back to the same
+        //  default otherwise.
+        let api = hf_hub::api::sync::ApiBuilder::from_env().build()?;
         let repo = api.model("facebook/wav2vec2-base-960h".to_string());
 
         let weights_path = repo.get("model.safetensors")?;
