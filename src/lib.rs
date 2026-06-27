@@ -5,7 +5,10 @@ mod ctc;
 mod model;
 
 use anyhow::Result;
-use transcript::{AlignReport, Segment, SuspectReason, SuspectWord, Transcript, SUSPECT_THRESHOLD};
+use transcript::{
+    AlignReport, Segment, SuspectReason, SuspectWord, Transcript, ANOMALOUS_DURATION_ABS_SECS,
+    ANOMALOUS_DURATION_RATIO, SUSPECT_THRESHOLD,
+};
 
 pub const SAMPLE_RATE: u32 = 16_000;
 
@@ -92,6 +95,46 @@ mod tests {
         assert_eq!(last.reason, SuspectReason::Truncated);
     }
 
+    fn word(text: &str, start: f64, end: f64, score: f64) -> transcript::Word {
+        transcript::Word {
+            word: text.to_string(),
+            start: Some(start),
+            end: Some(end),
+            score: Some(score),
+            speaker: None,
+        }
+    }
+
+    #[test]
+    fn anomalous_duration_flagged_even_above_score_threshold() {
+        // Reproduces the hypertext87 seg06 leak: "Another" absorbs ~7s of
+        // leaked audio (score 0.424, above SUSPECT_THRESHOLD) while every
+        // other word paces normally at ~0.2s/word with high scores.
+        let words = vec![
+            word("Another", 0.44, 2.64, 0.424),
+            word("thing", 7.15, 7.31, 0.999),
+            word("worth", 7.31, 7.51, 0.97),
+            word("noting", 7.51, 7.81, 0.95),
+            word("is", 7.81, 7.95, 0.96),
+        ];
+        let suspect = detect_suspects(&words, 8.0);
+        assert_eq!(suspect.len(), 1);
+        assert_eq!(suspect[0].word, "Another");
+        assert_eq!(suspect[0].reason, SuspectReason::AnomalousDuration);
+    }
+
+    #[test]
+    fn normal_pacing_has_no_anomalous_duration() {
+        let words = vec![
+            word("hello", 0.0, 0.2, 0.95),
+            word("there", 0.2, 0.4, 0.96),
+            word("my", 0.4, 0.55, 0.97),
+            word("friend", 0.55, 0.8, 0.98),
+        ];
+        let suspect = detect_suspects(&words, 1.0);
+        assert!(suspect.is_empty());
+    }
+
     /// Requires model weights (~360MB) downloaded from HuggingFace.
     #[test]
     #[ignore]
@@ -131,6 +174,65 @@ mod tests {
 /// frames by the Viterbi constraint and score near zero. Words below threshold
 /// whose start time falls in the final 10% of audio duration are classified as
 /// [`transcript::SuspectReason::Truncated`].
+fn word_duration(w: &transcript::Word) -> Option<f64> {
+    Some(w.end? - w.start?)
+}
+
+/// Median of per-character duration across words with timing, used as the
+/// segment's typical pace for [`transcript::SuspectReason::AnomalousDuration`].
+/// Returns `None` if there are too few timed words for a median to be
+/// meaningful.
+fn median_normalized_duration(words: &[transcript::Word]) -> Option<f64> {
+    const MIN_WORDS_FOR_MEDIAN: usize = 4;
+    let mut normalized: Vec<f64> = words
+        .iter()
+        .filter_map(|w| {
+            let d = word_duration(w)?;
+            Some(d / w.word.chars().count().max(1) as f64)
+        })
+        .collect();
+    if normalized.len() < MIN_WORDS_FOR_MEDIAN {
+        return None;
+    }
+    normalized.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    Some(normalized[normalized.len() / 2])
+}
+
+/// Flag words whose score is below threshold or whose duration is anomalous
+/// relative to the segment's typical per-character pace (see
+/// [`transcript::SuspectReason`]).
+fn detect_suspects(words: &[transcript::Word], duration_secs: f32) -> Vec<SuspectWord> {
+    let truncation_boundary = duration_secs as f64 * 0.9;
+    let median_normalized_duration = median_normalized_duration(words);
+    words
+        .iter()
+        .enumerate()
+        .filter_map(|(i, w)| {
+            let score = w.score?;
+            let duration = word_duration(w);
+            let normalized = duration.map(|d| d / w.word.chars().count().max(1) as f64);
+            let is_anomalous_duration = duration.is_some_and(|d| d > ANOMALOUS_DURATION_ABS_SECS)
+                || median_normalized_duration
+                    .zip(normalized)
+                    .is_some_and(|(median, n)| n > median * ANOMALOUS_DURATION_RATIO);
+
+            let reason = if is_anomalous_duration {
+                Some(SuspectReason::AnomalousDuration)
+            } else if score < SUSPECT_THRESHOLD {
+                if w.start.unwrap_or(0.0) >= truncation_boundary {
+                    Some(SuspectReason::Truncated)
+                } else {
+                    Some(SuspectReason::LowScore)
+                }
+            } else {
+                None
+            };
+
+            reason.map(|reason| SuspectWord { word_index: i, word: w.word.clone(), score, reason })
+        })
+        .collect()
+}
+
 pub fn align(samples: &[f32], text: &str) -> Result<(Transcript, AlignReport)> {
     let duration_secs = samples.len() as f32 / SAMPLE_RATE as f32;
     let emissions = model::run_inference(samples)?;
@@ -139,25 +241,7 @@ pub fn align(samples: &[f32], text: &str) -> Result<(Transcript, AlignReport)> {
     let start = words.first().and_then(|w| w.start).unwrap_or(0.0);
     let end = words.last().and_then(|w| w.end).unwrap_or(duration_secs as f64);
 
-    let truncation_boundary = duration_secs as f64 * 0.9;
-    let suspect: Vec<SuspectWord> = words
-        .iter()
-        .enumerate()
-        .filter_map(|(i, w)| {
-            let score = w.score?;
-            if score < SUSPECT_THRESHOLD {
-                let reason = if w.start.unwrap_or(0.0) >= truncation_boundary {
-                    SuspectReason::Truncated
-                } else {
-                    SuspectReason::LowScore
-                };
-                Some(SuspectWord { word_index: i, word: w.word.clone(), score, reason })
-            } else {
-                None
-            }
-        })
-        .collect();
-
+    let suspect = detect_suspects(&words, duration_secs);
     let report = AlignReport { filtered, suspect, threshold: SUSPECT_THRESHOLD };
 
     Ok((
