@@ -3,6 +3,15 @@ use serde::{Deserialize, Serialize};
 /// Score threshold below which a word is considered suspect.
 pub const SUSPECT_THRESHOLD: f64 = 0.3;
 
+/// A word's per-character duration is flagged if it exceeds the median
+/// per-character duration (across the segment) by this multiple.
+pub const ANOMALOUS_DURATION_RATIO: f64 = 4.0;
+
+/// A word's duration is flagged if it exceeds this many seconds outright,
+/// regardless of the median (catches segments where multiple leaks have
+/// already skewed the median upward).
+pub const ANOMALOUS_DURATION_ABS_SECS: f64 = 1.0;
+
 /// A word from the input text that was dropped before alignment because it
 /// contained no characters representable in the wav2vec2 vocabulary.
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -20,6 +29,11 @@ pub enum SuspectReason {
     /// Score below threshold AND word starts in the final 10% of audio
     /// duration — strong signal that the audio was truncated.
     Truncated,
+    /// Duration far exceeds the segment's typical per-character pace (or
+    /// exceeds an absolute cap), even though the score is above threshold —
+    /// signals that extra audio (e.g. a leaked fragment) was absorbed into
+    /// this word's span instead of being left unaligned.
+    AnomalousDuration,
 }
 
 /// A word whose alignment confidence is low enough to warrant review.
