@@ -36,6 +36,7 @@ use candle_nn::{
     GroupNorm, LayerNorm, Linear, Module, VarBuilder,
 };
 use std::collections::HashMap;
+use std::sync::OnceLock;
 
 const HIDDEN_SIZE: usize = 768;
 const NUM_LAYERS: usize = 12;
@@ -354,13 +355,30 @@ const SAMPLE_RATE: usize = 16_000;
 const CHUNK_SECONDS: usize = 20;
 const OVERLAP_SECONDS: usize = 1;
 
-/// Load the wav2vec2 model and run inference on audio samples (16kHz mono).
+/// Process-wide cached model — loaded once (device init + weights onto GPU/CPU),
+/// then shared across every `run_inference` call. Before this, every call
+/// reloaded the model from scratch: harmless at low concurrency, but at N
+/// concurrent calls (e.g. one per segment in a batch's alignment fan-out) it
+/// meant N redundant `Device::new_cuda(0)` + safetensors loads competing at
+/// once, which is suspected to be why CUDA alignment stalled entirely under
+/// real concurrency (see odoru's `vibe/dev/cloudrun/forced-alignment.md`).
+/// `Wav2Vec2Ctc` holds only weights (`Tensor`) and a `Device`, both read-only
+/// after construction, so sharing one instance across threads via a
+/// `&'static` reference is safe — no interior mutability, `forward` takes
+/// `&self`.
+static MODEL: OnceLock<Wav2Vec2Ctc> = OnceLock::new();
+
+fn shared_model() -> &'static Wav2Vec2Ctc {
+    MODEL.get_or_init(|| Wav2Vec2Ctc::load().expect("failed to load wav2vec2 model"))
+}
+
+/// Run inference on audio samples (16kHz mono) using the shared cached model.
 ///
 /// Long audio is processed in overlapping chunks (attention is O(T^2), so a single
 /// multi-minute pass is infeasible); the overlap is trimmed from each chunk's
 /// emissions before concatenation so frame timing stays uniform.
 pub fn run_inference(samples: &[f32]) -> Result<Emissions> {
-    let model = Wav2Vec2Ctc::load()?;
+    let model = shared_model();
 
     let chunk_samples = CHUNK_SECONDS * SAMPLE_RATE;
     let overlap_samples = OVERLAP_SECONDS * SAMPLE_RATE;
