@@ -287,6 +287,17 @@ pub struct Wav2Vec2Ctc {
 
 impl Wav2Vec2Ctc {
     pub fn load() -> Result<Self> {
+        Self::load_on_device(best_device()?)
+    }
+
+    /// Same load, but onto a caller-supplied device rather than picking one
+    /// via `best_device()`. Used to build a pool of stream-devices sharing
+    /// one CUDA context (see `shared_model_pool`) — the weights file is
+    /// already cached locally after the first load, so this is a host→GPU
+    /// upload, not a fresh disk/network fetch; the expensive part avoided by
+    /// sharing context is the `CudaContext::new()` device init itself, not
+    /// the weight upload.
+    pub fn load_on_device(device: Device) -> Result<Self> {
         // `Api::new()` uses `Cache::default()`, which ignores HF_HOME and
         // always resolves to ~/.cache/huggingface — silently missing any
         // model pre-downloaded into a custom HF_HOME at image build time
@@ -306,7 +317,6 @@ impl Wav2Vec2Ctc {
             vocab[id] = token;
         }
 
-        let device = best_device()?;
         let vb = unsafe {
             VarBuilder::from_mmaped_safetensors(&[weights_path], DType::F32, &device)?
         };
@@ -355,21 +365,77 @@ const SAMPLE_RATE: usize = 16_000;
 const CHUNK_SECONDS: usize = 20;
 const OVERLAP_SECONDS: usize = 1;
 
-/// Process-wide cached model — loaded once (device init + weights onto GPU/CPU),
-/// then shared across every `run_inference` call. Before this, every call
-/// reloaded the model from scratch: harmless at low concurrency, but at N
-/// concurrent calls (e.g. one per segment in a batch's alignment fan-out) it
-/// meant N redundant `Device::new_cuda(0)` + safetensors loads competing at
-/// once, which is suspected to be why CUDA alignment stalled entirely under
-/// real concurrency (see odoru's `vibe/dev/cloudrun/forced-alignment.md`).
-/// `Wav2Vec2Ctc` holds only weights (`Tensor`) and a `Device`, both read-only
-/// after construction, so sharing one instance across threads via a
-/// `&'static` reference is safe — no interior mutability, `forward` takes
-/// `&self`.
-static MODEL: OnceLock<Wav2Vec2Ctc> = OnceLock::new();
+/// Process-wide cached model pool — loaded once (device init + weights onto
+/// GPU/CPU), then shared across every `run_inference` call. Before the
+/// single-model version of this cache existed, every call reloaded the
+/// model from scratch: harmless at low concurrency, but at N concurrent
+/// calls (e.g. one per segment in a batch's alignment fan-out) it meant N
+/// redundant `Device::new_cuda(0)` + safetensors loads competing at once,
+/// which is suspected to have caused CUDA alignment to stall entirely under
+/// real concurrency. `Wav2Vec2Ctc` holds only weights (`Tensor`) and a
+/// `Device`, both read-only after construction, so sharing instances across
+/// threads via `&'static` references is safe — no interior mutability,
+/// `forward` takes `&self`.
+///
+/// A single shared model still means every concurrent CUDA call submits its
+/// kernels to the same one CUDA stream, which serializes them — real
+/// wall-clock concurrency needs each call to use its own stream. Candle
+/// doesn't expose reusing an existing device's context on a new stream by
+/// default, so this pool is built against a patched local `candle-core`
+/// fork that exposes `CudaDevice::cuda_context()` +
+/// `CudaDevice::from_context_and_stream()` as `pub`. That lets the pool
+/// build N stream-bound devices sharing one CUDA context (cheap — no repeat
+/// `CudaContext::new()`/device init) and load one weights copy onto each
+/// (a host→GPU upload since the weights file is already cached locally
+/// after the first load, not a fresh disk/network fetch) — trading a small,
+/// bounded amount of extra VRAM and one-time upload cost for genuine
+/// per-call stream concurrency instead of one shared, serializing stream.
+static MODEL_POOL: OnceLock<Vec<Wav2Vec2Ctc>> = OnceLock::new();
+static POOL_NEXT: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+
+/// Pool size, override via `FORCED_ALIGNMENT_STREAM_POOL_SIZE`. Only matters
+/// for CUDA — CPU/Metal builds always get a pool of 1 (streams aren't the
+/// bottleneck there).
+fn pool_size() -> usize {
+    std::env::var("FORCED_ALIGNMENT_STREAM_POOL_SIZE")
+        .ok()
+        .and_then(|s| s.parse().ok())
+        .filter(|&n| n > 0)
+        .unwrap_or(8)
+}
+
+fn build_model_pool() -> Vec<Wav2Vec2Ctc> {
+    let first = Wav2Vec2Ctc::load().expect("failed to load wav2vec2 model");
+
+    #[cfg(feature = "cuda")]
+    if let Device::Cuda(cuda_device) = &first.device {
+        let n = pool_size();
+        let context = cuda_device.cuda_context();
+        let mut pool = Vec::with_capacity(n);
+        pool.push(first);
+        for _ in 1..n {
+            let stream = context
+                .new_stream()
+                .expect("failed to create additional CUDA stream for alignment pool");
+            let device = Device::Cuda(
+                candle_core::CudaDevice::from_context_and_stream(context.clone(), stream)
+                    .expect("failed to build stream-bound CUDA device for alignment pool"),
+            );
+            pool.push(
+                Wav2Vec2Ctc::load_on_device(device)
+                    .expect("failed to load wav2vec2 model onto pooled CUDA stream"),
+            );
+        }
+        return pool;
+    }
+
+    vec![first]
+}
 
 fn shared_model() -> &'static Wav2Vec2Ctc {
-    MODEL.get_or_init(|| Wav2Vec2Ctc::load().expect("failed to load wav2vec2 model"))
+    let pool = MODEL_POOL.get_or_init(build_model_pool);
+    let i = POOL_NEXT.fetch_add(1, std::sync::atomic::Ordering::Relaxed) % pool.len();
+    &pool[i]
 }
 
 /// Run inference on audio samples (16kHz mono) using the shared cached model.
