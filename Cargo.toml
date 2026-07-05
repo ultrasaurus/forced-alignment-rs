@@ -38,6 +38,6 @@ unicode-segmentation = "1"
 # as pub, so multiple stream-bound devices can share one loaded model's
 # context (weights copied cheaply GPU-to-GPU per stream, not reloaded from
 # disk) instead of every concurrent align() call serializing on one shared
-# stream. Branch not yet pushed/merged upstream — local-only for now.
+# stream. Not yet merged upstream.
 [patch.crates-io]
-candle-core = { git = "git@github.com:ultrasaurus/candle.git", branch="expose-cuda-stream-context"}
+candle-core = { git = "https://github.com/ultrasaurus/candle.git", branch = "expose-cuda-stream-context" }
