@@ -381,9 +381,11 @@ const OVERLAP_SECONDS: usize = 1;
 /// kernels to the same one CUDA stream, which serializes them — real
 /// wall-clock concurrency needs each call to use its own stream. Candle
 /// doesn't expose reusing an existing device's context on a new stream by
-/// default, so this pool is built against a patched local `candle-core`
-/// fork that exposes `CudaDevice::cuda_context()` +
-/// `CudaDevice::from_context_and_stream()` as `pub`. That lets the pool
+/// default, so this pool is built against a patched `candle-core` fork
+/// (`ultrasaurus/candle`, branch `expose-cuda-stream-context`, pinned in
+/// `Cargo.toml`'s `[patch.crates-io]`) that exposes
+/// `CudaDevice::cuda_context()` + `CudaDevice::from_context_and_stream()`
+/// as `pub`. That lets the pool
 /// build N stream-bound devices sharing one CUDA context (cheap — no repeat
 /// `CudaContext::new()`/device init) and load one weights copy onto each
 /// (a host→GPU upload since the weights file is already cached locally
