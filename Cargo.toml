@@ -17,9 +17,9 @@ cuda = ["candle-core/cuda", "candle-nn/cuda", "candle-transformers/cuda"]
 
 [dependencies]
 anyhow = "1"
-candle-core = "0.10"
-candle-nn = "0.10"
-candle-transformers = "0.10"
+candle-core = "0.11"
+candle-nn = "0.11"
+candle-transformers = "0.11"
 clap = { version = "4", features = ["derive"] }
 hf-hub = "0.5"
 serde = { version = "1", features = ["derive"] }
@@ -34,4 +34,10 @@ symphonia = { version = "0.5", features = ["mp3"] }
 rubato = "0.16"
 unicode-segmentation = "1"
 
-
+# Exploratory: exposes CudaDevice::cuda_context()/from_context_and_stream()
+# as pub, so multiple stream-bound devices can share one loaded model's
+# context (weights copied cheaply GPU-to-GPU per stream, not reloaded from
+# disk) instead of every concurrent align() call serializing on one shared
+# stream. Branch not yet pushed/merged upstream — local-only for now.
+[patch.crates-io]
+candle-core = { git = "git@github.com:ultrasaurus/candle.git", branch="expose-cuda-stream-context"}
