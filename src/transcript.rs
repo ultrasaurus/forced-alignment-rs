@@ -49,6 +49,33 @@ pub struct SuspectWord {
     pub reason: SuspectReason,
 }
 
+/// Speech found in the audio that isn't in the reference text — e.g. a reader
+/// saying "Chapter" before a numeral, or a TTS engine leaking a fragment of
+/// another clip. Detected as a run of frames the forced-aligner routes into
+/// an optional filler state instead of smearing onto a neighboring word.
+///
+/// `decoded_text` is a best-effort, unconstrained greedy CTC decode of the
+/// filler frames — useful for a human to eyeball or for fuzzy-matching
+/// against the reference corpus (e.g. to identify a leaked TTS clip), but
+/// low-confidence and not meant to be trusted like an aligned [`Word`].
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Insertion {
+    /// Index into the aligned word list of the word this insertion precedes.
+    /// Equal to `words.len()` for an insertion after the final word.
+    pub before_word_index: usize,
+    /// Start time in seconds from the beginning of the audio.
+    pub start: f64,
+    /// End time in seconds from the beginning of the audio.
+    pub end: f64,
+    /// Best-effort greedy decode of the inserted speech. Low confidence.
+    pub decoded_text: String,
+    /// Mean probability of the decoded characters (0.0 - 1.0). Not
+    /// comparable to [`Word::score`] or [`SuspectWord::score`] — those score
+    /// confidence in a *known* word; this scores confidence in an
+    /// unconstrained decode of unknown content.
+    pub score: f64,
+}
+
 /// Diagnostic report returned alongside the [`Transcript`] from `align()`.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AlignReport {
@@ -56,6 +83,8 @@ pub struct AlignReport {
     pub filtered: Vec<FilteredWord>,
     /// Words aligned with low confidence.
     pub suspect: Vec<SuspectWord>,
+    /// Speech detected outside the reference text (see [`Insertion`]).
+    pub insertions: Vec<Insertion>,
     /// Score threshold used to classify suspects.
     pub threshold: f64,
 }

@@ -19,10 +19,21 @@ fn main() -> Result<()> {
     let samples = forced_alignment::audio::load_audio(&args.audio, forced_alignment::SAMPLE_RATE)?;
     let (transcript, report) = forced_alignment::align(&samples, &text)?;
     std::fs::write(&args.output, serde_json::to_string_pretty(&transcript)?)?;
-    if !report.filtered.is_empty() || !report.suspect.is_empty() {
-        eprintln!("{} filtered word(s), {} suspect word(s)", report.filtered.len(), report.suspect.len());
+    if !report.filtered.is_empty() || !report.suspect.is_empty() || !report.insertions.is_empty() {
+        eprintln!(
+            "{} filtered word(s), {} suspect word(s), {} insertion(s)",
+            report.filtered.len(),
+            report.suspect.len(),
+            report.insertions.len()
+        );
         for w in &report.suspect {
             eprintln!("  suspect [{:?}] {:?} score={:.3}", w.reason, w.word, w.score);
+        }
+        for ins in &report.insertions {
+            eprintln!(
+                "  insertion before word {} [{:.2}s-{:.2}s]: {:?} score={:.3}",
+                ins.before_word_index, ins.start, ins.end, ins.decoded_text, ins.score
+            );
         }
     }
     Ok(())

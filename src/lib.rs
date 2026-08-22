@@ -41,7 +41,7 @@ mod tests {
     fn filtered_words_recorded_with_correct_index() {
         // "hello ## world" — "##" has no alignable chars and should be filtered.
         let emissions = fake_emissions(200, base_vocab());
-        let (words, filtered) =
+        let (words, filtered, _insertions) =
             crate::ctc::viterbi_align(&emissions, "hello ## world", 2.0).unwrap();
         assert_eq!(filtered.len(), 1);
         assert_eq!(filtered[0].word, "##");
@@ -54,7 +54,7 @@ mod tests {
     #[test]
     fn no_filtered_words_for_clean_text() {
         let emissions = fake_emissions(200, base_vocab());
-        let (_words, filtered) =
+        let (_words, filtered, _insertions) =
             crate::ctc::viterbi_align(&emissions, "hello world", 2.0).unwrap();
         assert!(filtered.is_empty());
     }
@@ -65,10 +65,11 @@ mod tests {
         // 1/V which is well below SUSPECT_THRESHOLD, so all words are suspect.
         // Words whose start time >= 90% of duration are classified Truncated.
         let emissions = fake_emissions(200, base_vocab());
-        let (words, filtered) =
+        let (words, filtered, insertions) =
             crate::ctc::viterbi_align(&emissions, "hello world", 2.0).unwrap();
         let report = AlignReport {
             filtered,
+            insertions,
             suspect: words
                 .iter()
                 .enumerate()
@@ -133,6 +134,57 @@ mod tests {
         ];
         let suspect = detect_suspects(&words, 1.0);
         assert!(suspect.is_empty());
+    }
+
+    #[test]
+    fn detects_insertion_between_words_without_corrupting_neighbors() {
+        // Reference text "hi ok"; audio simulates a reader inserting "xx"
+        // between the two words. Builds explicit per-frame emissions rather
+        // than fake_emissions' uniform distribution, so specific frames can
+        // strongly favor a letter outside the reference vocabulary at that
+        // position (H, I, |, O, K) — the filler state should absorb those
+        // frames instead of the Viterbi DP smearing them onto "hi" or "ok".
+        let vocab = base_vocab();
+        let idx = |ch: char| vocab.iter().position(|t| t == &ch.to_string()).unwrap();
+        let pad = 0usize; // "<pad>" is vocab[0] per base_vocab()
+        let sep = 1usize; // "|" is vocab[1]
+        let v = vocab.len();
+        let winner_logit = (0.9_f32).ln();
+        let background_logit = (0.1_f32 / (v - 1) as f32).ln();
+
+        let frame_for = |winner: usize| -> Vec<f32> {
+            (0..v).map(|i| if i == winner { winner_logit } else { background_logit }).collect()
+        };
+
+        let log_probs = vec![
+            frame_for(idx('H')),
+            frame_for(idx('I')),
+            frame_for(sep),
+            frame_for(idx('X')),
+            frame_for(idx('X')),
+            frame_for(idx('X')),
+            frame_for(idx('X')),
+            frame_for(idx('X')),
+            frame_for(idx('X')),
+            frame_for(pad),
+            frame_for(idx('O')),
+            frame_for(idx('K')),
+        ];
+        let emissions = crate::model::Emissions { log_probs, vocab };
+
+        let (words, filtered, insertions) =
+            crate::ctc::viterbi_align(&emissions, "hi ok", 1.0).unwrap();
+
+        assert!(filtered.is_empty());
+        assert_eq!(words.len(), 2);
+        assert_eq!(words[0].word, "hi");
+        assert_eq!(words[1].word, "ok");
+        // Neighboring words shouldn't have absorbed the inserted frames.
+        assert!(words[0].end.unwrap() <= words[1].start.unwrap());
+
+        assert_eq!(insertions.len(), 1, "expected exactly one insertion, got {insertions:?}");
+        assert_eq!(insertions[0].before_word_index, 1);
+        assert!(insertions[0].decoded_text.contains('x'), "decoded: {:?}", insertions[0].decoded_text);
     }
 
     /// Requires model weights (~360MB) downloaded from HuggingFace.
@@ -236,13 +288,13 @@ fn detect_suspects(words: &[transcript::Word], duration_secs: f32) -> Vec<Suspec
 pub fn align(samples: &[f32], text: &str) -> Result<(Transcript, AlignReport)> {
     let duration_secs = samples.len() as f32 / SAMPLE_RATE as f32;
     let emissions = model::run_inference(samples)?;
-    let (words, filtered) = ctc::viterbi_align(&emissions, text, duration_secs)?;
+    let (words, filtered, insertions) = ctc::viterbi_align(&emissions, text, duration_secs)?;
 
     let start = words.first().and_then(|w| w.start).unwrap_or(0.0);
     let end = words.last().and_then(|w| w.end).unwrap_or(duration_secs as f64);
 
     let suspect = detect_suspects(&words, duration_secs);
-    let report = AlignReport { filtered, suspect, threshold: SUSPECT_THRESHOLD };
+    let report = AlignReport { filtered, suspect, insertions, threshold: SUSPECT_THRESHOLD };
 
     Ok((
         Transcript {
