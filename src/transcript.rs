@@ -12,6 +12,19 @@ pub const ANOMALOUS_DURATION_RATIO: f64 = 4.0;
 /// already skewed the median upward).
 pub const ANOMALOUS_DURATION_ABS_SECS: f64 = 1.0;
 
+/// A word's per-character duration is considered pace-collapsed — the
+/// signature of remaining reference words getting crushed into the last few
+/// frames when the Viterbi DP runs out of audio before it runs out of text —
+/// if it falls below the segment's median duration by this factor.
+pub const TRUNCATION_PACE_RATIO: f64 = 4.0;
+
+/// Minimum length of a trailing run of pace-collapsed, low-score words
+/// required to classify as [`SuspectReason::Truncated`]. A single bad word
+/// this late in a file could just be a mispronunciation or noise; genuine
+/// truncation collapses several consecutive words because the Viterbi DP has
+/// run out of frames, not just one.
+pub const MIN_TRUNCATION_RUN_WORDS: usize = 2;
+
 /// A word from the input text that was dropped before alignment because it
 /// contained no characters representable in the wav2vec2 vocabulary.
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -26,8 +39,12 @@ pub struct FilteredWord {
 pub enum SuspectReason {
     /// Score below threshold anywhere in the audio.
     LowScore,
-    /// Score below threshold AND word starts in the final 10% of audio
-    /// duration — strong signal that the audio was truncated.
+    /// Belongs to a trailing run of at least [`MIN_TRUNCATION_RUN_WORDS`]
+    /// consecutive words (ending at the last word) that are all below the
+    /// suspect threshold AND pace-collapsed relative to the segment's median
+    /// (see [`TRUNCATION_PACE_RATIO`]) — the DP running out of audio frames
+    /// before it runs out of reference text. A single late low-score word is
+    /// [`LowScore`] instead; truncation crushes a run, not one word.
     Truncated,
     /// Duration far exceeds the segment's typical per-character pace (or
     /// exceeds an absolute cap), even though the score is above threshold —

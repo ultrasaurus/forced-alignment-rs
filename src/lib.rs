@@ -60,40 +60,45 @@ mod tests {
     }
 
     #[test]
-    fn suspect_words_flagged_at_end_are_truncated() {
-        // With uniform low-probability emissions every word will score near
-        // 1/V which is well below SUSPECT_THRESHOLD, so all words are suspect.
-        // Words whose start time >= 90% of duration are classified Truncated.
-        let emissions = fake_emissions(200, base_vocab());
-        let (words, filtered, insertions) =
-            crate::ctc::viterbi_align(&emissions, "hello world", 2.0).unwrap();
-        let report = AlignReport {
-            filtered,
-            insertions,
-            suspect: words
-                .iter()
-                .enumerate()
-                .filter_map(|(i, w)| {
-                    let score = w.score?;
-                    if score < transcript::SUSPECT_THRESHOLD {
-                        let reason = if w.start.unwrap_or(0.0) >= 2.0 * 0.9 {
-                            SuspectReason::Truncated
-                        } else {
-                            SuspectReason::LowScore
-                        };
-                        Some(transcript::SuspectWord { word_index: i, word: w.word.clone(), score, reason })
-                    } else {
-                        None
-                    }
-                })
-                .collect(),
-            threshold: transcript::SUSPECT_THRESHOLD,
-        };
-        // Under uniform emissions all words are suspect (score << 0.3).
-        assert!(!report.suspect.is_empty());
-        // The last word starts near the end so should be Truncated.
-        let last = report.suspect.last().unwrap();
-        assert_eq!(last.reason, SuspectReason::Truncated);
+    fn trailing_collapsed_run_flagged_as_truncated() {
+        // Four normally-paced, high-scoring words establish a ~0.1s/char
+        // median, then two trailing words collapse to near-zero duration and
+        // score — the signature of the Viterbi DP running out of audio
+        // frames before it ran out of reference text.
+        let words = vec![
+            word("alpha", 0.0, 0.5, 0.95),
+            word("beta", 0.5, 0.9, 0.95),
+            word("gamma", 0.9, 1.4, 0.9),
+            word("delta", 1.4, 1.9, 0.92),
+            word("he", 1.9, 1.92, 0.02),
+            word("a", 1.92, 1.93, 0.01),
+        ];
+        let suspect = detect_suspects(&words);
+        assert_eq!(suspect.len(), 2, "expected only the trailing pair flagged, got {suspect:?}");
+        assert_eq!(suspect[0].word, "he");
+        assert_eq!(suspect[0].reason, SuspectReason::Truncated);
+        assert_eq!(suspect[1].word, "a");
+        assert_eq!(suspect[1].reason, SuspectReason::Truncated);
+    }
+
+    #[test]
+    fn isolated_trailing_low_score_word_is_not_truncated() {
+        // Regression guard: a single low-scoring word at the end (with
+        // normal-paced neighbors) is a plausible mispronunciation or noise
+        // artifact, not evidence the audio was cut short. Only a run of at
+        // least MIN_TRUNCATION_RUN_WORDS should be classified Truncated.
+        let words = vec![
+            word("alpha", 0.0, 0.5, 0.95),
+            word("beta", 0.5, 0.9, 0.95),
+            word("gamma", 0.9, 1.4, 0.9),
+            word("delta", 1.4, 1.9, 0.92),
+            word("epsilon", 1.9, 2.4, 0.91),
+            word("a", 2.4, 2.42, 0.01),
+        ];
+        let suspect = detect_suspects(&words);
+        assert_eq!(suspect.len(), 1);
+        assert_eq!(suspect[0].word, "a");
+        assert_eq!(suspect[0].reason, SuspectReason::LowScore);
     }
 
     fn word(text: &str, start: f64, end: f64, score: f64) -> transcript::Word {
@@ -118,7 +123,7 @@ mod tests {
             word("noting", 7.51, 7.81, 0.95),
             word("is", 7.81, 7.95, 0.96),
         ];
-        let suspect = detect_suspects(&words, 8.0);
+        let suspect = detect_suspects(&words);
         assert_eq!(suspect.len(), 1);
         assert_eq!(suspect[0].word, "Another");
         assert_eq!(suspect[0].reason, SuspectReason::AnomalousDuration);
@@ -132,7 +137,7 @@ mod tests {
             word("my", 0.4, 0.55, 0.97),
             word("friend", 0.55, 0.8, 0.98),
         ];
-        let suspect = detect_suspects(&words, 1.0);
+        let suspect = detect_suspects(&words);
         assert!(suspect.is_empty());
     }
 
@@ -222,10 +227,16 @@ mod tests {
 ///
 /// # Truncation detection
 ///
-/// If the audio ends before the text does, tail words are forced into the last
-/// frames by the Viterbi constraint and score near zero. Words below threshold
-/// whose start time falls in the final 10% of audio duration are classified as
-/// [`transcript::SuspectReason::Truncated`].
+/// If the audio ends before the text does, the Viterbi DP is forced to crush
+/// the remaining reference words into whatever frames are left, collapsing
+/// both their score and duration. A trailing run of at least
+/// [`transcript::MIN_TRUNCATION_RUN_WORDS`] consecutive words — ending at the
+/// last word — that are both below [`transcript::SUSPECT_THRESHOLD`] and
+/// pace-collapsed relative to the segment's median (see
+/// [`transcript::TRUNCATION_PACE_RATIO`]) is classified as
+/// [`transcript::SuspectReason::Truncated`]. A single late low-score word
+/// without that collapse is [`transcript::SuspectReason::LowScore`] instead —
+/// it's as likely to be a mispronunciation as a truncation.
 fn word_duration(w: &transcript::Word) -> Option<f64> {
     Some(w.end? - w.start?)
 }
@@ -250,12 +261,34 @@ fn median_normalized_duration(words: &[transcript::Word]) -> Option<f64> {
     Some(normalized[normalized.len() / 2])
 }
 
+/// Length of the trailing run of words (ending at the last word) that are
+/// both below the suspect threshold and pace-collapsed relative to
+/// `median_normalized_duration`. Returns 0 if there are too few words to
+/// establish a median, or if the trailing run doesn't meet
+/// [`transcript::MIN_TRUNCATION_RUN_WORDS`].
+fn truncated_run_len(words: &[transcript::Word], median_normalized_duration: Option<f64>) -> usize {
+    let Some(median) = median_normalized_duration else { return 0 };
+    let run = words
+        .iter()
+        .rev()
+        .take_while(|w| {
+            let score_low = w.score.is_some_and(|s| s < SUSPECT_THRESHOLD);
+            let pace_collapsed = word_duration(w)
+                .map(|d| d / w.word.chars().count().max(1) as f64)
+                .is_some_and(|n| n < median / transcript::TRUNCATION_PACE_RATIO);
+            score_low && pace_collapsed
+        })
+        .count();
+    if run >= transcript::MIN_TRUNCATION_RUN_WORDS { run } else { 0 }
+}
+
 /// Flag words whose score is below threshold or whose duration is anomalous
 /// relative to the segment's typical per-character pace (see
 /// [`transcript::SuspectReason`]).
-fn detect_suspects(words: &[transcript::Word], duration_secs: f32) -> Vec<SuspectWord> {
-    let truncation_boundary = duration_secs as f64 * 0.9;
+fn detect_suspects(words: &[transcript::Word]) -> Vec<SuspectWord> {
     let median_normalized_duration = median_normalized_duration(words);
+    let truncated_from = words.len() - truncated_run_len(words, median_normalized_duration);
+
     words
         .iter()
         .enumerate()
@@ -268,14 +301,12 @@ fn detect_suspects(words: &[transcript::Word], duration_secs: f32) -> Vec<Suspec
                     .zip(normalized)
                     .is_some_and(|(median, n)| n > median * ANOMALOUS_DURATION_RATIO);
 
-            let reason = if is_anomalous_duration {
+            let reason = if i >= truncated_from {
+                Some(SuspectReason::Truncated)
+            } else if is_anomalous_duration {
                 Some(SuspectReason::AnomalousDuration)
             } else if score < SUSPECT_THRESHOLD {
-                if w.start.unwrap_or(0.0) >= truncation_boundary {
-                    Some(SuspectReason::Truncated)
-                } else {
-                    Some(SuspectReason::LowScore)
-                }
+                Some(SuspectReason::LowScore)
             } else {
                 None
             };
@@ -293,7 +324,7 @@ pub fn align(samples: &[f32], text: &str) -> Result<(Transcript, AlignReport)> {
     let start = words.first().and_then(|w| w.start).unwrap_or(0.0);
     let end = words.last().and_then(|w| w.end).unwrap_or(duration_secs as f64);
 
-    let suspect = detect_suspects(&words, duration_secs);
+    let suspect = detect_suspects(&words);
     let report = AlignReport { filtered, suspect, insertions, threshold: SUSPECT_THRESHOLD };
 
     Ok((
