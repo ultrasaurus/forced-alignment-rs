@@ -398,6 +398,7 @@ static POOL_NEXT: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsiz
 /// Pool size, override via `FORCED_ALIGNMENT_STREAM_POOL_SIZE`. Only matters
 /// for CUDA — CPU/Metal builds always get a pool of 1 (streams aren't the
 /// bottleneck there).
+#[cfg(feature = "cuda")]
 fn pool_size() -> usize {
     std::env::var("FORCED_ALIGNMENT_STREAM_POOL_SIZE")
         .ok()
