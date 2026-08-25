@@ -3,6 +3,8 @@ pub mod transcript;
 
 mod ctc;
 mod model;
+#[cfg(feature = "transcribe")]
+pub mod transcribe;
 
 use anyhow::Result;
 use transcript::{
