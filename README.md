@@ -18,7 +18,8 @@ For more details, see [overview.md](overview.md) and [report.md](report.md).
 3. Run a Viterbi forced-alignment DP between the CTC output and the known
    text to find each word's frame span.
 4. Return a `Transcript` with per-word `start`/`end`/`score` (seconds, 0.0–1.0)
-   and an `AlignReport` describing filtered and suspect words.
+   and an `AlignReport` describing filtered words, suspect words, and
+   insertions (audio present that isn't in the reference text at all).
 
 Currently English only.
 
@@ -90,3 +91,26 @@ meaningful when the text matches what was actually spoken.
 - **Strip leading/trailing punctuation per token** — the wav2vec2 vocab
   contains only letters and `|`; punctuation attached to a word token
   (e.g. `"Or,"`) deflates its score even when the word itself is present.
+
+## `transcribe` feature (optional, unintegrated)
+
+`forced_alignment::transcribe::transcribe(samples: &[f32]) -> Result<String>`
+— an independent free ASR transcription (Parakeet CTC via `parakeet-rs`/ONNX
+Runtime, CPU only) of audio whose *content* isn't already known, the opposite
+premise from forced alignment above. Gated behind the `transcribe` Cargo
+feature so plain consumers of this crate aren't forced to pull in a second
+inference runtime and a ~2.4GB model download.
+
+**Not the same thing as, and not integrated with, the `Transcript` struct
+`align()` returns.** `Transcript` is forced alignment's own output — the
+*known* reference words with their timestamps, ground truth by construction.
+`transcribe()` is a free-form guess at what audio says with no reference text
+at all, returned as a plain `String`, and doesn't touch `align()` or
+`AlignReport` in any way. Useful as an independent second opinion on
+whether a segment's audio actually matches its intended text — forced
+alignment can force a confident-looking match even when the audio is
+substantially or entirely wrong (see `report.md`'s "Known limitations") — but
+building that comparison (normalizing both sides, choosing a threshold,
+deciding what to do with acronyms/numbers) is a caller concern; see
+`artifacts/theory.md`'s "Free-transcription QA" section for the validated
+approach and its own limitations.
