@@ -8,8 +8,8 @@ individual cases.
 
 ## Summary
 
-Three distinct failure mechanisms produce what forced-alignment reports
-as "leaked audio," not one:
+Four distinct failure mechanisms have been found under the umbrella of
+"forced-alignment flagged this sentence's audio as suspect," not one:
 
 1. **Reference-clip bleed** — a fragment of the voice's own cloning
    reference audio leaks into the generated output.
@@ -19,8 +19,12 @@ as "leaked audio," not one:
    utterance.
 3. **Batch/pipeline misrouting** — weaker evidence than 1 and 2; mostly
    superseded by mechanism 2 (see below), kept for completeness.
+4. **TTS synthesis truncation** — the TTS engine stops generating partway
+   through a sentence; the audio just ends early into real trailing
+   silence. Found via free transcription, not by ear or by forced
+   alignment — see "Mechanism 4" below.
 
-These aren't competing explanations for one root cause — they're three
+These aren't competing explanations for one root cause — they're
 different things the same pipeline does under different conditions, and
 should be reasoned about separately, not collapsed into a single "the
 bug is X" story.
@@ -164,14 +168,16 @@ that add something not literally in the text (the original motivating
 use case, same as a human reader saying "Chapter" before a number).
 These aren't artifacts at all.
 
-## Free-transcription QA (Parakeet)
+## Free-transcription QA
 
-A CPU-only free transcription pass (`altunenes/parakeet-rs`, ONNX
-Runtime, `onnx-community/parakeet-ctc-0.6b-ONNX`), compared against
-normalized reference text, was built as `forced_alignment::transcribe`
-(feature-gated) plus an exploratory CLI tool
+A CPU-only free transcription pass, compared against normalized
+reference text, was prototyped via an exploratory CLI tool
 (`dl transcribe-check <doc_id> --voice <voice>` in odoru's `cli` crate)
-— not wired into the live `align_warnings` pipeline yet.
+— not wired into the live `align_warnings` pipeline yet. First built
+against Parakeet, since retired — see `asr-engine-comparison.md` for
+engine-specific findings and the current WhisperX direction. The
+methodology below (what to compare against, how to tokenize/score) is
+engine-agnostic and still applies.
 
 **Validated on the physics-of-sound corpus**: 83 sentences, clean
 separation between real problems and clean audio (worst clean score
@@ -204,56 +210,75 @@ only).
   the right trade if this is ever used to gate automated re-synth, where
   false positives are far more costly than an occasional missed
   acronym-only error.
-- **Known remaining gaps, found on a second, citation-heavy document**
-  (legal/technical citations, not math-heavy — a useful contrast corpus):
-  abbreviations that expand to ordinary words (`"pp."` → `"pages"`,
-  confirmed present in the normalized text) can still show as low-scoring
-  if Parakeet's transcription simply **truncates before reaching them**
-  — a distinct, more concerning limitation (silent content-dropping on
-  long/complex sentences, not a wrong-word problem) surfaced late in
-  this investigation and not yet systematically checked across more
-  cases.
 - A naive "give Parakeet more surrounding context" test (concatenating
-  adjacent cached sentence clips) did **not** improve the two confirmed-
-  real Parakeet-side errors, and made one worse — likely a splice
-  artifact from concatenating separately-cached clips rather than
+  adjacent cached sentence clips) did **not** improve two confirmed-real
+  Parakeet-side transcription errors, and made one worse — likely a
+  splice artifact from concatenating separately-cached clips rather than
   evidence against a real continuous-segment-audio approach, but no
   positive signal for restructuring the pipeline around segment-level
   (pre-slice) transcription either. Not pursued further without a
   cleaner test.
 
-**Whisper as an alternative** (`whisper-rs`, bindings to whisper.cpp) was
-researched as a candidate for the acronym/citation weak spot specifically
-— it exposes `set_initial_prompt()` for real vocabulary biasing, which
-Parakeet has no equivalent for. Far more downloaded than either Parakeet
-crate (~1M vs. low hundreds), but has maintenance-health concerns of its
-own (a year-old open perf-regression issue, several stalled PRs) —
-"most mature of the Rust options" and "actively maintained" turned out
-to be separate claims. Not yet tested; would need a head-to-head run
-against the same known cases (especially the AUGMENT doc's acronym/
-citation sentences and the transcription-truncation question) before
-deciding.
+## Mechanism 4: TTS synthesis truncation (found via free transcription)
+
+A citation-heavy sentence's real audio genuinely stops partway through —
+confirmed by ear, and independently by *both* Parakeet and WhisperX
+transcribing identically up to the same point (`"...Montvale, New
+Jersey."`) and no further, despite the cached clip's buffer running
+16.41s (per-word data shows the trailing ~5s isn't a short buffer forcing
+compression — the remaining unspoken reference words get spread across
+real trailing silence at normal-to-elongated pace, not crushed). The TTS
+engine stopped generating before finishing the sentence; this is a real
+synthesis bug, not an ASR limitation. (Earlier framing in this doc
+mischaracterized this as "Parakeet transcription truncation, a
+concerning limitation" — corrected: the ASR engines were both doing
+exactly the right thing, reporting where real speech actually ended.)
+
+**Confirmed as another silent miss for forced-alignment's own
+detectors**: `vibe_sync.json` has no `align_warnings` at all for this
+document, so neither `Truncated` nor `Insertion` caught it. Root cause is
+now precisely understood — `Truncated` requires the DP to be forced into
+*compressing* remaining words into a too-small leftover frame budget; TTS
+truncation with a full trailing-silence buffer produces low-scoring words
+at *normal or longer* duration instead, which doesn't match `Truncated`'s
+pace-collapse signature at all. This is the concrete, now-understood
+version of the "third, coarser signal" gap this doc has been circling —
+a run of low-confidence words with no isolable anomaly and no pace
+collapse either.
+
+**A cheap, reference-text-free detection heuristic falls out of this
+directly**: compare the free transcription's last recognized word's end
+time against the clip's total duration. A large unexplained gap is
+itself a truncation signal, without needing word-overlap comparison
+against reference text at all.
+
+## Engine choice: Parakeet retired, WhisperX current direction
+
+See `asr-engine-comparison.md` for the full head-to-head findings
+(timestamps, confidence, acronym handling) and why Parakeet was retired
+in favor of WhisperX. Short version: three of four Parakeet weaknesses
+found in this investigation are solved by WhisperX; the fourth
+(sentence-332 truncation) turned out not to be an engine weakness at all
+— see mechanism 4 above.
 
 ## Open items
 
 - **`decoded_text` reliability**: forced-alignment's own `Insertion`
   decode is an unconstrained greedy CTC read and is often garbled
   (`"gemi"`, `"prst"`, `"anhor"`) — a natural, not-yet-built improvement
-  is decoding just the flagged filler span with Parakeet (or whichever
-  ASR wins the ongoing comparison) instead of the crate's own greedy
-  decode, without needing to solve the harder whole-sentence-comparison
-  problem at all.
+  is decoding just the flagged filler span with an external ASR (Parakeet
+  or WhisperX) instead of the crate's own greedy decode, without needing
+  to solve the harder whole-sentence-comparison problem at all.
 - **Batch-position correlation** — never checked: does mechanism 2
   (hallucination/repetition-collapse) correlate with position within a
   synthesis batch? `vibe_align_reports.jsonl` has `batch_id`/`job_id`
   per segment; would need whatever recorded each batch's segment
   ordering to answer this.
-- **Parakeet transcription truncation** on long/complex sentences —
-  found once (a ~14s citation-heavy sentence), not yet checked
-  systematically across other long sentences to see how common it is.
-- **Whisper vs. Parakeet head-to-head** — not run yet; the natural next
-  experiment given the acronym/citation weak spot and the truncation
-  finding above.
+- **How common is mechanism 4** (TTS truncation)? Found once so far; not
+  yet checked systematically across other long/citation-heavy sentences.
+- **Wiring WhisperX into the actual tooling** — tested via raw CLI calls
+  so far, not yet integrated as a Rust subprocess call the way
+  `dl transcribe-check` wraps Parakeet.
 - Whether to wire free-transcription QA into the live `align_warnings`
-  pipeline, and at what score threshold, is still an open decision
-  pending the Whisper comparison and more documents' worth of data.
+  pipeline, and at what score threshold (and using which engine), is
+  still an open decision pending more documents' worth of data.

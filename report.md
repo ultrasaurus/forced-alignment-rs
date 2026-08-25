@@ -154,7 +154,7 @@ production artifacts (see `artifacts/theory.md` for the full investigation):
 The one thing that reliably catches whole-sentence content mismatches is
 comparing an independent free transcription of the audio against the
 reference text — a fundamentally different signal ("what did the audio
-actually say") from anything forced alignment itself can produce. Not
-integrated with `AlignReport` — see `README.md`'s note on the `transcribe`
-feature, and `artifacts/theory.md`'s "Free-transcription QA" section for the
-validated comparison approach and its known limitations.
+actually say") from anything forced alignment itself can produce. Not part
+of this crate — see `artifacts/asr-engine-comparison.md` and
+`artifacts/theory.md`'s "Free-transcription QA" section for the
+investigation and what was tried.
