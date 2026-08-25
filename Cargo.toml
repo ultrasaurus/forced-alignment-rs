@@ -14,6 +14,13 @@ path = "src/main.rs"
 [features]
 metal = ["candle-core/metal", "candle-nn/metal", "candle-transformers/metal"]
 cuda = ["candle-core/cuda", "candle-nn/cuda", "candle-transformers/cuda"]
+# Independent free-transcription check (Parakeet via ONNX Runtime, CPU
+# only for now) — a secondary QA signal alongside the CTC forced-alignment
+# above, for catching whole-sentence content mismatches CTC scoring can't
+# see (see project-odoru/forced-alignment/artifacts/theory.md). Opt-in:
+# pulls in a second inference runtime (ort) and a ~2.4GB model download,
+# so plain consumers of this crate aren't forced to pay that cost.
+transcribe = ["dep:parakeet-rs"]
 
 [dependencies]
 anyhow = "1"
@@ -25,6 +32,7 @@ hf-hub = "0.5"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 tokenizers = "0.23"
+parakeet-rs = { version = "0.3.7", optional = true }
 
 # pin symphonia & rubato to 0.5 and 0.16
 # Both symphonia 0.6 & rubato 3.0 are very recent rewrites with
@@ -33,5 +41,4 @@ tokenizers = "0.23"
 symphonia = { version = "0.5", features = ["mp3"] }
 rubato = "0.16"
 unicode-segmentation = "1"
-
 

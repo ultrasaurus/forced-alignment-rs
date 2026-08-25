@@ -1,0 +1,140 @@
+=== doc=0d594437-9810-45af-aed9-c73cf964d84a sid=12 label=you-wa ===
+     Running `target/debug/dl cache-path 0d594437-9810-45af-aed9-c73cf964d84a 12 --voice 'vibe:Jack'`
+text: "Note"
+cache key: 53a068141d08465c21d347cd6fed31987212672222226b5868558afb1cc6252c
+mp3: /Users/sallen/.odoru/audio/53a068141d08465c21d347cd6fed31987212672222226b5868558afb1cc6252c.mp3
+meta: /Users/sallen/.odoru/audio/53a068141d08465c21d347cd6fed31987212672222226b5868558afb1cc6252c.json
+exists: yes (invalid=false, duration=1.71s)
+=== doc=0d594437-9810-45af-aed9-c73cf964d84a sid=14 label=conven ===
+     Running `target/debug/dl cache-path 0d594437-9810-45af-aed9-c73cf964d84a 14 --voice 'vibe:Jack'`
+text: "By this, I mean that these ideas are the base level upon which we will build."
+cache key: 296b2d090104983fbd9209fb9dd7c858e61cab8bfe21b6ba948a0fcc72c84ac5
+mp3: /Users/sallen/.odoru/audio/296b2d090104983fbd9209fb9dd7c858e61cab8bfe21b6ba948a0fcc72c84ac5.mp3
+meta: /Users/sallen/.odoru/audio/296b2d090104983fbd9209fb9dd7c858e61cab8bfe21b6ba948a0fcc72c84ac5.json
+exists: yes (invalid=false, duration=3.45s)
+=== doc=0d594437-9810-45af-aed9-c73cf964d84a sid=15 label=much ===
+     Running `target/debug/dl cache-path 0d594437-9810-45af-aed9-c73cf964d84a 15 --voice 'vibe:Jack'`
+text: "This is not the same thing as being easy."
+cache key: b9d3f2d552dfd51bd15ce50e20c72b686a68ce24773d6180ec981cabc907cd2f
+mp3: /Users/sallen/.odoru/audio/b9d3f2d552dfd51bd15ce50e20c72b686a68ce24773d6180ec981cabc907cd2f.mp3
+meta: /Users/sallen/.odoru/audio/b9d3f2d552dfd51bd15ce50e20c72b686a68ce24773d6180ec981cabc907cd2f.json
+exists: yes (invalid=false, duration=6.66s)
+=== doc=0d594437-9810-45af-aed9-c73cf964d84a sid=16 label=u ===
+     Running `target/debug/dl cache-path 0d594437-9810-45af-aed9-c73cf964d84a 16 --voice 'vibe:Jack'`
+text: "Many basic ideas can be complicated, and take quite some time to thoroughly understand."
+cache key: ee651aba471e7b35fd0cecff76f17b86b2c1307d3008d6c50f6bb21ff6c50d2a
+mp3: /Users/sallen/.odoru/audio/ee651aba471e7b35fd0cecff76f17b86b2c1307d3008d6c50f6bb21ff6c50d2a.mp3
+meta: /Users/sallen/.odoru/audio/ee651aba471e7b35fd0cecff76f17b86b2c1307d3008d6c50f6bb21ff6c50d2a.json
+exists: yes (invalid=false, duration=8.17s)
+=== doc=0d594437-9810-45af-aed9-c73cf964d84a sid=18 label=ideas ===
+     Running `target/debug/dl cache-path 0d594437-9810-45af-aed9-c73cf964d84a 18 --voice 'vibe:Jack'`
+text: "Just take it slow, and don’t move on to the next section too soon."
+cache key: f2ee1760fc03231db49ff85dbcd7df4a2fe7d6af6a642e22062ec8751e197542
+mp3: /Users/sallen/.odoru/audio/f2ee1760fc03231db49ff85dbcd7df4a2fe7d6af6a642e22062ec8751e197542.mp3
+meta: /Users/sallen/.odoru/audio/f2ee1760fc03231db49ff85dbcd7df4a2fe7d6af6a642e22062ec8751e197542.json
+exists: yes (invalid=false, duration=8.22s)
+=== doc=0d594437-9810-45af-aed9-c73cf964d84a sid=19 label=ch-we ===
+     Running `target/debug/dl cache-path 0d594437-9810-45af-aed9-c73cf964d84a 19 --voice 'vibe:Jack'`
+text: "None of the contents here are magical: it all builds on basic ideas."
+cache key: 159c04bbe2b1a213a954ac9ea54239a2e0f00e8a0af04b3ef480a825996f6483
+mp3: /Users/sallen/.odoru/audio/159c04bbe2b1a213a954ac9ea54239a2e0f00e8a0af04b3ef480a825996f6483.mp3
+meta: /Users/sallen/.odoru/audio/159c04bbe2b1a213a954ac9ea54239a2e0f00e8a0af04b3ef480a825996f6483.json
+exists: yes (invalid=false, duration=5.45s)
+=== doc=0d594437-9810-45af-aed9-c73cf964d84a sid=48 label=ire ===
+     Running `target/debug/dl cache-path 0d594437-9810-45af-aed9-c73cf964d84a 48 --voice 'vibe:Jack'`
+text: "This creates a bit of a disconnect between multiplication in software (usually denoted by *) and in text, but this is for good reason: the asterisk operator will be used for a different purpose later on, known as convolution."
+cache key: e01440f856c80fc285045f71ea593ed0437dc0ff266f7f00b5755322f88dbc83
+mp3: /Users/sallen/.odoru/audio/e01440f856c80fc285045f71ea593ed0437dc0ff266f7f00b5755322f88dbc83.mp3
+meta: /Users/sallen/.odoru/audio/e01440f856c80fc285045f71ea593ed0437dc0ff266f7f00b5755322f88dbc83.json
+exists: yes (invalid=false, duration=14.73s)
+=== doc=0d594437-9810-45af-aed9-c73cf964d84a sid=56 label=hum ===
+     Running `target/debug/dl cache-path 0d594437-9810-45af-aed9-c73cf964d84a 56 --voice 'vibe:Jack'`
+text: "y equals g of x ."
+cache key: 5114d294b3a9e58eaafe56339cf88e5794616b78d0499ce1058a55643eb8a665
+mp3: /Users/sallen/.odoru/audio/5114d294b3a9e58eaafe56339cf88e5794616b78d0499ce1058a55643eb8a665.mp3
+meta: /Users/sallen/.odoru/audio/5114d294b3a9e58eaafe56339cf88e5794616b78d0499ce1058a55643eb8a665.json
+exists: yes (invalid=false, duration=4.22s)
+=== doc=0d594437-9810-45af-aed9-c73cf964d84a sid=67 label=ea ===
+     Running `target/debug/dl cache-path 0d594437-9810-45af-aed9-c73cf964d84a 67 --voice 'vibe:Jack'`
+text: "Unless otherwise stated, we will by default assume that signals are 0-valued when t (for continuous-time) or n (for discrete-time) are negative:"
+cache key: c0c8f485636c5c6aa5218c3594d93ea9cec693b2536df07d4337cf68fbcb3bb2
+mp3: /Users/sallen/.odoru/audio/c0c8f485636c5c6aa5218c3594d93ea9cec693b2536df07d4337cf68fbcb3bb2.mp3
+meta: /Users/sallen/.odoru/audio/c0c8f485636c5c6aa5218c3594d93ea9cec693b2536df07d4337cf68fbcb3bb2.json
+exists: yes (invalid=false, duration=10.19s)
+=== doc=f8aaa0e1-7702-4fd7-b5de-8d3eaf99e9fe sid=42 label=int ===
+     Running `target/debug/dl cache-path f8aaa0e1-7702-4fd7-b5de-8d3eaf99e9fe 42 --voice 'vibe:Jack'`
+text: "1.3.2."
+cache key: d9d8e14bb262fc28a19b2d2b8ead8017c4d94f5c37ecf7b300c29e4711a269df
+mp3: /Users/sallen/.odoru/audio/d9d8e14bb262fc28a19b2d2b8ead8017c4d94f5c37ecf7b300c29e4711a269df.mp3
+meta: /Users/sallen/.odoru/audio/d9d8e14bb262fc28a19b2d2b8ead8017c4d94f5c37ecf7b300c29e4711a269df.json
+exists: yes (invalid=false, duration=2.00s)
+=== doc=f8aaa0e1-7702-4fd7-b5de-8d3eaf99e9fe sid=54 label=plus ===
+     Running `target/debug/dl cache-path f8aaa0e1-7702-4fd7-b5de-8d3eaf99e9fe 54 --voice 'vibe:Jack'`
+text: "However, even in strongly typed languages like Java (or, to some extent, C++), the computer still wouldn’t understand the semantics of the different variables, like that time is measured in seconds (and not milliseconds or fortnights), or that phase is in radians and not degrees."
+cache key: a0fe1dd1285a4ec2a0d3d191387305f3f608a15d83f724d208cd1ebc78adbfba
+mp3: /Users/sallen/.odoru/audio/a0fe1dd1285a4ec2a0d3d191387305f3f608a15d83f724d208cd1ebc78adbfba.mp3
+meta: /Users/sallen/.odoru/audio/a0fe1dd1285a4ec2a0d3d191387305f3f608a15d83f724d208cd1ebc78adbfba.json
+exists: yes (invalid=false, duration=14.01s)
+=== doc=f40578d5-d9c5-4796-80b9-b11d0f5b4e4d sid=10 label=re ===
+     Running `target/debug/dl cache-path f40578d5-d9c5-4796-80b9-b11d0f5b4e4d 10 --voice 'vibe:Jack'`
+text: "Basic properties of waves"
+cache key: dd39ee97746b8399630c9ec554c7785fd71fd3b88d7ffa57b486e85fa6a8c4b1
+mp3: /Users/sallen/.odoru/audio/dd39ee97746b8399630c9ec554c7785fd71fd3b88d7ffa57b486e85fa6a8c4b1.mp3
+meta: /Users/sallen/.odoru/audio/dd39ee97746b8399630c9ec554c7785fd71fd3b88d7ffa57b486e85fa6a8c4b1.json
+exists: yes (invalid=false, duration=3.23s)
+=== doc=f40578d5-d9c5-4796-80b9-b11d0f5b4e4d sid=18 label=sig ===
+     Running `target/debug/dl cache-path f40578d5-d9c5-4796-80b9-b11d0f5b4e4d 18 --voice 'vibe:Jack'`
+text: "Think of the period of a signal as the shortest amount of time it takes, when listening to a looped recording, before you hear the recording start over."
+cache key: 8b74277011119e174ddcc2cb962872d400abe940980e471c816a4c140c53c361
+mp3: /Users/sallen/.odoru/audio/8b74277011119e174ddcc2cb962872d400abe940980e471c816a4c140c53c361.mp3
+meta: /Users/sallen/.odoru/audio/8b74277011119e174ddcc2cb962872d400abe940980e471c816a4c140c53c361.json
+exists: yes (invalid=false, duration=4.74s)
+=== doc=f40578d5-d9c5-4796-80b9-b11d0f5b4e4d sid=19 label=stesc ===
+     Running `target/debug/dl cache-path f40578d5-d9c5-4796-80b9-b11d0f5b4e4d 19 --voice 'vibe:Jack'`
+text: "Example (Pulse train)"
+cache key: 0ff2394ef4bf504575222f199b408a66c20639f75c8136fe3ae67073dcdbafb0
+mp3: /Users/sallen/.odoru/audio/0ff2394ef4bf504575222f199b408a66c20639f75c8136fe3ae67073dcdbafb0.mp3
+meta: /Users/sallen/.odoru/audio/0ff2394ef4bf504575222f199b408a66c20639f75c8136fe3ae67073dcdbafb0.json
+exists: yes (invalid=false, duration=3.21s)
+=== doc=f40578d5-d9c5-4796-80b9-b11d0f5b4e4d sid=53 label=over ===
+     Running `target/debug/dl cache-path f40578d5-d9c5-4796-80b9-b11d0f5b4e4d 53 --voice 'vibe:Jack'`
+text: "Definition 1.2 (Fundamental frequency)"
+cache key: a071718658853aa6e2133d6df988361793648aa394dbb92503fced1c35464bb4
+mp3: /Users/sallen/.odoru/audio/a071718658853aa6e2133d6df988361793648aa394dbb92503fced1c35464bb4.mp3
+meta: /Users/sallen/.odoru/audio/a071718658853aa6e2133d6df988361793648aa394dbb92503fced1c35464bb4.json
+exists: yes (invalid=false, duration=14.14s)
+=== doc=f40578d5-d9c5-4796-80b9-b11d0f5b4e4d sid=54 label=frequenc ===
+     Running `target/debug/dl cache-path f40578d5-d9c5-4796-80b9-b11d0f5b4e4d 54 --voice 'vibe:Jack'`
+text: "If a signal x of t has a fundamental period t sub 0, then its fundamental frequency is defined as"
+cache key: 50857c787746e35541c51c028fab28167ad0722caa36f961ce51e3d6e993016c
+mp3: /Users/sallen/.odoru/audio/50857c787746e35541c51c028fab28167ad0722caa36f961ce51e3d6e993016c.mp3
+meta: /Users/sallen/.odoru/audio/50857c787746e35541c51c028fab28167ad0722caa36f961ce51e3d6e993016c.json
+exists: yes (invalid=false, duration=16.21s)
+=== doc=f40578d5-d9c5-4796-80b9-b11d0f5b4e4d sid=110 label=gemi ===
+     Running `target/debug/dl cache-path f40578d5-d9c5-4796-80b9-b11d0f5b4e4d 110 --voice 'vibe:Jack'`
+text: "x of t equals cosine of theta of t, y of t equals sine of theta of t ."
+cache key: ce1f0f1819ae5009a4e60d9b528b117afda01e30f0e159a7ef615f0b7b62c61b
+mp3: /Users/sallen/.odoru/audio/ce1f0f1819ae5009a4e60d9b528b117afda01e30f0e159a7ef615f0b7b62c61b.mp3
+meta: /Users/sallen/.odoru/audio/ce1f0f1819ae5009a4e60d9b528b117afda01e30f0e159a7ef615f0b7b62c61b.json
+exists: yes (invalid=false, duration=9.78s)
+=== doc=f40578d5-d9c5-4796-80b9-b11d0f5b4e4d sid=111 label=prst ===
+     Running `target/debug/dl cache-path f40578d5-d9c5-4796-80b9-b11d0f5b4e4d 111 --voice 'vibe:Jack'`
+text: "This process is illustrated by Fig. 1.8."
+cache key: e5657a89a5ea6572f8f73d973fe106bf8512bd501f491f250efb03a6c93b0f21
+mp3: /Users/sallen/.odoru/audio/e5657a89a5ea6572f8f73d973fe106bf8512bd501f491f250efb03a6c93b0f21.mp3
+meta: /Users/sallen/.odoru/audio/e5657a89a5ea6572f8f73d973fe106bf8512bd501f491f250efb03a6c93b0f21.json
+exists: yes (invalid=false, duration=6.40s)
+=== doc=f40578d5-d9c5-4796-80b9-b11d0f5b4e4d sid=166 label=zon ===
+     Running `target/debug/dl cache-path f40578d5-d9c5-4796-80b9-b11d0f5b4e4d 166 --voice 'vibe:Jack'`
+text: "Opposite angles produce points with opposite vertical components: sine of negative theta equals minus sine of theta."
+cache key: e0a6741e854110db6ccb6678424538dcb7e167a7944fc0ae7e8e5e1f723b8bd1
+mp3: /Users/sallen/.odoru/audio/e0a6741e854110db6ccb6678424538dcb7e167a7944fc0ae7e8e5e1f723b8bd1.mp3
+meta: /Users/sallen/.odoru/audio/e0a6741e854110db6ccb6678424538dcb7e167a7944fc0ae7e8e5e1f723b8bd1.json
+exists: yes (invalid=false, duration=6.10s)
+=== doc=cb32fa2a-34ef-4384-b6e4-cf4a6de56ad5 sid=114 label=anhor ===
+     Running `target/debug/dl cache-path cb32fa2a-34ef-4384-b6e4-cf4a6de56ad5 114 --voice 'vibe:Jack'`
+text: "A change in frequency of 1¢ therefore corresponds to a multiplicative factor of 2 to the 1 over 1200 approximately 1.0006."
+cache key: 55a4ad29cc427e93d38e40d53b76d92c3065d74176c006393d7d01aa88dc6ae0
+mp3: /Users/sallen/.odoru/audio/55a4ad29cc427e93d38e40d53b76d92c3065d74176c006393d7d01aa88dc6ae0.mp3
+meta: /Users/sallen/.odoru/audio/55a4ad29cc427e93d38e40d53b76d92c3065d74176c006393d7d01aa88dc6ae0.json
+exists: yes (invalid=false, duration=11.41s)
