@@ -148,15 +148,24 @@ pub fn viterbi_align(
     let insertions = filler_spans
         .into_iter()
         .filter(|s| s.end_frame - s.start_frame >= MIN_FILLER_FRAMES)
-        .map(|s| {
+        .filter_map(|s| {
             let decoded_text = decode_filler(&emissions.log_probs, &emissions.vocab, s.start_frame, s.end_frame, blank_id);
-            Insertion {
+            if decoded_text.0.trim().is_empty() {
+                // An empty greedy decode means the filler span didn't
+                // resolve to any character, not even a low-confidence one —
+                // in practice this is silence/noise the aligner routed to
+                // the filler state, not a real leaked-audio fragment (see
+                // false-positive analysis of forced-alignment "leaked
+                // audio" warnings against manually-classified samples).
+                return None;
+            }
+            Some(Insertion {
                 before_word_index: gap_to_word_idx[s.gap_index],
                 start: (s.start_frame as f32 * seconds_per_frame) as f64,
                 end: (s.end_frame as f32 * seconds_per_frame) as f64,
                 decoded_text: decoded_text.0,
                 score: decoded_text.1,
-            }
+            })
         })
         .collect();
 
