@@ -1,0 +1,15 @@
+{
+  "text": "Perhaps they are; for this is Wells Institute, and these black students have few dealings with the white city below.",
+  "original": "Perhaps they are; for this is Wells Institute, and these black students have few dealings with the white city below.",
+  "duration": 7.523607126871741,
+  "normalized_hash": "e65d8a856bb5c4792b66bb4213c39ff5bb3e6ee55d8909beee8b76a05b512105",
+  "words": null,
+  "source": {
+    "doc_id": "029b1229-0b81-4bcc-84bf-ff8d616e2479",
+    "title": "The Souls of Black Folk",
+    "voice": "Sarah",
+    "sentence_id": 2322,
+    "warning_reason": "leaked audio: \"\" (82.92s-83.04s)",
+    "category": "false_positive"
+  }
+}

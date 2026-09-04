@@ -1,0 +1,15 @@
+{
+  "text": "Down in the guard house, there's where the blood ran.\"",
+  "original": "Down in the guard-house, there’s where the blood ran.”",
+  "duration": 4.227959569295247,
+  "normalized_hash": "053fada841bd6693c5f9c942b53115c05aa0c122dc436f45694168e002f0eb9d",
+  "words": null,
+  "source": {
+    "doc_id": "029b1229-0b81-4bcc-84bf-ff8d616e2479",
+    "title": "The Souls of Black Folk",
+    "voice": "Sarah",
+    "sentence_id": 1200,
+    "warning_reason": "leaked audio: \"\" (37.85s-37.97s)",
+    "category": "false_positive"
+  }
+}

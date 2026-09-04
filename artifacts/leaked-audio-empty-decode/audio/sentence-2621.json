@@ -1,0 +1,15 @@
+{
+  "text": "But the world listened only half credulously until the Fisk Jubilee Singers sang the slave songs so deeply into the world's heart that it can never wholly forget them again.",
+  "original": "But the world listened only half credulously until the Fisk Jubilee Singers sang the slave songs so deeply into the world’s heart that it can never wholly forget them again.",
+  "duration": 9.477513376871745,
+  "normalized_hash": "e7f5017fdfba18fd8179c75d5059eb842d268547196208c26805d495c89ab1d9",
+  "words": null,
+  "source": {
+    "doc_id": "029b1229-0b81-4bcc-84bf-ff8d616e2479",
+    "title": "The Souls of Black Folk",
+    "voice": "Sarah",
+    "sentence_id": 2621,
+    "warning_reason": "leaked audio: \"\" (57.88s-58.00s)",
+    "category": "false_positive"
+  }
+}

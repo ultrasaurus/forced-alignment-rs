@@ -1,0 +1,15 @@
+{
+  "text": "But it would be well to test what one meant by man womanly, and conversely by woman manly, by pausing and looking at a book or two.",
+  "original": "But it would be well to test what one meant by man-womanly, and conversely by woman-manly, by pausing and looking at a book or two.",
+  "duration": 8.15358924865723,
+  "normalized_hash": "4a6d6920842154a0efe4a2aa87fd555af0d85a7055cf8c2f868ee1425613d4c8",
+  "words": null,
+  "source": {
+    "doc_id": "795f4b34-7822-4832-8332-e15e13d37034",
+    "title": "A Room of One's Own",
+    "voice": "Sarah",
+    "sentence_id": 1438,
+    "warning_reason": "leaked audio: \"\" (48.95s-49.07s)",
+    "category": "false_positive"
+  }
+}

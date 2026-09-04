@@ -1,0 +1,15 @@
+{
+  "text": "\"O Freedom, O Freedom, O Freedom over me!",
+  "original": "“O Freedom, O Freedom, O Freedom over me!",
+  "duration": 3.3983863830566348,
+  "normalized_hash": "c69553b9fda0f8db3c4d84184acd3e57b142a293119f9ac6cee89a62c6467118",
+  "words": null,
+  "source": {
+    "doc_id": "029b1229-0b81-4bcc-84bf-ff8d616e2479",
+    "title": "The Souls of Black Folk",
+    "voice": "Sarah",
+    "sentence_id": 1999,
+    "warning_reason": "leaked audio: \"\" (65.33s-65.47s)",
+    "category": "false_positive"
+  }
+}
