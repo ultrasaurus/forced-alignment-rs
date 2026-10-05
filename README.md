@@ -75,6 +75,10 @@ let samples = forced_alignment::audio::load_audio(&path, forced_alignment::SAMPL
 let (transcript, report) = forced_alignment::align(&samples, &text)?;
 ```
 
+The model loads on the first `align` call. To load it up front instead (e.g.
+at service startup, before other models fill a shared GPU), call
+`forced_alignment::preload()?`.
+
 See `cargo doc --open` for full API documentation, and [report.md](report.md)
 for score interpretation.
 

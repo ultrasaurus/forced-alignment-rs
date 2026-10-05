@@ -372,6 +372,19 @@ fn shared_model() -> &'static Wav2Vec2Ctc {
     MODEL.get_or_init(|| Wav2Vec2Ctc::load().expect("failed to load wav2vec2 model"))
 }
 
+/// Load the shared model now instead of on the first `run_inference` call,
+/// returning the load error rather than panicking. A no-op if already loaded.
+/// Not guarded against a concurrent first `run_inference` call — both would
+/// load and one copy would be dropped — so call it before any inference
+/// starts.
+pub fn preload() -> Result<()> {
+    if MODEL.get().is_none() {
+        let model = Wav2Vec2Ctc::load()?;
+        let _ = MODEL.set(model);
+    }
+    Ok(())
+}
+
 /// Run inference on audio samples (16kHz mono) using the shared cached model.
 ///
 /// Long audio is processed in overlapping chunks (attention is O(T^2), so a single
@@ -426,7 +439,7 @@ mod tests {
     #[test]
     #[ignore = "slow in debug builds (~90s); run with `cargo test --release -- --ignored`"]
     fn runs_on_short_sentence() {
-        let samples = load_audio(Path::new("samples/short-sentence.mp3"), 16_000).unwrap();
+        let samples = load_audio(Path::new("validation-samples/short-sentence.mp3"), 16_000).unwrap();
         let emissions = run_inference(&samples).unwrap();
         println!("frames={} vocab={}", emissions.log_probs.len(), emissions.vocab.len());
 
@@ -445,5 +458,16 @@ mod tests {
         }
         println!("decoded: {out}");
         assert!(out.to_lowercase().contains("contain"));
+    }
+
+    #[test]
+    #[ignore = "loads the ~360MB model; run with `cargo test --release -- --ignored`"]
+    fn preload_then_inference_reuses_model() {
+        preload().unwrap();
+        let first = MODEL.get().unwrap() as *const Wav2Vec2Ctc;
+        preload().unwrap();
+        let samples = load_audio(Path::new("validation-samples/short-sentence.mp3"), 16_000).unwrap();
+        run_inference(&samples).unwrap();
+        assert_eq!(first, MODEL.get().unwrap() as *const Wav2Vec2Ctc);
     }
 }

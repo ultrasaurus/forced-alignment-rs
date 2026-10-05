@@ -316,6 +316,14 @@ fn detect_suspects(words: &[transcript::Word]) -> Vec<SuspectWord> {
         .collect()
 }
 
+/// Load the wav2vec2 model (and initialize its device) now, so its memory is
+/// taken up front rather than on the first `align` call. Useful on a GPU
+/// shared with other models: a lazy first load can fail if other work has
+/// filled the card by then. `align` reuses the preloaded model.
+pub fn preload() -> Result<()> {
+    model::preload()
+}
+
 pub fn align(samples: &[f32], text: &str) -> Result<(Transcript, AlignReport)> {
     let duration_secs = samples.len() as f32 / SAMPLE_RATE as f32;
     let emissions = model::run_inference(samples)?;
