@@ -12,18 +12,27 @@ The truth files are not output from this CLI. They are reference data:
 the implementation is considered correct when its output matches these
 timestamps within acceptable tolerance.
 
-## Attributions
+## Audio
 
-The files in this directory are third-party test data. They are not covered
-by the repository's MIT/Apache-2.0 license; each keeps the terms below.
+All audio is synthesized with [Kokoro](https://huggingface.co/hexgrad/Kokoro-82M)
+(Apache-2.0) with custom post-processing, one sentence per call, with sentences
+joined in order and no added gap. `hypertext` uses the `af_sky` voice; 
+the others use `af_heart`.
+
+## Text attributions
+
+The quoted texts are not covered by the repository's MIT/Apache-2.0
+license; each keeps the terms below.
 
 - **`hypertext`**: Ted Nelson's definition of "hypertext", from "A File
   Structure for the Complex, the Changing and the Indeterminate" (ACM
   National Conference, 1965). A short quotation, included as test data
   under fair use.
 - **`memex-quote`**: from Vannevar Bush, "As We May Think", The Atlantic
-  Monthly, July 1945. The text is a short quotation, included as test data
-  under fair use. The audio is an excerpt of Professor Brooke Singer's
-  reading ([SoundCloud](https://soundcloud.com/audiodemics/001-as-we-may-think)),
-  licensed [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/);
-  the excerpt is shared under the same license.
+  Monthly, July 1945. A short quotation, included as test data under fair
+  use.
+- **`room-one`**: from Virginia Woolf, *A Room of One's Own* (1929), excerpt
+  from chapter one. The text is in the public domain. The audio reads the
+  heading as "Chapter One" where the text has only "One", to test that an
+  extra word spoken before the text is detected without corrupting the
+  neighboring words.

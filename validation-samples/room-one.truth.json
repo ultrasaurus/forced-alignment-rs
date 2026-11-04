@@ -1,0 +1,4815 @@
+{
+    "version": "1.0.0",
+    "segments": [
+        {
+            "startTime": 0.3,
+            "endTime": 0.72,
+            "body": "Chapter"
+        },
+        {
+            "startTime": 0.72,
+            "endTime": 1.11,
+            "body": "one,"
+        },
+        {
+            "startTime": 1.83,
+            "endTime": 1.98,
+            "body": "but"
+        },
+        {
+            "startTime": 1.98,
+            "endTime": 2.07,
+            "body": "you"
+        },
+        {
+            "startTime": 2.07,
+            "endTime": 2.25,
+            "body": "may"
+        },
+        {
+            "startTime": 2.25,
+            "endTime": 2.7,
+            "body": "say,"
+        },
+        {
+            "startTime": 2.79,
+            "endTime": 2.97,
+            "body": "we"
+        },
+        {
+            "startTime": 2.97,
+            "endTime": 3.27,
+            "body": "asked"
+        },
+        {
+            "startTime": 3.27,
+            "endTime": 3.36,
+            "body": "you"
+        },
+        {
+            "startTime": 3.36,
+            "endTime": 3.45,
+            "body": "to"
+        },
+        {
+            "startTime": 3.45,
+            "endTime": 3.75,
+            "body": "speak"
+        },
+        {
+            "startTime": 3.75,
+            "endTime": 4.05,
+            "body": "about"
+        },
+        {
+            "startTime": 4.05,
+            "endTime": 4.41,
+            "body": "women"
+        },
+        {
+            "startTime": 4.41,
+            "endTime": 4.53,
+            "body": "and"
+        },
+        {
+            "startTime": 4.53,
+            "endTime": 5.1,
+            "body": "fiction."
+        },
+        {
+            "startTime": 5.46,
+            "endTime": 5.79,
+            "body": "What"
+        },
+        {
+            "startTime": 5.88,
+            "endTime": 6.12,
+            "body": "has"
+        },
+        {
+            "startTime": 6.12,
+            "endTime": 6.33,
+            "body": "that"
+        },
+        {
+            "startTime": 6.33,
+            "endTime": 6.51,
+            "body": "got"
+        },
+        {
+            "startTime": 6.51,
+            "endTime": 6.63,
+            "body": "to"
+        },
+        {
+            "startTime": 6.63,
+            "endTime": 6.78,
+            "body": "do"
+        },
+        {
+            "startTime": 6.78,
+            "endTime": 6.93,
+            "body": "with"
+        },
+        {
+            "startTime": 6.93,
+            "endTime": 6.99,
+            "body": "a"
+        },
+        {
+            "startTime": 6.99,
+            "endTime": 7.26,
+            "body": "room"
+        },
+        {
+            "startTime": 7.26,
+            "endTime": 7.35,
+            "body": "of"
+        },
+        {
+            "startTime": 7.35,
+            "endTime": 7.59,
+            "body": "one's"
+        },
+        {
+            "startTime": 7.59,
+            "endTime": 7.92,
+            "body": "own?"
+        },
+        {
+            "startTime": 8.64,
+            "endTime": 8.76,
+            "body": "I"
+        },
+        {
+            "startTime": 8.76,
+            "endTime": 8.91,
+            "body": "will"
+        },
+        {
+            "startTime": 8.91,
+            "endTime": 9.15,
+            "body": "try"
+        },
+        {
+            "startTime": 9.15,
+            "endTime": 9.3,
+            "body": "to"
+        },
+        {
+            "startTime": 9.3,
+            "endTime": 9.93,
+            "body": "explain."
+        },
+        {
+            "startTime": 10.62,
+            "endTime": 10.77,
+            "body": "When"
+        },
+        {
+            "startTime": 10.77,
+            "endTime": 10.86,
+            "body": "you"
+        },
+        {
+            "startTime": 10.86,
+            "endTime": 11.25,
+            "body": "asked"
+        },
+        {
+            "startTime": 11.25,
+            "endTime": 11.34,
+            "body": "me"
+        },
+        {
+            "startTime": 11.34,
+            "endTime": 11.49,
+            "body": "to"
+        },
+        {
+            "startTime": 11.49,
+            "endTime": 11.79,
+            "body": "speak"
+        },
+        {
+            "startTime": 11.79,
+            "endTime": 12.09,
+            "body": "about"
+        },
+        {
+            "startTime": 12.09,
+            "endTime": 12.45,
+            "body": "women"
+        },
+        {
+            "startTime": 12.45,
+            "endTime": 12.6,
+            "body": "and"
+        },
+        {
+            "startTime": 12.6,
+            "endTime": 13.14,
+            "body": "fiction,"
+        },
+        {
+            "startTime": 13.41,
+            "endTime": 13.56,
+            "body": "I"
+        },
+        {
+            "startTime": 13.56,
+            "endTime": 13.89,
+            "body": "sat"
+        },
+        {
+            "startTime": 13.89,
+            "endTime": 14.19,
+            "body": "down"
+        },
+        {
+            "startTime": 14.19,
+            "endTime": 14.28,
+            "body": "on"
+        },
+        {
+            "startTime": 14.28,
+            "endTime": 14.37,
+            "body": "the"
+        },
+        {
+            "startTime": 14.37,
+            "endTime": 14.64,
+            "body": "banks"
+        },
+        {
+            "startTime": 14.64,
+            "endTime": 14.73,
+            "body": "of"
+        },
+        {
+            "startTime": 14.73,
+            "endTime": 14.79,
+            "body": "a"
+        },
+        {
+            "startTime": 14.79,
+            "endTime": 15.18,
+            "body": "river"
+        },
+        {
+            "startTime": 15.51,
+            "endTime": 15.66,
+            "body": "and"
+        },
+        {
+            "startTime": 15.66,
+            "endTime": 15.99,
+            "body": "began"
+        },
+        {
+            "startTime": 15.99,
+            "endTime": 16.11,
+            "body": "to"
+        },
+        {
+            "startTime": 16.11,
+            "endTime": 16.41,
+            "body": "wonder"
+        },
+        {
+            "startTime": 16.41,
+            "endTime": 16.59,
+            "body": "what"
+        },
+        {
+            "startTime": 16.59,
+            "endTime": 16.68,
+            "body": "the"
+        },
+        {
+            "startTime": 16.68,
+            "endTime": 16.98,
+            "body": "words"
+        },
+        {
+            "startTime": 16.98,
+            "endTime": 17.34,
+            "body": "meant."
+        },
+        {
+            "startTime": 18.06,
+            "endTime": 18.21,
+            "body": "They"
+        },
+        {
+            "startTime": 18.21,
+            "endTime": 18.45,
+            "body": "might"
+        },
+        {
+            "startTime": 18.45,
+            "endTime": 18.66,
+            "body": "mean"
+        },
+        {
+            "startTime": 18.66,
+            "endTime": 19.02,
+            "body": "simply."
+        },
+        {
+            "startTime": 19.05,
+            "endTime": 19.11,
+            "body": "A"
+        },
+        {
+            "startTime": 19.11,
+            "endTime": 19.35,
+            "body": "few"
+        },
+        {
+            "startTime": 19.35,
+            "endTime": 19.86,
+            "body": "remarks"
+        },
+        {
+            "startTime": 19.86,
+            "endTime": 20.16,
+            "body": "about"
+        },
+        {
+            "startTime": 20.16,
+            "endTime": 20.46,
+            "body": "Fannie"
+        },
+        {
+            "startTime": 20.46,
+            "endTime": 20.94,
+            "body": "Bernie."
+        },
+        {
+            "startTime": 21.27,
+            "endTime": 21.36,
+            "body": "A"
+        },
+        {
+            "startTime": 21.36,
+            "endTime": 21.6,
+            "body": "few"
+        },
+        {
+            "startTime": 21.6,
+            "endTime": 21.87,
+            "body": "more"
+        },
+        {
+            "startTime": 21.87,
+            "endTime": 22.2,
+            "body": "about"
+        },
+        {
+            "startTime": 22.2,
+            "endTime": 22.56,
+            "body": "Jane"
+        },
+        {
+            "startTime": 22.56,
+            "endTime": 23.13,
+            "body": "Austen."
+        },
+        {
+            "startTime": 23.52,
+            "endTime": 23.61,
+            "body": "A"
+        },
+        {
+            "startTime": 23.61,
+            "endTime": 24,
+            "body": "tribute"
+        },
+        {
+            "startTime": 24,
+            "endTime": 24.09,
+            "body": "to"
+        },
+        {
+            "startTime": 24.09,
+            "endTime": 24.18,
+            "body": "the"
+        },
+        {
+            "startTime": 24.18,
+            "endTime": 24.87,
+            "body": "Brontes"
+        },
+        {
+            "startTime": 24.87,
+            "endTime": 25.02,
+            "body": "and"
+        },
+        {
+            "startTime": 25.02,
+            "endTime": 25.08,
+            "body": "a"
+        },
+        {
+            "startTime": 25.08,
+            "endTime": 25.47,
+            "body": "sketch"
+        },
+        {
+            "startTime": 25.47,
+            "endTime": 25.56,
+            "body": "of"
+        },
+        {
+            "startTime": 25.56,
+            "endTime": 25.74,
+            "body": "How"
+        },
+        {
+            "startTime": 25.74,
+            "endTime": 25.95,
+            "body": "Worth"
+        },
+        {
+            "startTime": 25.95,
+            "endTime": 26.52,
+            "body": "parsonage"
+        },
+        {
+            "startTime": 26.52,
+            "endTime": 26.73,
+            "body": "under"
+        },
+        {
+            "startTime": 26.73,
+            "endTime": 27.09,
+            "body": "snow."
+        },
+        {
+            "startTime": 27.479999999999997,
+            "endTime": 27.84,
+            "body": "Some"
+        },
+        {
+            "startTime": 27.84,
+            "endTime": 28.529999999999998,
+            "body": "witticisms,"
+        },
+        {
+            "startTime": 28.529999999999998,
+            "endTime": 28.68,
+            "body": "if"
+        },
+        {
+            "startTime": 28.68,
+            "endTime": 29.25,
+            "body": "possible,"
+        },
+        {
+            "startTime": 29.25,
+            "endTime": 29.58,
+            "body": "about"
+        },
+        {
+            "startTime": 29.58,
+            "endTime": 29.729999999999997,
+            "body": "Miss"
+        },
+        {
+            "startTime": 29.729999999999997,
+            "endTime": 30.209999999999997,
+            "body": "Mitford,"
+        },
+        {
+            "startTime": 30.659999999999997,
+            "endTime": 30.75,
+            "body": "a"
+        },
+        {
+            "startTime": 30.75,
+            "endTime": 31.439999999999998,
+            "body": "respectful"
+        },
+        {
+            "startTime": 31.439999999999998,
+            "endTime": 31.95,
+            "body": "allusion"
+        },
+        {
+            "startTime": 31.95,
+            "endTime": 32.07,
+            "body": "to"
+        },
+        {
+            "startTime": 32.07,
+            "endTime": 32.4,
+            "body": "George"
+        },
+        {
+            "startTime": 32.4,
+            "endTime": 32.85,
+            "body": "Elliot."
+        },
+        {
+            "startTime": 33.239999999999995,
+            "endTime": 33.36,
+            "body": "A"
+        },
+        {
+            "startTime": 33.36,
+            "endTime": 33.839999999999996,
+            "body": "reference"
+        },
+        {
+            "startTime": 33.839999999999996,
+            "endTime": 33.93,
+            "body": "to"
+        },
+        {
+            "startTime": 33.93,
+            "endTime": 34.23,
+            "body": "Mrs."
+        },
+        {
+            "startTime": 34.23,
+            "endTime": 34.92,
+            "body": "Gaskel"
+        },
+        {
+            "startTime": 35.04,
+            "endTime": 35.22,
+            "body": "and"
+        },
+        {
+            "startTime": 35.22,
+            "endTime": 35.4,
+            "body": "one"
+        },
+        {
+            "startTime": 35.4,
+            "endTime": 35.61,
+            "body": "would've"
+        },
+        {
+            "startTime": 35.61,
+            "endTime": 35.91,
+            "body": "done,"
+        },
+        {
+            "startTime": 36.66,
+            "endTime": 36.81,
+            "body": "but"
+        },
+        {
+            "startTime": 36.81,
+            "endTime": 36.9,
+            "body": "at"
+        },
+        {
+            "startTime": 36.9,
+            "endTime": 37.2,
+            "body": "Second"
+        },
+        {
+            "startTime": 37.2,
+            "endTime": 37.62,
+            "body": "sight,"
+        },
+        {
+            "startTime": 37.71,
+            "endTime": 37.86,
+            "body": "the"
+        },
+        {
+            "startTime": 37.86,
+            "endTime": 38.16,
+            "body": "word"
+        },
+        {
+            "startTime": 38.16,
+            "endTime": 38.46,
+            "body": "seemed"
+        },
+        {
+            "startTime": 38.46,
+            "endTime": 38.7,
+            "body": "not"
+        },
+        {
+            "startTime": 38.7,
+            "endTime": 38.849999999999994,
+            "body": "so"
+        },
+        {
+            "startTime": 38.849999999999994,
+            "endTime": 39.3,
+            "body": "simple."
+        },
+        {
+            "startTime": 39.989999999999995,
+            "endTime": 40.11,
+            "body": "The"
+        },
+        {
+            "startTime": 40.11,
+            "endTime": 40.5,
+            "body": "title"
+        },
+        {
+            "startTime": 40.5,
+            "endTime": 40.769999999999996,
+            "body": "Women"
+        },
+        {
+            "startTime": 40.769999999999996,
+            "endTime": 40.92,
+            "body": "and"
+        },
+        {
+            "startTime": 40.92,
+            "endTime": 41.28,
+            "body": "Fiction"
+        },
+        {
+            "startTime": 41.28,
+            "endTime": 41.489999999999995,
+            "body": "might"
+        },
+        {
+            "startTime": 41.489999999999995,
+            "endTime": 41.82,
+            "body": "mean,"
+        },
+        {
+            "startTime": 42.15,
+            "endTime": 42.3,
+            "body": "and"
+        },
+        {
+            "startTime": 42.3,
+            "endTime": 42.42,
+            "body": "you"
+        },
+        {
+            "startTime": 42.42,
+            "endTime": 42.599999999999994,
+            "body": "may"
+        },
+        {
+            "startTime": 42.599999999999994,
+            "endTime": 42.75,
+            "body": "have"
+        },
+        {
+            "startTime": 42.75,
+            "endTime": 42.989999999999995,
+            "body": "meant"
+        },
+        {
+            "startTime": 42.989999999999995,
+            "endTime": 43.05,
+            "body": "it"
+        },
+        {
+            "startTime": 43.05,
+            "endTime": 43.17,
+            "body": "to"
+        },
+        {
+            "startTime": 43.17,
+            "endTime": 43.56,
+            "body": "mean"
+        },
+        {
+            "startTime": 43.83,
+            "endTime": 44.28,
+            "body": "women"
+        },
+        {
+            "startTime": 44.28,
+            "endTime": 44.459999999999994,
+            "body": "and"
+        },
+        {
+            "startTime": 44.459999999999994,
+            "endTime": 44.64,
+            "body": "what"
+        },
+        {
+            "startTime": 44.64,
+            "endTime": 44.76,
+            "body": "they"
+        },
+        {
+            "startTime": 44.76,
+            "endTime": 44.91,
+            "body": "are"
+        },
+        {
+            "startTime": 44.91,
+            "endTime": 45.33,
+            "body": "like."
+        },
+        {
+            "startTime": 45.629999999999995,
+            "endTime": 45.84,
+            "body": "Or"
+        },
+        {
+            "startTime": 45.84,
+            "endTime": 45.989999999999995,
+            "body": "it"
+        },
+        {
+            "startTime": 45.989999999999995,
+            "endTime": 46.2,
+            "body": "might"
+        },
+        {
+            "startTime": 46.2,
+            "endTime": 46.41,
+            "body": "mean"
+        },
+        {
+            "startTime": 46.41,
+            "endTime": 46.83,
+            "body": "women"
+        },
+        {
+            "startTime": 46.83,
+            "endTime": 47.01,
+            "body": "and"
+        },
+        {
+            "startTime": 47.01,
+            "endTime": 47.07,
+            "body": "the"
+        },
+        {
+            "startTime": 47.07,
+            "endTime": 47.519999999999996,
+            "body": "fiction"
+        },
+        {
+            "startTime": 47.519999999999996,
+            "endTime": 47.67,
+            "body": "that"
+        },
+        {
+            "startTime": 47.67,
+            "endTime": 47.79,
+            "body": "they"
+        },
+        {
+            "startTime": 47.79,
+            "endTime": 48.209999999999994,
+            "body": "write,"
+        },
+        {
+            "startTime": 48.72,
+            "endTime": 48.93,
+            "body": "or"
+        },
+        {
+            "startTime": 48.93,
+            "endTime": 49.05,
+            "body": "it"
+        },
+        {
+            "startTime": 49.05,
+            "endTime": 49.23,
+            "body": "might"
+        },
+        {
+            "startTime": 49.23,
+            "endTime": 49.47,
+            "body": "mean"
+        },
+        {
+            "startTime": 49.47,
+            "endTime": 49.86,
+            "body": "women"
+        },
+        {
+            "startTime": 49.86,
+            "endTime": 50.04,
+            "body": "and"
+        },
+        {
+            "startTime": 50.04,
+            "endTime": 50.129999999999995,
+            "body": "the"
+        },
+        {
+            "startTime": 50.129999999999995,
+            "endTime": 50.58,
+            "body": "fiction"
+        },
+        {
+            "startTime": 50.58,
+            "endTime": 50.7,
+            "body": "that"
+        },
+        {
+            "startTime": 50.7,
+            "endTime": 50.879999999999995,
+            "body": "is"
+        },
+        {
+            "startTime": 50.879999999999995,
+            "endTime": 51.15,
+            "body": "written"
+        },
+        {
+            "startTime": 51.15,
+            "endTime": 51.39,
+            "body": "about"
+        },
+        {
+            "startTime": 51.39,
+            "endTime": 51.48,
+            "body": "them."
+        },
+        {
+            "startTime": 52.11000000000001,
+            "endTime": 52.35,
+            "body": "Or"
+        },
+        {
+            "startTime": 52.35,
+            "endTime": 52.440000000000005,
+            "body": "it"
+        },
+        {
+            "startTime": 52.440000000000005,
+            "endTime": 52.650000000000006,
+            "body": "might"
+        },
+        {
+            "startTime": 52.650000000000006,
+            "endTime": 52.89,
+            "body": "mean"
+        },
+        {
+            "startTime": 52.89,
+            "endTime": 53.07,
+            "body": "that"
+        },
+        {
+            "startTime": 53.07,
+            "endTime": 53.61000000000001,
+            "body": "somehow"
+        },
+        {
+            "startTime": 53.61000000000001,
+            "endTime": 53.85,
+            "body": "all"
+        },
+        {
+            "startTime": 53.85,
+            "endTime": 54.21,
+            "body": "three"
+        },
+        {
+            "startTime": 54.21,
+            "endTime": 54.39,
+            "body": "are"
+        },
+        {
+            "startTime": 54.39,
+            "endTime": 55.17,
+            "body": "inextricably"
+        },
+        {
+            "startTime": 55.17,
+            "endTime": 55.5,
+            "body": "mixed"
+        },
+        {
+            "startTime": 55.5,
+            "endTime": 55.980000000000004,
+            "body": "together"
+        },
+        {
+            "startTime": 56.1,
+            "endTime": 56.370000000000005,
+            "body": "and"
+        },
+        {
+            "startTime": 56.370000000000005,
+            "endTime": 56.49,
+            "body": "you"
+        },
+        {
+            "startTime": 56.49,
+            "endTime": 56.7,
+            "body": "want"
+        },
+        {
+            "startTime": 56.7,
+            "endTime": 56.790000000000006,
+            "body": "me"
+        },
+        {
+            "startTime": 56.790000000000006,
+            "endTime": 56.88,
+            "body": "to"
+        },
+        {
+            "startTime": 56.88,
+            "endTime": 57.36,
+            "body": "consider"
+        },
+        {
+            "startTime": 57.36,
+            "endTime": 57.6,
+            "body": "them"
+        },
+        {
+            "startTime": 57.6,
+            "endTime": 57.720000000000006,
+            "body": "in"
+        },
+        {
+            "startTime": 57.720000000000006,
+            "endTime": 57.900000000000006,
+            "body": "that"
+        },
+        {
+            "startTime": 57.900000000000006,
+            "endTime": 58.230000000000004,
+            "body": "light."
+        },
+        {
+            "startTime": 58.95,
+            "endTime": 59.1,
+            "body": "But"
+        },
+        {
+            "startTime": 59.1,
+            "endTime": 59.25,
+            "body": "when"
+        },
+        {
+            "startTime": 59.25,
+            "endTime": 59.34,
+            "body": "I"
+        },
+        {
+            "startTime": 59.34,
+            "endTime": 59.7,
+            "body": "began"
+        },
+        {
+            "startTime": 59.7,
+            "endTime": 59.82000000000001,
+            "body": "to"
+        },
+        {
+            "startTime": 59.82000000000001,
+            "endTime": 60.21,
+            "body": "consider"
+        },
+        {
+            "startTime": 60.21,
+            "endTime": 60.330000000000005,
+            "body": "the"
+        },
+        {
+            "startTime": 60.330000000000005,
+            "endTime": 60.81,
+            "body": "subject"
+        },
+        {
+            "startTime": 60.81,
+            "endTime": 60.96,
+            "body": "in"
+        },
+        {
+            "startTime": 60.96,
+            "endTime": 61.11,
+            "body": "this"
+        },
+        {
+            "startTime": 61.11,
+            "endTime": 61.470000000000006,
+            "body": "last"
+        },
+        {
+            "startTime": 61.470000000000006,
+            "endTime": 61.830000000000005,
+            "body": "way,"
+        },
+        {
+            "startTime": 62.1,
+            "endTime": 62.34,
+            "body": "which"
+        },
+        {
+            "startTime": 62.34,
+            "endTime": 62.67,
+            "body": "seemed"
+        },
+        {
+            "startTime": 62.67,
+            "endTime": 62.760000000000005,
+            "body": "the"
+        },
+        {
+            "startTime": 62.760000000000005,
+            "endTime": 63.06,
+            "body": "most"
+        },
+        {
+            "startTime": 63.06,
+            "endTime": 63.720000000000006,
+            "body": "interesting,"
+        },
+        {
+            "startTime": 64.05000000000001,
+            "endTime": 64.17,
+            "body": "I"
+        },
+        {
+            "startTime": 64.17,
+            "endTime": 64.53,
+            "body": "soon"
+        },
+        {
+            "startTime": 64.53,
+            "endTime": 64.80000000000001,
+            "body": "saw"
+        },
+        {
+            "startTime": 64.80000000000001,
+            "endTime": 64.95,
+            "body": "that"
+        },
+        {
+            "startTime": 64.95,
+            "endTime": 65.04,
+            "body": "it"
+        },
+        {
+            "startTime": 65.04,
+            "endTime": 65.28,
+            "body": "had"
+        },
+        {
+            "startTime": 65.28,
+            "endTime": 65.67,
+            "body": "one"
+        },
+        {
+            "startTime": 65.67,
+            "endTime": 66.09,
+            "body": "fatal"
+        },
+        {
+            "startTime": 66.09,
+            "endTime": 66.69,
+            "body": "drawback."
+        },
+        {
+            "startTime": 67.44,
+            "endTime": 67.53,
+            "body": "I"
+        },
+        {
+            "startTime": 67.53,
+            "endTime": 67.77000000000001,
+            "body": "should"
+        },
+        {
+            "startTime": 67.77000000000001,
+            "endTime": 68.10000000000001,
+            "body": "never"
+        },
+        {
+            "startTime": 68.10000000000001,
+            "endTime": 68.25,
+            "body": "be"
+        },
+        {
+            "startTime": 68.25,
+            "endTime": 68.52000000000001,
+            "body": "able"
+        },
+        {
+            "startTime": 68.52000000000001,
+            "endTime": 68.64,
+            "body": "to"
+        },
+        {
+            "startTime": 68.64,
+            "endTime": 68.91,
+            "body": "come"
+        },
+        {
+            "startTime": 68.91,
+            "endTime": 69.03,
+            "body": "to"
+        },
+        {
+            "startTime": 69.03,
+            "endTime": 69.06,
+            "body": "a"
+        },
+        {
+            "startTime": 69.06,
+            "endTime": 69.75,
+            "body": "conclusion"
+        },
+        {
+            "startTime": 70.47,
+            "endTime": 70.56,
+            "body": "I"
+        },
+        {
+            "startTime": 70.56,
+            "endTime": 70.77000000000001,
+            "body": "should"
+        },
+        {
+            "startTime": 70.77000000000001,
+            "endTime": 71.04,
+            "body": "never"
+        },
+        {
+            "startTime": 71.04,
+            "endTime": 71.19,
+            "body": "be"
+        },
+        {
+            "startTime": 71.19,
+            "endTime": 71.4,
+            "body": "able"
+        },
+        {
+            "startTime": 71.4,
+            "endTime": 71.52000000000001,
+            "body": "to"
+        },
+        {
+            "startTime": 71.52000000000001,
+            "endTime": 72.12,
+            "body": "fulfill"
+        },
+        {
+            "startTime": 72.15,
+            "endTime": 72.36,
+            "body": "what"
+        },
+        {
+            "startTime": 72.36,
+            "endTime": 72.78,
+            "body": "is"
+        },
+        {
+            "startTime": 72.99000000000001,
+            "endTime": 73.17,
+            "body": "I"
+        },
+        {
+            "startTime": 73.17,
+            "endTime": 73.95,
+            "body": "understand"
+        },
+        {
+            "startTime": 74.25,
+            "endTime": 74.4,
+            "body": "the"
+        },
+        {
+            "startTime": 74.4,
+            "endTime": 74.76,
+            "body": "first"
+        },
+        {
+            "startTime": 74.76,
+            "endTime": 75.06,
+            "body": "duty"
+        },
+        {
+            "startTime": 75.06,
+            "endTime": 75.18,
+            "body": "of"
+        },
+        {
+            "startTime": 75.18,
+            "endTime": 75.21000000000001,
+            "body": "a"
+        },
+        {
+            "startTime": 75.21000000000001,
+            "endTime": 75.69,
+            "body": "lecturer"
+        },
+        {
+            "startTime": 75.69,
+            "endTime": 75.84,
+            "body": "to"
+        },
+        {
+            "startTime": 75.84,
+            "endTime": 76.17,
+            "body": "hand"
+        },
+        {
+            "startTime": 76.17,
+            "endTime": 76.38,
+            "body": "you"
+        },
+        {
+            "startTime": 76.38,
+            "endTime": 76.74000000000001,
+            "body": "after"
+        },
+        {
+            "startTime": 76.74000000000001,
+            "endTime": 76.83,
+            "body": "an"
+        },
+        {
+            "startTime": 76.83,
+            "endTime": 77.22,
+            "body": "hour's"
+        },
+        {
+            "startTime": 77.22,
+            "endTime": 77.85000000000001,
+            "body": "discourse."
+        },
+        {
+            "startTime": 78.3,
+            "endTime": 78.39,
+            "body": "A"
+        },
+        {
+            "startTime": 78.39,
+            "endTime": 78.78,
+            "body": "nugget"
+        },
+        {
+            "startTime": 78.78,
+            "endTime": 78.92999999999999,
+            "body": "of"
+        },
+        {
+            "startTime": 78.92999999999999,
+            "endTime": 79.25999999999999,
+            "body": "pure"
+        },
+        {
+            "startTime": 79.25999999999999,
+            "endTime": 79.64999999999999,
+            "body": "truth"
+        },
+        {
+            "startTime": 79.64999999999999,
+            "endTime": 79.8,
+            "body": "to"
+        },
+        {
+            "startTime": 79.8,
+            "endTime": 80.07,
+            "body": "wrap"
+        },
+        {
+            "startTime": 80.07,
+            "endTime": 80.22,
+            "body": "up"
+        },
+        {
+            "startTime": 80.22,
+            "endTime": 80.55,
+            "body": "between"
+        },
+        {
+            "startTime": 80.55,
+            "endTime": 80.64,
+            "body": "the"
+        },
+        {
+            "startTime": 80.64,
+            "endTime": 81,
+            "body": "pages"
+        },
+        {
+            "startTime": 81,
+            "endTime": 81.08999999999999,
+            "body": "of"
+        },
+        {
+            "startTime": 81.08999999999999,
+            "endTime": 81.17999999999999,
+            "body": "your"
+        },
+        {
+            "startTime": 81.17999999999999,
+            "endTime": 81.80999999999999,
+            "body": "notebooks"
+        },
+        {
+            "startTime": 81.92999999999999,
+            "endTime": 82.22999999999999,
+            "body": "and"
+        },
+        {
+            "startTime": 82.22999999999999,
+            "endTime": 82.53,
+            "body": "keep"
+        },
+        {
+            "startTime": 82.53,
+            "endTime": 82.61999999999999,
+            "body": "on"
+        },
+        {
+            "startTime": 82.61999999999999,
+            "endTime": 82.71,
+            "body": "the"
+        },
+        {
+            "startTime": 82.71,
+            "endTime": 83.07,
+            "body": "mantle"
+        },
+        {
+            "startTime": 83.07,
+            "endTime": 83.39999999999999,
+            "body": "piece"
+        },
+        {
+            "startTime": 83.39999999999999,
+            "endTime": 83.91,
+            "body": "forever."
+        },
+        {
+            "startTime": 84.69,
+            "endTime": 84.89999999999999,
+            "body": "All"
+        },
+        {
+            "startTime": 84.89999999999999,
+            "endTime": 84.99,
+            "body": "I"
+        },
+        {
+            "startTime": 84.99,
+            "endTime": 85.16999999999999,
+            "body": "could"
+        },
+        {
+            "startTime": 85.16999999999999,
+            "endTime": 85.44,
+            "body": "do"
+        },
+        {
+            "startTime": 85.44,
+            "endTime": 85.61999999999999,
+            "body": "was"
+        },
+        {
+            "startTime": 85.61999999999999,
+            "endTime": 85.74,
+            "body": "to"
+        },
+        {
+            "startTime": 85.74,
+            "endTime": 86.1,
+            "body": "offer"
+        },
+        {
+            "startTime": 86.1,
+            "endTime": 86.25,
+            "body": "you"
+        },
+        {
+            "startTime": 86.25,
+            "endTime": 86.36999999999999,
+            "body": "an"
+        },
+        {
+            "startTime": 86.36999999999999,
+            "endTime": 86.88,
+            "body": "opinion"
+        },
+        {
+            "startTime": 86.88,
+            "endTime": 87.24,
+            "body": "upon"
+        },
+        {
+            "startTime": 87.24,
+            "endTime": 87.44999999999999,
+            "body": "one"
+        },
+        {
+            "startTime": 87.44999999999999,
+            "endTime": 87.78,
+            "body": "minor"
+        },
+        {
+            "startTime": 87.78,
+            "endTime": 88.16999999999999,
+            "body": "point."
+        },
+        {
+            "startTime": 88.64999999999999,
+            "endTime": 88.77,
+            "body": "A"
+        },
+        {
+            "startTime": 88.77,
+            "endTime": 89.13,
+            "body": "woman"
+        },
+        {
+            "startTime": 89.13,
+            "endTime": 89.42999999999999,
+            "body": "must"
+        },
+        {
+            "startTime": 89.42999999999999,
+            "endTime": 89.61,
+            "body": "have"
+        },
+        {
+            "startTime": 89.61,
+            "endTime": 90.03,
+            "body": "money"
+        },
+        {
+            "startTime": 90.06,
+            "endTime": 90.21,
+            "body": "and"
+        },
+        {
+            "startTime": 90.21,
+            "endTime": 90.27,
+            "body": "a"
+        },
+        {
+            "startTime": 90.27,
+            "endTime": 90.50999999999999,
+            "body": "room"
+        },
+        {
+            "startTime": 90.50999999999999,
+            "endTime": 90.6,
+            "body": "of"
+        },
+        {
+            "startTime": 90.6,
+            "endTime": 90.75,
+            "body": "her"
+        },
+        {
+            "startTime": 90.75,
+            "endTime": 91.08,
+            "body": "own"
+        },
+        {
+            "startTime": 91.08,
+            "endTime": 91.25999999999999,
+            "body": "if"
+        },
+        {
+            "startTime": 91.25999999999999,
+            "endTime": 91.44,
+            "body": "she"
+        },
+        {
+            "startTime": 91.44,
+            "endTime": 91.58999999999999,
+            "body": "is"
+        },
+        {
+            "startTime": 91.58999999999999,
+            "endTime": 91.71,
+            "body": "to"
+        },
+        {
+            "startTime": 91.71,
+            "endTime": 91.94999999999999,
+            "body": "write"
+        },
+        {
+            "startTime": 91.94999999999999,
+            "endTime": 92.49,
+            "body": "fiction,"
+        },
+        {
+            "startTime": 92.97,
+            "endTime": 93.14999999999999,
+            "body": "and"
+        },
+        {
+            "startTime": 93.14999999999999,
+            "endTime": 93.44999999999999,
+            "body": "that,"
+        },
+        {
+            "startTime": 93.78,
+            "endTime": 93.96,
+            "body": "as"
+        },
+        {
+            "startTime": 93.96,
+            "endTime": 94.05,
+            "body": "you"
+        },
+        {
+            "startTime": 94.05,
+            "endTime": 94.22999999999999,
+            "body": "will"
+        },
+        {
+            "startTime": 94.22999999999999,
+            "endTime": 94.71,
+            "body": "see"
+        },
+        {
+            "startTime": 94.94999999999999,
+            "endTime": 95.36999999999999,
+            "body": "leaves"
+        },
+        {
+            "startTime": 95.36999999999999,
+            "endTime": 95.46,
+            "body": "the"
+        },
+        {
+            "startTime": 95.46,
+            "endTime": 95.78999999999999,
+            "body": "great"
+        },
+        {
+            "startTime": 95.78999999999999,
+            "endTime": 96.24,
+            "body": "problem"
+        },
+        {
+            "startTime": 96.24,
+            "endTime": 96.33,
+            "body": "of"
+        },
+        {
+            "startTime": 96.33,
+            "endTime": 96.41999999999999,
+            "body": "the"
+        },
+        {
+            "startTime": 96.41999999999999,
+            "endTime": 96.72,
+            "body": "true"
+        },
+        {
+            "startTime": 96.72,
+            "endTime": 97.08,
+            "body": "nature"
+        },
+        {
+            "startTime": 97.08,
+            "endTime": 97.19999999999999,
+            "body": "of"
+        },
+        {
+            "startTime": 97.19999999999999,
+            "endTime": 97.64999999999999,
+            "body": "woman"
+        },
+        {
+            "startTime": 97.71,
+            "endTime": 98.00999999999999,
+            "body": "and"
+        },
+        {
+            "startTime": 98.00999999999999,
+            "endTime": 98.07,
+            "body": "the"
+        },
+        {
+            "startTime": 98.07,
+            "endTime": 98.31,
+            "body": "true"
+        },
+        {
+            "startTime": 98.31,
+            "endTime": 98.63999999999999,
+            "body": "nature"
+        },
+        {
+            "startTime": 98.63999999999999,
+            "endTime": 98.72999999999999,
+            "body": "of"
+        },
+        {
+            "startTime": 98.72999999999999,
+            "endTime": 99.17999999999999,
+            "body": "fiction"
+        },
+        {
+            "startTime": 99.17999999999999,
+            "endTime": 99.92999999999999,
+            "body": "unsolved."
+        },
+        {
+            "startTime": 100.67999999999999,
+            "endTime": 100.8,
+            "body": "I"
+        },
+        {
+            "startTime": 100.8,
+            "endTime": 100.94999999999999,
+            "body": "have"
+        },
+        {
+            "startTime": 100.94999999999999,
+            "endTime": 101.28,
+            "body": "shirked"
+        },
+        {
+            "startTime": 101.28,
+            "endTime": 101.36999999999999,
+            "body": "the"
+        },
+        {
+            "startTime": 101.36999999999999,
+            "endTime": 101.66999999999999,
+            "body": "duty"
+        },
+        {
+            "startTime": 101.66999999999999,
+            "endTime": 101.78999999999999,
+            "body": "of"
+        },
+        {
+            "startTime": 101.78999999999999,
+            "endTime": 102.08999999999999,
+            "body": "coming"
+        },
+        {
+            "startTime": 102.08999999999999,
+            "endTime": 102.21,
+            "body": "to"
+        },
+        {
+            "startTime": 102.21,
+            "endTime": 102.27,
+            "body": "a"
+        },
+        {
+            "startTime": 102.27,
+            "endTime": 102.92999999999999,
+            "body": "conclusion"
+        },
+        {
+            "startTime": 102.92999999999999,
+            "endTime": 103.25999999999999,
+            "body": "upon"
+        },
+        {
+            "startTime": 103.25999999999999,
+            "endTime": 103.44,
+            "body": "these"
+        },
+        {
+            "startTime": 103.44,
+            "endTime": 103.61999999999999,
+            "body": "two"
+        },
+        {
+            "startTime": 103.61999999999999,
+            "endTime": 104.28,
+            "body": "questions."
+        },
+        {
+            "startTime": 104.67,
+            "endTime": 105.09,
+            "body": "Women"
+        },
+        {
+            "startTime": 105.09,
+            "endTime": 105.24000000000001,
+            "body": "and"
+        },
+        {
+            "startTime": 105.24000000000001,
+            "endTime": 105.69,
+            "body": "fiction"
+        },
+        {
+            "startTime": 105.69,
+            "endTime": 106.23,
+            "body": "remain"
+        },
+        {
+            "startTime": 106.47,
+            "endTime": 106.71000000000001,
+            "body": "so"
+        },
+        {
+            "startTime": 106.71000000000001,
+            "endTime": 106.95,
+            "body": "far"
+        },
+        {
+            "startTime": 106.95,
+            "endTime": 107.10000000000001,
+            "body": "as"
+        },
+        {
+            "startTime": 107.10000000000001,
+            "endTime": 107.25,
+            "body": "I"
+        },
+        {
+            "startTime": 107.25,
+            "endTime": 107.4,
+            "body": "am"
+        },
+        {
+            "startTime": 107.4,
+            "endTime": 108.15,
+            "body": "concerned,"
+        },
+        {
+            "startTime": 108.33,
+            "endTime": 108.96000000000001,
+            "body": "unsolved"
+        },
+        {
+            "startTime": 108.96000000000001,
+            "endTime": 109.59,
+            "body": "problems."
+        },
+        {
+            "startTime": 110.28,
+            "endTime": 110.43,
+            "body": "But"
+        },
+        {
+            "startTime": 110.43,
+            "endTime": 110.55,
+            "body": "in"
+        },
+        {
+            "startTime": 110.55,
+            "endTime": 110.82000000000001,
+            "body": "order"
+        },
+        {
+            "startTime": 110.82000000000001,
+            "endTime": 110.94,
+            "body": "to"
+        },
+        {
+            "startTime": 110.94,
+            "endTime": 111.12,
+            "body": "make"
+        },
+        {
+            "startTime": 111.12,
+            "endTime": 111.3,
+            "body": "some"
+        },
+        {
+            "startTime": 111.3,
+            "endTime": 111.84,
+            "body": "amends,"
+        },
+        {
+            "startTime": 112.14,
+            "endTime": 112.26,
+            "body": "I"
+        },
+        {
+            "startTime": 112.26,
+            "endTime": 112.38,
+            "body": "am"
+        },
+        {
+            "startTime": 112.38,
+            "endTime": 112.59,
+            "body": "going"
+        },
+        {
+            "startTime": 112.59,
+            "endTime": 112.68,
+            "body": "to"
+        },
+        {
+            "startTime": 112.68,
+            "endTime": 112.92,
+            "body": "do"
+        },
+        {
+            "startTime": 112.92,
+            "endTime": 113.10000000000001,
+            "body": "what"
+        },
+        {
+            "startTime": 113.10000000000001,
+            "endTime": 113.16,
+            "body": "I"
+        },
+        {
+            "startTime": 113.16,
+            "endTime": 113.34,
+            "body": "can"
+        },
+        {
+            "startTime": 113.34,
+            "endTime": 113.43,
+            "body": "to"
+        },
+        {
+            "startTime": 113.43,
+            "endTime": 113.73,
+            "body": "show"
+        },
+        {
+            "startTime": 113.73,
+            "endTime": 114,
+            "body": "you"
+        },
+        {
+            "startTime": 114.15,
+            "endTime": 114.39,
+            "body": "how"
+        },
+        {
+            "startTime": 114.39,
+            "endTime": 114.54,
+            "body": "I"
+        },
+        {
+            "startTime": 114.54,
+            "endTime": 115.02000000000001,
+            "body": "arrived"
+        },
+        {
+            "startTime": 115.02000000000001,
+            "endTime": 115.11,
+            "body": "at"
+        },
+        {
+            "startTime": 115.11,
+            "endTime": 115.29,
+            "body": "this"
+        },
+        {
+            "startTime": 115.29,
+            "endTime": 115.80000000000001,
+            "body": "opinion"
+        },
+        {
+            "startTime": 115.80000000000001,
+            "endTime": 116.07000000000001,
+            "body": "about"
+        },
+        {
+            "startTime": 116.07000000000001,
+            "endTime": 116.19,
+            "body": "the"
+        },
+        {
+            "startTime": 116.19,
+            "endTime": 116.58,
+            "body": "room"
+        },
+        {
+            "startTime": 116.58,
+            "endTime": 116.76,
+            "body": "and"
+        },
+        {
+            "startTime": 116.76,
+            "endTime": 116.82000000000001,
+            "body": "the"
+        },
+        {
+            "startTime": 116.82000000000001,
+            "endTime": 117.21000000000001,
+            "body": "money"
+        },
+        {
+            "startTime": 117.99000000000001,
+            "endTime": 118.14,
+            "body": "I"
+        },
+        {
+            "startTime": 118.14,
+            "endTime": 118.29,
+            "body": "am"
+        },
+        {
+            "startTime": 118.29,
+            "endTime": 118.5,
+            "body": "going"
+        },
+        {
+            "startTime": 118.5,
+            "endTime": 118.62,
+            "body": "to"
+        },
+        {
+            "startTime": 118.62,
+            "endTime": 119.07000000000001,
+            "body": "develop"
+        },
+        {
+            "startTime": 119.07000000000001,
+            "endTime": 119.16,
+            "body": "in"
+        },
+        {
+            "startTime": 119.16,
+            "endTime": 119.28,
+            "body": "your"
+        },
+        {
+            "startTime": 119.28,
+            "endTime": 119.85000000000001,
+            "body": "presence"
+        },
+        {
+            "startTime": 119.97,
+            "endTime": 120.18,
+            "body": "as"
+        },
+        {
+            "startTime": 120.18,
+            "endTime": 120.54,
+            "body": "fully"
+        },
+        {
+            "startTime": 120.54,
+            "endTime": 120.69,
+            "body": "and"
+        },
+        {
+            "startTime": 120.69,
+            "endTime": 121.23,
+            "body": "freely"
+        },
+        {
+            "startTime": 121.5,
+            "endTime": 121.68,
+            "body": "as"
+        },
+        {
+            "startTime": 121.68,
+            "endTime": 121.80000000000001,
+            "body": "I"
+        },
+        {
+            "startTime": 121.80000000000001,
+            "endTime": 121.98,
+            "body": "can"
+        },
+        {
+            "startTime": 121.98,
+            "endTime": 122.04,
+            "body": "the"
+        },
+        {
+            "startTime": 122.04,
+            "endTime": 122.37,
+            "body": "train"
+        },
+        {
+            "startTime": 122.37,
+            "endTime": 122.46000000000001,
+            "body": "of"
+        },
+        {
+            "startTime": 122.46000000000001,
+            "endTime": 122.85000000000001,
+            "body": "thought,"
+        },
+        {
+            "startTime": 122.94,
+            "endTime": 123.15,
+            "body": "which"
+        },
+        {
+            "startTime": 123.15,
+            "endTime": 123.33,
+            "body": "led"
+        },
+        {
+            "startTime": 123.33,
+            "endTime": 123.42,
+            "body": "me"
+        },
+        {
+            "startTime": 123.45,
+            "endTime": 123.51,
+            "body": "to"
+        },
+        {
+            "startTime": 123.51,
+            "endTime": 123.75,
+            "body": "think"
+        },
+        {
+            "startTime": 123.75,
+            "endTime": 124.11,
+            "body": "this."
+        },
+        {
+            "startTime": 124.77000000000001,
+            "endTime": 125.34,
+            "body": "Perhaps"
+        },
+        {
+            "startTime": 125.34,
+            "endTime": 125.49000000000001,
+            "body": "if"
+        },
+        {
+            "startTime": 125.49000000000001,
+            "endTime": 125.61,
+            "body": "I"
+        },
+        {
+            "startTime": 125.61,
+            "endTime": 125.85000000000001,
+            "body": "lay"
+        },
+        {
+            "startTime": 125.85000000000001,
+            "endTime": 126.09,
+            "body": "bare"
+        },
+        {
+            "startTime": 126.09,
+            "endTime": 126.21000000000001,
+            "body": "the"
+        },
+        {
+            "startTime": 126.21000000000001,
+            "endTime": 126.87,
+            "body": "ideas,"
+        },
+        {
+            "startTime": 126.93,
+            "endTime": 127.05000000000001,
+            "body": "the"
+        },
+        {
+            "startTime": 127.05000000000001,
+            "endTime": 127.89,
+            "body": "prejudices"
+        },
+        {
+            "startTime": 128.19,
+            "endTime": 128.37,
+            "body": "that"
+        },
+        {
+            "startTime": 128.37,
+            "endTime": 128.61,
+            "body": "lie"
+        },
+        {
+            "startTime": 128.61,
+            "endTime": 129.06,
+            "body": "behind"
+        },
+        {
+            "startTime": 129.06,
+            "endTime": 129.24,
+            "body": "this"
+        },
+        {
+            "startTime": 129.24,
+            "endTime": 129.72,
+            "body": "statement,"
+        },
+        {
+            "startTime": 129.75,
+            "endTime": 129.9,
+            "body": "you"
+        },
+        {
+            "startTime": 129.9,
+            "endTime": 130.05,
+            "body": "will"
+        },
+        {
+            "startTime": 130.05,
+            "endTime": 130.41,
+            "body": "find"
+        },
+        {
+            "startTime": 130.41,
+            "endTime": 130.53,
+            "body": "that"
+        },
+        {
+            "startTime": 130.53,
+            "endTime": 130.65,
+            "body": "they"
+        },
+        {
+            "startTime": 130.65,
+            "endTime": 130.86,
+            "body": "have"
+        },
+        {
+            "startTime": 130.86,
+            "endTime": 131.1,
+            "body": "some"
+        },
+        {
+            "startTime": 131.1,
+            "endTime": 131.46,
+            "body": "bearing"
+        },
+        {
+            "startTime": 131.46,
+            "endTime": 131.82,
+            "body": "upon"
+        },
+        {
+            "startTime": 131.82,
+            "endTime": 132.24,
+            "body": "women"
+        },
+        {
+            "startTime": 132.54,
+            "endTime": 132.75,
+            "body": "and"
+        },
+        {
+            "startTime": 132.75,
+            "endTime": 132.93,
+            "body": "some"
+        },
+        {
+            "startTime": 132.93,
+            "endTime": 133.26,
+            "body": "upon"
+        },
+        {
+            "startTime": 133.26,
+            "endTime": 133.71,
+            "body": "fiction."
+        },
+        {
+            "startTime": 134.475,
+            "endTime": 134.625,
+            "body": "At"
+        },
+        {
+            "startTime": 134.625,
+            "endTime": 134.835,
+            "body": "any"
+        },
+        {
+            "startTime": 134.835,
+            "endTime": 135.165,
+            "body": "rate,"
+        },
+        {
+            "startTime": 135.195,
+            "endTime": 135.375,
+            "body": "when"
+        },
+        {
+            "startTime": 135.375,
+            "endTime": 135.435,
+            "body": "a"
+        },
+        {
+            "startTime": 135.435,
+            "endTime": 135.945,
+            "body": "subject"
+        },
+        {
+            "startTime": 135.945,
+            "endTime": 136.065,
+            "body": "is"
+        },
+        {
+            "startTime": 136.065,
+            "endTime": 136.45499999999998,
+            "body": "highly"
+        },
+        {
+            "startTime": 136.45499999999998,
+            "endTime": 137.355,
+            "body": "controversial"
+        },
+        {
+            "startTime": 137.685,
+            "endTime": 137.835,
+            "body": "and"
+        },
+        {
+            "startTime": 137.835,
+            "endTime": 138.015,
+            "body": "any"
+        },
+        {
+            "startTime": 138.015,
+            "endTime": 138.435,
+            "body": "question"
+        },
+        {
+            "startTime": 138.435,
+            "endTime": 138.73499999999999,
+            "body": "about"
+        },
+        {
+            "startTime": 138.73499999999999,
+            "endTime": 139.155,
+            "body": "sex"
+        },
+        {
+            "startTime": 139.155,
+            "endTime": 139.305,
+            "body": "is"
+        },
+        {
+            "startTime": 139.305,
+            "endTime": 139.605,
+            "body": "that"
+        },
+        {
+            "startTime": 139.935,
+            "endTime": 140.20499999999998,
+            "body": "one"
+        },
+        {
+            "startTime": 140.20499999999998,
+            "endTime": 140.565,
+            "body": "cannot"
+        },
+        {
+            "startTime": 140.565,
+            "endTime": 140.835,
+            "body": "hope"
+        },
+        {
+            "startTime": 140.835,
+            "endTime": 140.92499999999998,
+            "body": "to"
+        },
+        {
+            "startTime": 140.92499999999998,
+            "endTime": 141.165,
+            "body": "tell"
+        },
+        {
+            "startTime": 141.165,
+            "endTime": 141.255,
+            "body": "the"
+        },
+        {
+            "startTime": 141.255,
+            "endTime": 141.67499999999998,
+            "body": "truth,"
+        },
+        {
+            "startTime": 142.39499999999998,
+            "endTime": 142.665,
+            "body": "one"
+        },
+        {
+            "startTime": 142.665,
+            "endTime": 142.845,
+            "body": "can"
+        },
+        {
+            "startTime": 142.845,
+            "endTime": 143.115,
+            "body": "only"
+        },
+        {
+            "startTime": 143.115,
+            "endTime": 143.505,
+            "body": "show"
+        },
+        {
+            "startTime": 143.535,
+            "endTime": 143.745,
+            "body": "how"
+        },
+        {
+            "startTime": 143.745,
+            "endTime": 143.98499999999999,
+            "body": "one"
+        },
+        {
+            "startTime": 143.98499999999999,
+            "endTime": 144.225,
+            "body": "came"
+        },
+        {
+            "startTime": 144.225,
+            "endTime": 144.315,
+            "body": "to"
+        },
+        {
+            "startTime": 144.315,
+            "endTime": 144.615,
+            "body": "hold"
+        },
+        {
+            "startTime": 144.615,
+            "endTime": 145.005,
+            "body": "whatever"
+        },
+        {
+            "startTime": 145.005,
+            "endTime": 145.575,
+            "body": "opinion"
+        },
+        {
+            "startTime": 145.815,
+            "endTime": 146.055,
+            "body": "one"
+        },
+        {
+            "startTime": 146.055,
+            "endTime": 146.265,
+            "body": "does"
+        },
+        {
+            "startTime": 146.265,
+            "endTime": 146.685,
+            "body": "hold."
+        },
+        {
+            "startTime": 147.405,
+            "endTime": 147.73499999999999,
+            "body": "One"
+        },
+        {
+            "startTime": 147.73499999999999,
+            "endTime": 147.915,
+            "body": "can"
+        },
+        {
+            "startTime": 147.915,
+            "endTime": 148.185,
+            "body": "only"
+        },
+        {
+            "startTime": 148.185,
+            "endTime": 148.42499999999998,
+            "body": "give"
+        },
+        {
+            "startTime": 148.42499999999998,
+            "endTime": 148.725,
+            "body": "one's"
+        },
+        {
+            "startTime": 148.725,
+            "endTime": 149.23499999999999,
+            "body": "audience"
+        },
+        {
+            "startTime": 149.23499999999999,
+            "endTime": 149.355,
+            "body": "the"
+        },
+        {
+            "startTime": 149.355,
+            "endTime": 149.775,
+            "body": "chance"
+        },
+        {
+            "startTime": 149.775,
+            "endTime": 149.925,
+            "body": "of"
+        },
+        {
+            "startTime": 149.925,
+            "endTime": 150.315,
+            "body": "drawing"
+        },
+        {
+            "startTime": 150.315,
+            "endTime": 150.525,
+            "body": "their"
+        },
+        {
+            "startTime": 150.525,
+            "endTime": 150.795,
+            "body": "own"
+        },
+        {
+            "startTime": 150.795,
+            "endTime": 151.575,
+            "body": "conclusions"
+        },
+        {
+            "startTime": 151.785,
+            "endTime": 151.995,
+            "body": "as"
+        },
+        {
+            "startTime": 151.995,
+            "endTime": 152.14499999999998,
+            "body": "they"
+        },
+        {
+            "startTime": 152.14499999999998,
+            "endTime": 152.595,
+            "body": "observe"
+        },
+        {
+            "startTime": 152.595,
+            "endTime": 152.685,
+            "body": "the"
+        },
+        {
+            "startTime": 152.685,
+            "endTime": 153.465,
+            "body": "limitations"
+        },
+        {
+            "startTime": 153.885,
+            "endTime": 154.005,
+            "body": "the"
+        },
+        {
+            "startTime": 154.005,
+            "endTime": 154.815,
+            "body": "prejudices,"
+        },
+        {
+            "startTime": 155.08499999999998,
+            "endTime": 155.295,
+            "body": "the"
+        },
+        {
+            "startTime": 155.295,
+            "endTime": 156.225,
+            "body": "idiosyncrasies"
+        },
+        {
+            "startTime": 156.225,
+            "endTime": 156.315,
+            "body": "of"
+        },
+        {
+            "startTime": 156.315,
+            "endTime": 156.405,
+            "body": "the"
+        },
+        {
+            "startTime": 156.405,
+            "endTime": 156.885,
+            "body": "speaker"
+        },
+        {
+            "startTime": 157.635,
+            "endTime": 158.025,
+            "body": "fiction"
+        },
+        {
+            "startTime": 158.025,
+            "endTime": 158.20499999999998,
+            "body": "here"
+        },
+        {
+            "startTime": 158.445,
+            "endTime": 158.655,
+            "body": "is"
+        },
+        {
+            "startTime": 158.655,
+            "endTime": 159.075,
+            "body": "likely"
+        },
+        {
+            "startTime": 159.075,
+            "endTime": 159.195,
+            "body": "to"
+        },
+        {
+            "startTime": 159.195,
+            "endTime": 159.58499999999998,
+            "body": "contain"
+        },
+        {
+            "startTime": 159.58499999999998,
+            "endTime": 159.795,
+            "body": "more"
+        },
+        {
+            "startTime": 159.795,
+            "endTime": 160.095,
+            "body": "truth"
+        },
+        {
+            "startTime": 160.095,
+            "endTime": 160.305,
+            "body": "than"
+        },
+        {
+            "startTime": 160.31,
+            "endTime": 160.45,
+            "body": "fact."
+        },
+        {
+            "startTime": 161.445,
+            "endTime": 161.95499999999998,
+            "body": "Therefore,"
+        },
+        {
+            "startTime": 161.95499999999998,
+            "endTime": 162.075,
+            "body": "I"
+        },
+        {
+            "startTime": 162.075,
+            "endTime": 162.825,
+            "body": "propose"
+        },
+        {
+            "startTime": 163.005,
+            "endTime": 163.395,
+            "body": "making"
+        },
+        {
+            "startTime": 163.395,
+            "endTime": 163.665,
+            "body": "use"
+        },
+        {
+            "startTime": 163.665,
+            "endTime": 163.755,
+            "body": "of"
+        },
+        {
+            "startTime": 163.755,
+            "endTime": 164.055,
+            "body": "all"
+        },
+        {
+            "startTime": 164.055,
+            "endTime": 164.17499999999998,
+            "body": "the"
+        },
+        {
+            "startTime": 164.17499999999998,
+            "endTime": 164.745,
+            "body": "liberties"
+        },
+        {
+            "startTime": 164.745,
+            "endTime": 164.865,
+            "body": "and"
+        },
+        {
+            "startTime": 164.865,
+            "endTime": 165.495,
+            "body": "licenses"
+        },
+        {
+            "startTime": 165.495,
+            "endTime": 165.615,
+            "body": "of"
+        },
+        {
+            "startTime": 165.615,
+            "endTime": 165.645,
+            "body": "a"
+        },
+        {
+            "startTime": 165.645,
+            "endTime": 166.335,
+            "body": "novelist"
+        },
+        {
+            "startTime": 166.665,
+            "endTime": 166.785,
+            "body": "to"
+        },
+        {
+            "startTime": 166.785,
+            "endTime": 167.025,
+            "body": "tell"
+        },
+        {
+            "startTime": 167.025,
+            "endTime": 167.17499999999998,
+            "body": "you"
+        },
+        {
+            "startTime": 167.17499999999998,
+            "endTime": 167.325,
+            "body": "the"
+        },
+        {
+            "startTime": 167.325,
+            "endTime": 167.715,
+            "body": "story"
+        },
+        {
+            "startTime": 167.715,
+            "endTime": 167.835,
+            "body": "of"
+        },
+        {
+            "startTime": 167.835,
+            "endTime": 167.92499999999998,
+            "body": "the"
+        },
+        {
+            "startTime": 167.92499999999998,
+            "endTime": 168.135,
+            "body": "two"
+        },
+        {
+            "startTime": 168.135,
+            "endTime": 168.585,
+            "body": "days"
+        },
+        {
+            "startTime": 168.585,
+            "endTime": 168.73499999999999,
+            "body": "that"
+        },
+        {
+            "startTime": 168.73499999999999,
+            "endTime": 169.185,
+            "body": "preceded"
+        },
+        {
+            "startTime": 169.185,
+            "endTime": 169.305,
+            "body": "my"
+        },
+        {
+            "startTime": 169.305,
+            "endTime": 169.665,
+            "body": "coming"
+        },
+        {
+            "startTime": 169.665,
+            "endTime": 169.995,
+            "body": "here."
+        },
+        {
+            "startTime": 170.445,
+            "endTime": 170.925,
+            "body": "How"
+        },
+        {
+            "startTime": 171.135,
+            "endTime": 171.555,
+            "body": "bowed"
+        },
+        {
+            "startTime": 171.555,
+            "endTime": 171.885,
+            "body": "down"
+        },
+        {
+            "startTime": 171.885,
+            "endTime": 172.035,
+            "body": "by"
+        },
+        {
+            "startTime": 172.035,
+            "endTime": 172.155,
+            "body": "the"
+        },
+        {
+            "startTime": 172.155,
+            "endTime": 172.425,
+            "body": "weight"
+        },
+        {
+            "startTime": 172.425,
+            "endTime": 172.515,
+            "body": "of"
+        },
+        {
+            "startTime": 172.515,
+            "endTime": 172.605,
+            "body": "the"
+        },
+        {
+            "startTime": 172.605,
+            "endTime": 173.14499999999998,
+            "body": "subject,"
+        },
+        {
+            "startTime": 173.14499999999998,
+            "endTime": 173.355,
+            "body": "which"
+        },
+        {
+            "startTime": 173.355,
+            "endTime": 173.445,
+            "body": "you"
+        },
+        {
+            "startTime": 173.445,
+            "endTime": 173.565,
+            "body": "have"
+        },
+        {
+            "startTime": 173.565,
+            "endTime": 173.775,
+            "body": "laid"
+        },
+        {
+            "startTime": 173.775,
+            "endTime": 174.015,
+            "body": "upon"
+        },
+        {
+            "startTime": 174.015,
+            "endTime": 174.135,
+            "body": "my"
+        },
+        {
+            "startTime": 174.135,
+            "endTime": 174.765,
+            "body": "shoulders."
+        },
+        {
+            "startTime": 175.065,
+            "endTime": 175.215,
+            "body": "I"
+        },
+        {
+            "startTime": 175.215,
+            "endTime": 175.695,
+            "body": "pondered"
+        },
+        {
+            "startTime": 175.695,
+            "endTime": 175.845,
+            "body": "it"
+        },
+        {
+            "startTime": 176.20499999999998,
+            "endTime": 176.355,
+            "body": "and"
+        },
+        {
+            "startTime": 176.355,
+            "endTime": 176.565,
+            "body": "made"
+        },
+        {
+            "startTime": 176.565,
+            "endTime": 176.655,
+            "body": "it"
+        },
+        {
+            "startTime": 176.655,
+            "endTime": 176.95499999999998,
+            "body": "work"
+        },
+        {
+            "startTime": 176.98499999999999,
+            "endTime": 177.315,
+            "body": "in"
+        },
+        {
+            "startTime": 177.315,
+            "endTime": 177.495,
+            "body": "and"
+        },
+        {
+            "startTime": 177.495,
+            "endTime": 177.70499999999998,
+            "body": "out"
+        },
+        {
+            "startTime": 177.70499999999998,
+            "endTime": 177.795,
+            "body": "of"
+        },
+        {
+            "startTime": 177.795,
+            "endTime": 177.915,
+            "body": "my"
+        },
+        {
+            "startTime": 177.915,
+            "endTime": 178.305,
+            "body": "daily"
+        },
+        {
+            "startTime": 178.305,
+            "endTime": 178.725,
+            "body": "life."
+        },
+        {
+            "startTime": 179.475,
+            "endTime": 179.595,
+            "body": "I"
+        },
+        {
+            "startTime": 179.595,
+            "endTime": 179.835,
+            "body": "need"
+        },
+        {
+            "startTime": 179.835,
+            "endTime": 180.045,
+            "body": "not"
+        },
+        {
+            "startTime": 180.045,
+            "endTime": 180.345,
+            "body": "say"
+        },
+        {
+            "startTime": 180.345,
+            "endTime": 180.525,
+            "body": "that"
+        },
+        {
+            "startTime": 180.525,
+            "endTime": 180.675,
+            "body": "what"
+        },
+        {
+            "startTime": 180.675,
+            "endTime": 180.825,
+            "body": "I"
+        },
+        {
+            "startTime": 180.825,
+            "endTime": 180.975,
+            "body": "am"
+        },
+        {
+            "startTime": 180.975,
+            "endTime": 181.245,
+            "body": "about"
+        },
+        {
+            "startTime": 181.245,
+            "endTime": 181.365,
+            "body": "to"
+        },
+        {
+            "startTime": 181.365,
+            "endTime": 181.965,
+            "body": "describe"
+        },
+        {
+            "startTime": 181.965,
+            "endTime": 182.175,
+            "body": "has"
+        },
+        {
+            "startTime": 182.175,
+            "endTime": 182.385,
+            "body": "no"
+        },
+        {
+            "startTime": 182.385,
+            "endTime": 183.225,
+            "body": "existence."
+        },
+        {
+            "startTime": 183.585,
+            "endTime": 184.185,
+            "body": "Oxbridge"
+        },
+        {
+            "startTime": 184.215,
+            "endTime": 184.365,
+            "body": "is"
+        },
+        {
+            "startTime": 184.365,
+            "endTime": 184.45499999999998,
+            "body": "an"
+        },
+        {
+            "startTime": 184.45499999999998,
+            "endTime": 185.14499999999998,
+            "body": "invention,"
+        },
+        {
+            "startTime": 185.355,
+            "endTime": 185.805,
+            "body": "so"
+        },
+        {
+            "startTime": 185.805,
+            "endTime": 186.075,
+            "body": "is"
+        },
+        {
+            "startTime": 186.075,
+            "endTime": 186.555,
+            "body": "ferna."
+        },
+        {
+            "startTime": 187.095,
+            "endTime": 187.455,
+            "body": "I"
+        },
+        {
+            "startTime": 187.485,
+            "endTime": 187.69500000000002,
+            "body": "is"
+        },
+        {
+            "startTime": 187.69500000000002,
+            "endTime": 187.995,
+            "body": "only"
+        },
+        {
+            "startTime": 187.995,
+            "endTime": 188.055,
+            "body": "a"
+        },
+        {
+            "startTime": 188.055,
+            "endTime": 188.625,
+            "body": "convenient"
+        },
+        {
+            "startTime": 188.625,
+            "endTime": 188.985,
+            "body": "term"
+        },
+        {
+            "startTime": 188.985,
+            "endTime": 189.13500000000002,
+            "body": "for"
+        },
+        {
+            "startTime": 189.13500000000002,
+            "endTime": 189.645,
+            "body": "somebody"
+        },
+        {
+            "startTime": 189.645,
+            "endTime": 189.79500000000002,
+            "body": "who"
+        },
+        {
+            "startTime": 189.79500000000002,
+            "endTime": 190.035,
+            "body": "has"
+        },
+        {
+            "startTime": 190.035,
+            "endTime": 190.215,
+            "body": "no"
+        },
+        {
+            "startTime": 190.215,
+            "endTime": 190.51500000000001,
+            "body": "real"
+        },
+        {
+            "startTime": 190.51500000000001,
+            "endTime": 190.905,
+            "body": "being."
+        },
+        {
+            "startTime": 191.655,
+            "endTime": 192.10500000000002,
+            "body": "Lies"
+        },
+        {
+            "startTime": 192.10500000000002,
+            "endTime": 192.255,
+            "body": "will"
+        },
+        {
+            "startTime": 192.255,
+            "endTime": 192.525,
+            "body": "flow"
+        },
+        {
+            "startTime": 192.525,
+            "endTime": 192.675,
+            "body": "from"
+        },
+        {
+            "startTime": 192.675,
+            "endTime": 192.82500000000002,
+            "body": "my"
+        },
+        {
+            "startTime": 192.82500000000002,
+            "endTime": 193.305,
+            "body": "lips,"
+        },
+        {
+            "startTime": 193.54500000000002,
+            "endTime": 193.72500000000002,
+            "body": "but"
+        },
+        {
+            "startTime": 193.72500000000002,
+            "endTime": 193.875,
+            "body": "there"
+        },
+        {
+            "startTime": 193.875,
+            "endTime": 194.055,
+            "body": "may"
+        },
+        {
+            "startTime": 194.055,
+            "endTime": 194.625,
+            "body": "perhaps"
+        },
+        {
+            "startTime": 194.625,
+            "endTime": 194.775,
+            "body": "be"
+        },
+        {
+            "startTime": 194.775,
+            "endTime": 195.04500000000002,
+            "body": "some"
+        },
+        {
+            "startTime": 195.04500000000002,
+            "endTime": 195.435,
+            "body": "truth"
+        },
+        {
+            "startTime": 195.435,
+            "endTime": 195.76500000000001,
+            "body": "mixed"
+        },
+        {
+            "startTime": 195.76500000000001,
+            "endTime": 195.88500000000002,
+            "body": "up"
+        },
+        {
+            "startTime": 195.88500000000002,
+            "endTime": 196.035,
+            "body": "with"
+        },
+        {
+            "startTime": 196.035,
+            "endTime": 196.305,
+            "body": "them."
+        },
+        {
+            "startTime": 196.72500000000002,
+            "endTime": 196.905,
+            "body": "It"
+        },
+        {
+            "startTime": 196.905,
+            "endTime": 197.025,
+            "body": "is"
+        },
+        {
+            "startTime": 197.025,
+            "endTime": 197.145,
+            "body": "for"
+        },
+        {
+            "startTime": 197.145,
+            "endTime": 197.29500000000002,
+            "body": "you"
+        },
+        {
+            "startTime": 197.29500000000002,
+            "endTime": 197.44500000000002,
+            "body": "to"
+        },
+        {
+            "startTime": 197.44500000000002,
+            "endTime": 197.715,
+            "body": "seek"
+        },
+        {
+            "startTime": 197.715,
+            "endTime": 197.895,
+            "body": "out"
+        },
+        {
+            "startTime": 197.895,
+            "endTime": 198.04500000000002,
+            "body": "this"
+        },
+        {
+            "startTime": 198.04500000000002,
+            "endTime": 198.465,
+            "body": "truth"
+        },
+        {
+            "startTime": 198.645,
+            "endTime": 198.79500000000002,
+            "body": "and"
+        },
+        {
+            "startTime": 198.79500000000002,
+            "endTime": 198.88500000000002,
+            "body": "to"
+        },
+        {
+            "startTime": 198.88500000000002,
+            "endTime": 199.395,
+            "body": "decide"
+        },
+        {
+            "startTime": 199.395,
+            "endTime": 199.66500000000002,
+            "body": "whether"
+        },
+        {
+            "startTime": 199.66500000000002,
+            "endTime": 199.905,
+            "body": "any"
+        },
+        {
+            "startTime": 199.905,
+            "endTime": 200.175,
+            "body": "part"
+        },
+        {
+            "startTime": 200.175,
+            "endTime": 200.235,
+            "body": "of"
+        },
+        {
+            "startTime": 200.235,
+            "endTime": 200.35500000000002,
+            "body": "it"
+        },
+        {
+            "startTime": 200.35500000000002,
+            "endTime": 200.505,
+            "body": "is"
+        },
+        {
+            "startTime": 200.505,
+            "endTime": 200.745,
+            "body": "worth"
+        },
+        {
+            "startTime": 200.745,
+            "endTime": 201.22500000000002,
+            "body": "keeping."
+        },
+        {
+            "startTime": 201.91500000000002,
+            "endTime": 202.125,
+            "body": "If"
+        },
+        {
+            "startTime": 202.125,
+            "endTime": 202.485,
+            "body": "not,"
+        },
+        {
+            "startTime": 202.60500000000002,
+            "endTime": 202.755,
+            "body": "you"
+        },
+        {
+            "startTime": 202.755,
+            "endTime": 202.935,
+            "body": "will"
+        },
+        {
+            "startTime": 202.935,
+            "endTime": 203.025,
+            "body": "of"
+        },
+        {
+            "startTime": 203.025,
+            "endTime": 203.445,
+            "body": "course"
+        },
+        {
+            "startTime": 203.445,
+            "endTime": 203.715,
+            "body": "throw"
+        },
+        {
+            "startTime": 203.715,
+            "endTime": 203.835,
+            "body": "the"
+        },
+        {
+            "startTime": 203.835,
+            "endTime": 204.10500000000002,
+            "body": "whole"
+        },
+        {
+            "startTime": 204.10500000000002,
+            "endTime": 204.16500000000002,
+            "body": "of"
+        },
+        {
+            "startTime": 204.16500000000002,
+            "endTime": 204.315,
+            "body": "it"
+        },
+        {
+            "startTime": 204.315,
+            "endTime": 204.495,
+            "body": "into"
+        },
+        {
+            "startTime": 204.495,
+            "endTime": 204.615,
+            "body": "the"
+        },
+        {
+            "startTime": 204.615,
+            "endTime": 204.91500000000002,
+            "body": "waste"
+        },
+        {
+            "startTime": 204.91500000000002,
+            "endTime": 205.215,
+            "body": "paper"
+        },
+        {
+            "startTime": 205.215,
+            "endTime": 205.755,
+            "body": "basket"
+        },
+        {
+            "startTime": 206.055,
+            "endTime": 206.205,
+            "body": "and"
+        },
+        {
+            "startTime": 206.205,
+            "endTime": 206.565,
+            "body": "forget"
+        },
+        {
+            "startTime": 206.565,
+            "endTime": 206.745,
+            "body": "all"
+        },
+        {
+            "startTime": 206.75,
+            "endTime": 206.99,
+            "body": "about"
+        },
+        {
+            "startTime": 207.01500000000001,
+            "endTime": 207.16500000000002,
+            "body": "it."
+        },
+        {
+            "startTime": 207.91500000000002,
+            "endTime": 208.155,
+            "body": "Here"
+        },
+        {
+            "startTime": 208.155,
+            "endTime": 208.395,
+            "body": "then"
+        },
+        {
+            "startTime": 208.395,
+            "endTime": 208.57500000000002,
+            "body": "was"
+        },
+        {
+            "startTime": 208.57500000000002,
+            "endTime": 208.78500000000003,
+            "body": "I"
+        },
+        {
+            "startTime": 208.78500000000003,
+            "endTime": 209.055,
+            "body": "call"
+        },
+        {
+            "startTime": 209.055,
+            "endTime": 209.205,
+            "body": "me"
+        },
+        {
+            "startTime": 209.205,
+            "endTime": 209.505,
+            "body": "Mary"
+        },
+        {
+            "startTime": 209.505,
+            "endTime": 210.07500000000002,
+            "body": "Baton,"
+        },
+        {
+            "startTime": 210.195,
+            "endTime": 210.525,
+            "body": "Mary"
+        },
+        {
+            "startTime": 210.525,
+            "endTime": 211.03500000000003,
+            "body": "Seton,"
+        },
+        {
+            "startTime": 211.215,
+            "endTime": 211.54500000000002,
+            "body": "Mary"
+        },
+        {
+            "startTime": 211.54500000000002,
+            "endTime": 212.235,
+            "body": "Carmichael,"
+        },
+        {
+            "startTime": 212.26500000000001,
+            "endTime": 212.445,
+            "body": "or"
+        },
+        {
+            "startTime": 212.445,
+            "endTime": 212.625,
+            "body": "by"
+        },
+        {
+            "startTime": 212.625,
+            "endTime": 212.865,
+            "body": "any"
+        },
+        {
+            "startTime": 212.865,
+            "endTime": 213.10500000000002,
+            "body": "name"
+        },
+        {
+            "startTime": 213.10500000000002,
+            "endTime": 213.22500000000002,
+            "body": "you"
+        },
+        {
+            "startTime": 213.22500000000002,
+            "endTime": 213.76500000000001,
+            "body": "please."
+        },
+        {
+            "startTime": 214.095,
+            "endTime": 214.275,
+            "body": "It"
+        },
+        {
+            "startTime": 214.275,
+            "endTime": 214.395,
+            "body": "is"
+        },
+        {
+            "startTime": 214.395,
+            "endTime": 214.63500000000002,
+            "body": "not"
+        },
+        {
+            "startTime": 214.63500000000002,
+            "endTime": 214.695,
+            "body": "a"
+        },
+        {
+            "startTime": 214.695,
+            "endTime": 215.085,
+            "body": "matter"
+        },
+        {
+            "startTime": 215.085,
+            "endTime": 215.175,
+            "body": "of"
+        },
+        {
+            "startTime": 215.175,
+            "endTime": 215.445,
+            "body": "any"
+        },
+        {
+            "startTime": 215.445,
+            "endTime": 216.16500000000002,
+            "body": "importance."
+        },
+        {
+            "startTime": 216.54000000000002,
+            "endTime": 216.87,
+            "body": "Sitting"
+        },
+        {
+            "startTime": 216.87,
+            "endTime": 216.99,
+            "body": "on"
+        },
+        {
+            "startTime": 216.99,
+            "endTime": 217.08,
+            "body": "the"
+        },
+        {
+            "startTime": 217.08,
+            "endTime": 217.38,
+            "body": "banks"
+        },
+        {
+            "startTime": 217.38,
+            "endTime": 217.47,
+            "body": "of"
+        },
+        {
+            "startTime": 217.47,
+            "endTime": 217.53,
+            "body": "a"
+        },
+        {
+            "startTime": 217.53,
+            "endTime": 217.89000000000001,
+            "body": "river"
+        },
+        {
+            "startTime": 217.89000000000001,
+            "endTime": 217.98000000000002,
+            "body": "a"
+        },
+        {
+            "startTime": 217.98000000000002,
+            "endTime": 218.25,
+            "body": "week"
+        },
+        {
+            "startTime": 218.25,
+            "endTime": 218.43,
+            "body": "or"
+        },
+        {
+            "startTime": 218.43,
+            "endTime": 218.67000000000002,
+            "body": "two"
+        },
+        {
+            "startTime": 218.67000000000002,
+            "endTime": 219,
+            "body": "ago"
+        },
+        {
+            "startTime": 219,
+            "endTime": 219.15,
+            "body": "in"
+        },
+        {
+            "startTime": 219.15,
+            "endTime": 219.54000000000002,
+            "body": "fine"
+        },
+        {
+            "startTime": 219.54000000000002,
+            "endTime": 220.02,
+            "body": "October,"
+        },
+        {
+            "startTime": 220.02,
+            "endTime": 220.41,
+            "body": "weather"
+        },
+        {
+            "startTime": 220.65,
+            "endTime": 221.07000000000002,
+            "body": "lost"
+        },
+        {
+            "startTime": 221.07000000000002,
+            "endTime": 221.25,
+            "body": "in"
+        },
+        {
+            "startTime": 221.25,
+            "endTime": 221.64000000000001,
+            "body": "thought"
+        },
+        {
+            "startTime": 222.36,
+            "endTime": 222.6,
+            "body": "that"
+        },
+        {
+            "startTime": 222.6,
+            "endTime": 223.02,
+            "body": "collar."
+        },
+        {
+            "startTime": 223.02,
+            "endTime": 223.17000000000002,
+            "body": "I"
+        },
+        {
+            "startTime": 223.17000000000002,
+            "endTime": 223.26000000000002,
+            "body": "have"
+        },
+        {
+            "startTime": 223.26000000000002,
+            "endTime": 223.71,
+            "body": "spoken"
+        },
+        {
+            "startTime": 223.71,
+            "endTime": 223.95000000000002,
+            "body": "of"
+        },
+        {
+            "startTime": 224.19,
+            "endTime": 224.58,
+            "body": "women"
+        },
+        {
+            "startTime": 224.58,
+            "endTime": 224.73000000000002,
+            "body": "and"
+        },
+        {
+            "startTime": 224.73000000000002,
+            "endTime": 225.3,
+            "body": "fiction"
+        },
+        {
+            "startTime": 225.63,
+            "endTime": 225.78,
+            "body": "the"
+        },
+        {
+            "startTime": 225.78,
+            "endTime": 226.02,
+            "body": "need"
+        },
+        {
+            "startTime": 226.02,
+            "endTime": 226.11,
+            "body": "of"
+        },
+        {
+            "startTime": 226.11,
+            "endTime": 226.44,
+            "body": "coming"
+        },
+        {
+            "startTime": 226.44,
+            "endTime": 226.56,
+            "body": "to"
+        },
+        {
+            "startTime": 226.56,
+            "endTime": 226.86,
+            "body": "some"
+        },
+        {
+            "startTime": 226.86,
+            "endTime": 227.49,
+            "body": "conclusion"
+        },
+        {
+            "startTime": 227.49,
+            "endTime": 227.64000000000001,
+            "body": "on"
+        },
+        {
+            "startTime": 227.64000000000001,
+            "endTime": 227.70000000000002,
+            "body": "a"
+        },
+        {
+            "startTime": 227.70000000000002,
+            "endTime": 228.27,
+            "body": "subject"
+        },
+        {
+            "startTime": 228.3,
+            "endTime": 228.48000000000002,
+            "body": "that"
+        },
+        {
+            "startTime": 228.48000000000002,
+            "endTime": 228.96,
+            "body": "raises"
+        },
+        {
+            "startTime": 228.96,
+            "endTime": 229.26000000000002,
+            "body": "all"
+        },
+        {
+            "startTime": 229.26000000000002,
+            "endTime": 229.56,
+            "body": "sorts"
+        },
+        {
+            "startTime": 229.56,
+            "endTime": 229.68,
+            "body": "of"
+        },
+        {
+            "startTime": 229.68,
+            "endTime": 230.37,
+            "body": "prejudices"
+        },
+        {
+            "startTime": 230.37,
+            "endTime": 230.49,
+            "body": "and"
+        },
+        {
+            "startTime": 230.49,
+            "endTime": 231.15,
+            "body": "passions."
+        },
+        {
+            "startTime": 231.48000000000002,
+            "endTime": 231.84,
+            "body": "Bowed"
+        },
+        {
+            "startTime": 231.84,
+            "endTime": 231.99,
+            "body": "my"
+        },
+        {
+            "startTime": 231.99,
+            "endTime": 232.23000000000002,
+            "body": "head"
+        },
+        {
+            "startTime": 232.23000000000002,
+            "endTime": 232.32,
+            "body": "to"
+        },
+        {
+            "startTime": 232.32,
+            "endTime": 232.41,
+            "body": "the"
+        },
+        {
+            "startTime": 232.41,
+            "endTime": 232.92000000000002,
+            "body": "ground"
+        },
+        {
+            "startTime": 233.64000000000001,
+            "endTime": 233.79000000000002,
+            "body": "to"
+        },
+        {
+            "startTime": 233.79000000000002,
+            "endTime": 233.91,
+            "body": "the"
+        },
+        {
+            "startTime": 233.91,
+            "endTime": 234.27,
+            "body": "right"
+        },
+        {
+            "startTime": 234.27,
+            "endTime": 234.42000000000002,
+            "body": "and"
+        },
+        {
+            "startTime": 234.42000000000002,
+            "endTime": 234.72,
+            "body": "left"
+        },
+        {
+            "startTime": 234.72,
+            "endTime": 235.11,
+            "body": "bushes"
+        },
+        {
+            "startTime": 235.11,
+            "endTime": 235.17000000000002,
+            "body": "of"
+        },
+        {
+            "startTime": 235.17000000000002,
+            "endTime": 235.41,
+            "body": "some"
+        },
+        {
+            "startTime": 235.41,
+            "endTime": 235.86,
+            "body": "sort."
+        },
+        {
+            "startTime": 236.01000000000002,
+            "endTime": 236.43,
+            "body": "Golden"
+        },
+        {
+            "startTime": 236.43,
+            "endTime": 236.55,
+            "body": "and"
+        },
+        {
+            "startTime": 236.55,
+            "endTime": 237.15,
+            "body": "crimson"
+        },
+        {
+            "startTime": 237.36,
+            "endTime": 237.81,
+            "body": "glowed"
+        },
+        {
+            "startTime": 237.81,
+            "endTime": 237.96,
+            "body": "with"
+        },
+        {
+            "startTime": 237.96,
+            "endTime": 238.05,
+            "body": "the"
+        },
+        {
+            "startTime": 238.05,
+            "endTime": 238.44,
+            "body": "color"
+        },
+        {
+            "startTime": 238.83,
+            "endTime": 239.16,
+            "body": "even"
+        },
+        {
+            "startTime": 239.16,
+            "endTime": 239.28,
+            "body": "it"
+        },
+        {
+            "startTime": 239.28,
+            "endTime": 239.55,
+            "body": "seemed"
+        },
+        {
+            "startTime": 239.55,
+            "endTime": 239.85000000000002,
+            "body": "burnt"
+        },
+        {
+            "startTime": 239.85000000000002,
+            "endTime": 239.97,
+            "body": "with"
+        },
+        {
+            "startTime": 239.97,
+            "endTime": 240.06,
+            "body": "the"
+        },
+        {
+            "startTime": 240.06,
+            "endTime": 240.48000000000002,
+            "body": "heat"
+        },
+        {
+            "startTime": 240.57,
+            "endTime": 240.72,
+            "body": "of"
+        },
+        {
+            "startTime": 240.72,
+            "endTime": 241.20000000000002,
+            "body": "fire"
+        },
+        {
+            "startTime": 241.95000000000002,
+            "endTime": 242.10000000000002,
+            "body": "on"
+        },
+        {
+            "startTime": 242.10000000000002,
+            "endTime": 242.19,
+            "body": "the"
+        },
+        {
+            "startTime": 242.19,
+            "endTime": 242.52,
+            "body": "further"
+        },
+        {
+            "startTime": 242.52,
+            "endTime": 242.85000000000002,
+            "body": "bank,"
+        },
+        {
+            "startTime": 242.85000000000002,
+            "endTime": 242.97,
+            "body": "the"
+        },
+        {
+            "startTime": 242.97,
+            "endTime": 243.42000000000002,
+            "body": "willows"
+        },
+        {
+            "startTime": 243.42000000000002,
+            "endTime": 243.81,
+            "body": "wept"
+        },
+        {
+            "startTime": 243.81,
+            "endTime": 243.93,
+            "body": "in"
+        },
+        {
+            "startTime": 243.93,
+            "endTime": 244.41,
+            "body": "perpetual"
+        },
+        {
+            "startTime": 244.41,
+            "endTime": 245.16,
+            "body": "lamentation."
+        },
+        {
+            "startTime": 245.52,
+            "endTime": 245.7,
+            "body": "Their"
+        },
+        {
+            "startTime": 245.7,
+            "endTime": 246.06,
+            "body": "hair"
+        },
+        {
+            "startTime": 246.06,
+            "endTime": 246.33,
+            "body": "about"
+        },
+        {
+            "startTime": 246.33,
+            "endTime": 246.48,
+            "body": "their"
+        },
+        {
+            "startTime": 246.48,
+            "endTime": 247.10999999999999,
+            "body": "shoulders."
+        },
+        {
+            "startTime": 247.8,
+            "endTime": 247.95,
+            "body": "The"
+        },
+        {
+            "startTime": 247.95,
+            "endTime": 248.25,
+            "body": "river"
+        },
+        {
+            "startTime": 248.25,
+            "endTime": 248.85,
+            "body": "reflected"
+        },
+        {
+            "startTime": 248.85,
+            "endTime": 249.27,
+            "body": "whatever"
+        },
+        {
+            "startTime": 249.27,
+            "endTime": 249.35999999999999,
+            "body": "it"
+        },
+        {
+            "startTime": 249.35999999999999,
+            "endTime": 249.78,
+            "body": "chose"
+        },
+        {
+            "startTime": 249.78,
+            "endTime": 249.87,
+            "body": "of"
+        },
+        {
+            "startTime": 249.87,
+            "endTime": 250.44,
+            "body": "sky"
+        },
+        {
+            "startTime": 250.44,
+            "endTime": 250.65,
+            "body": "and"
+        },
+        {
+            "startTime": 250.65,
+            "endTime": 251.07,
+            "body": "bridge"
+        },
+        {
+            "startTime": 251.07,
+            "endTime": 251.25,
+            "body": "and"
+        },
+        {
+            "startTime": 251.25,
+            "endTime": 251.58,
+            "body": "Burning"
+        },
+        {
+            "startTime": 251.58,
+            "endTime": 252.06,
+            "body": "Tree."
+        },
+        {
+            "startTime": 252.45,
+            "endTime": 252.6,
+            "body": "And"
+        },
+        {
+            "startTime": 252.6,
+            "endTime": 252.75,
+            "body": "when"
+        },
+        {
+            "startTime": 252.75,
+            "endTime": 252.84,
+            "body": "the"
+        },
+        {
+            "startTime": 252.84,
+            "endTime": 253.59,
+            "body": "undergraduate"
+        },
+        {
+            "startTime": 253.59,
+            "endTime": 253.77,
+            "body": "had"
+        },
+        {
+            "startTime": 253.77,
+            "endTime": 254.07,
+            "body": "ord"
+        },
+        {
+            "startTime": 254.07,
+            "endTime": 254.22,
+            "body": "his"
+        },
+        {
+            "startTime": 254.22,
+            "endTime": 254.52,
+            "body": "boat"
+        },
+        {
+            "startTime": 254.52,
+            "endTime": 254.73,
+            "body": "through"
+        },
+        {
+            "startTime": 254.73,
+            "endTime": 254.85,
+            "body": "the"
+        },
+        {
+            "startTime": 254.85,
+            "endTime": 255.54,
+            "body": "reflections,"
+        },
+        {
+            "startTime": 255.54,
+            "endTime": 255.66,
+            "body": "they"
+        },
+        {
+            "startTime": 255.66,
+            "endTime": 256.11,
+            "body": "closed"
+        },
+        {
+            "startTime": 256.11,
+            "endTime": 256.47,
+            "body": "again"
+        },
+        {
+            "startTime": 256.77,
+            "endTime": 257.49,
+            "body": "completely"
+        },
+        {
+            "startTime": 257.76,
+            "endTime": 257.94,
+            "body": "as"
+        },
+        {
+            "startTime": 257.94,
+            "endTime": 258.06,
+            "body": "if"
+        },
+        {
+            "startTime": 258.06,
+            "endTime": 258.21,
+            "body": "he"
+        },
+        {
+            "startTime": 258.21,
+            "endTime": 258.33,
+            "body": "had"
+        },
+        {
+            "startTime": 258.33,
+            "endTime": 258.63,
+            "body": "never"
+        },
+        {
+            "startTime": 258.63,
+            "endTime": 258.93,
+            "body": "been."
+        },
+        {
+            "startTime": 259.71,
+            "endTime": 259.86,
+            "body": "Their"
+        },
+        {
+            "startTime": 259.86,
+            "endTime": 260.07,
+            "body": "one"
+        },
+        {
+            "startTime": 260.07,
+            "endTime": 260.28,
+            "body": "might"
+        },
+        {
+            "startTime": 260.28,
+            "endTime": 260.34,
+            "body": "have"
+        },
+        {
+            "startTime": 260.34,
+            "endTime": 260.61,
+            "body": "sat"
+        },
+        {
+            "startTime": 260.61,
+            "endTime": 260.7,
+            "body": "the"
+        },
+        {
+            "startTime": 260.7,
+            "endTime": 260.97,
+            "body": "clock"
+        },
+        {
+            "startTime": 260.97,
+            "endTime": 261.42,
+            "body": "round,"
+        },
+        {
+            "startTime": 261.48,
+            "endTime": 261.9,
+            "body": "lost"
+        },
+        {
+            "startTime": 261.9,
+            "endTime": 262.02,
+            "body": "in"
+        },
+        {
+            "startTime": 262.02,
+            "endTime": 262.41,
+            "body": "thought,"
+        },
+        {
+            "startTime": 263.13,
+            "endTime": 263.52,
+            "body": "thought"
+        },
+        {
+            "startTime": 263.52,
+            "endTime": 263.73,
+            "body": "to"
+        },
+        {
+            "startTime": 263.73,
+            "endTime": 263.97,
+            "body": "call"
+        },
+        {
+            "startTime": 263.97,
+            "endTime": 264.09,
+            "body": "it"
+        },
+        {
+            "startTime": 264.09,
+            "endTime": 264.27,
+            "body": "by"
+        },
+        {
+            "startTime": 264.27,
+            "endTime": 264.33,
+            "body": "a"
+        },
+        {
+            "startTime": 264.33,
+            "endTime": 264.75,
+            "body": "prouder"
+        },
+        {
+            "startTime": 264.75,
+            "endTime": 265.14,
+            "body": "name"
+        },
+        {
+            "startTime": 265.14,
+            "endTime": 265.29,
+            "body": "than"
+        },
+        {
+            "startTime": 265.295,
+            "endTime": 265.425,
+            "body": "it"
+        },
+        {
+            "startTime": 265.625,
+            "endTime": 265.745,
+            "body": "deserved,"
+        },
+        {
+            "startTime": 266.25,
+            "endTime": 266.46,
+            "body": "had"
+        },
+        {
+            "startTime": 266.46,
+            "endTime": 266.61,
+            "body": "let"
+        },
+        {
+            "startTime": 266.61,
+            "endTime": 266.76,
+            "body": "its"
+        },
+        {
+            "startTime": 266.76,
+            "endTime": 267.06,
+            "body": "line"
+        },
+        {
+            "startTime": 267.06,
+            "endTime": 267.36,
+            "body": "down"
+        },
+        {
+            "startTime": 267.36,
+            "endTime": 267.51,
+            "body": "into"
+        },
+        {
+            "startTime": 267.51,
+            "endTime": 267.63,
+            "body": "the"
+        },
+        {
+            "startTime": 267.63,
+            "endTime": 268.08,
+            "body": "stream."
+        },
+        {
+            "startTime": 268.8,
+            "endTime": 269.01,
+            "body": "It"
+        },
+        {
+            "startTime": 269.01,
+            "endTime": 269.55,
+            "body": "swayed"
+        },
+        {
+            "startTime": 269.58000000000004,
+            "endTime": 269.85,
+            "body": "minute"
+        },
+        {
+            "startTime": 269.85,
+            "endTime": 270.15000000000003,
+            "body": "after"
+        },
+        {
+            "startTime": 270.15000000000003,
+            "endTime": 270.45,
+            "body": "minute,"
+        },
+        {
+            "startTime": 270.66,
+            "endTime": 271.14000000000004,
+            "body": "hither"
+        },
+        {
+            "startTime": 271.14000000000004,
+            "endTime": 271.32,
+            "body": "and"
+        },
+        {
+            "startTime": 271.35,
+            "endTime": 271.71000000000004,
+            "body": "thither"
+        },
+        {
+            "startTime": 271.74,
+            "endTime": 272.01,
+            "body": "among"
+        },
+        {
+            "startTime": 272.01,
+            "endTime": 272.1,
+            "body": "the"
+        },
+        {
+            "startTime": 272.1,
+            "endTime": 272.82,
+            "body": "reflections"
+        },
+        {
+            "startTime": 272.82,
+            "endTime": 272.94,
+            "body": "and"
+        },
+        {
+            "startTime": 272.94,
+            "endTime": 273,
+            "body": "the"
+        },
+        {
+            "startTime": 273,
+            "endTime": 273.54,
+            "body": "weeds,"
+        },
+        {
+            "startTime": 273.84000000000003,
+            "endTime": 274.17,
+            "body": "letting"
+        },
+        {
+            "startTime": 274.17,
+            "endTime": 274.29,
+            "body": "the"
+        },
+        {
+            "startTime": 274.29,
+            "endTime": 274.65000000000003,
+            "body": "water"
+        },
+        {
+            "startTime": 274.65000000000003,
+            "endTime": 274.98,
+            "body": "lift"
+        },
+        {
+            "startTime": 274.98,
+            "endTime": 275.13,
+            "body": "it"
+        },
+        {
+            "startTime": 275.19,
+            "endTime": 275.37,
+            "body": "and"
+        },
+        {
+            "startTime": 275.37,
+            "endTime": 275.73,
+            "body": "sink"
+        },
+        {
+            "startTime": 275.73,
+            "endTime": 275.91,
+            "body": "it"
+        },
+        {
+            "startTime": 275.91,
+            "endTime": 276.36,
+            "body": "until,"
+        },
+        {
+            "startTime": 276.51,
+            "endTime": 276.69,
+            "body": "you"
+        },
+        {
+            "startTime": 276.69,
+            "endTime": 276.90000000000003,
+            "body": "know,"
+        },
+        {
+            "startTime": 276.90000000000003,
+            "endTime": 277.02000000000004,
+            "body": "the"
+        },
+        {
+            "startTime": 277.02000000000004,
+            "endTime": 277.23,
+            "body": "little"
+        },
+        {
+            "startTime": 277.23,
+            "endTime": 277.68,
+            "body": "tug,"
+        },
+        {
+            "startTime": 278.13,
+            "endTime": 278.28000000000003,
+            "body": "the"
+        },
+        {
+            "startTime": 278.28000000000003,
+            "endTime": 278.64000000000004,
+            "body": "sudden"
+        },
+        {
+            "startTime": 278.64000000000004,
+            "endTime": 279.54,
+            "body": "conglomeration"
+        },
+        {
+            "startTime": 279.54,
+            "endTime": 279.66,
+            "body": "of"
+        },
+        {
+            "startTime": 279.66,
+            "endTime": 279.72,
+            "body": "an"
+        },
+        {
+            "startTime": 279.72,
+            "endTime": 280.2,
+            "body": "idea"
+        },
+        {
+            "startTime": 280.2,
+            "endTime": 280.32,
+            "body": "at"
+        },
+        {
+            "startTime": 280.32,
+            "endTime": 280.44,
+            "body": "the"
+        },
+        {
+            "startTime": 280.44,
+            "endTime": 280.68,
+            "body": "end"
+        },
+        {
+            "startTime": 280.68,
+            "endTime": 280.77000000000004,
+            "body": "of"
+        },
+        {
+            "startTime": 280.77000000000004,
+            "endTime": 281.04,
+            "body": "one's"
+        },
+        {
+            "startTime": 281.04,
+            "endTime": 281.43,
+            "body": "line."
+        },
+        {
+            "startTime": 281.85,
+            "endTime": 282,
+            "body": "And"
+        },
+        {
+            "startTime": 282,
+            "endTime": 282.15000000000003,
+            "body": "then"
+        },
+        {
+            "startTime": 282.15000000000003,
+            "endTime": 282.24,
+            "body": "the"
+        },
+        {
+            "startTime": 282.24,
+            "endTime": 282.72,
+            "body": "cautious"
+        },
+        {
+            "startTime": 282.72,
+            "endTime": 283.08000000000004,
+            "body": "hauling"
+        },
+        {
+            "startTime": 283.08000000000004,
+            "endTime": 283.17,
+            "body": "of"
+        },
+        {
+            "startTime": 283.17,
+            "endTime": 283.26,
+            "body": "it"
+        },
+        {
+            "startTime": 283.26,
+            "endTime": 283.59000000000003,
+            "body": "in,"
+        },
+        {
+            "startTime": 283.68,
+            "endTime": 283.92,
+            "body": "and"
+        },
+        {
+            "startTime": 283.92,
+            "endTime": 284.01,
+            "body": "the"
+        },
+        {
+            "startTime": 284.01,
+            "endTime": 284.43,
+            "body": "careful"
+        },
+        {
+            "startTime": 284.43,
+            "endTime": 284.82,
+            "body": "laying"
+        },
+        {
+            "startTime": 284.82,
+            "endTime": 284.88,
+            "body": "of"
+        },
+        {
+            "startTime": 284.88,
+            "endTime": 284.97,
+            "body": "it"
+        },
+        {
+            "startTime": 284.97,
+            "endTime": 285.24,
+            "body": "out,"
+        },
+        {
+            "startTime": 286.02000000000004,
+            "endTime": 286.62,
+            "body": "alas"
+        },
+        {
+            "startTime": 286.65000000000003,
+            "endTime": 286.98,
+            "body": "laid"
+        },
+        {
+            "startTime": 286.98,
+            "endTime": 287.1,
+            "body": "on"
+        },
+        {
+            "startTime": 287.1,
+            "endTime": 287.16,
+            "body": "the"
+        },
+        {
+            "startTime": 287.16,
+            "endTime": 287.55,
+            "body": "grass."
+        },
+        {
+            "startTime": 287.55,
+            "endTime": 287.73,
+            "body": "How"
+        },
+        {
+            "startTime": 287.73,
+            "endTime": 288.27000000000004,
+            "body": "small,"
+        },
+        {
+            "startTime": 288.51,
+            "endTime": 288.78000000000003,
+            "body": "how"
+        },
+        {
+            "startTime": 288.78000000000003,
+            "endTime": 289.56,
+            "body": "insignificant"
+        },
+        {
+            "startTime": 289.56,
+            "endTime": 289.77000000000004,
+            "body": "this"
+        },
+        {
+            "startTime": 289.77000000000004,
+            "endTime": 289.98,
+            "body": "thought"
+        },
+        {
+            "startTime": 289.98,
+            "endTime": 290.1,
+            "body": "of"
+        },
+        {
+            "startTime": 290.105,
+            "endTime": 290.265,
+            "body": "mind"
+        },
+        {
+            "startTime": 290.265,
+            "endTime": 290.46500000000003,
+            "body": "looked."
+        },
+        {
+            "startTime": 291.255,
+            "endTime": 291.375,
+            "body": "The"
+        },
+        {
+            "startTime": 291.375,
+            "endTime": 291.585,
+            "body": "sort"
+        },
+        {
+            "startTime": 291.585,
+            "endTime": 291.645,
+            "body": "of"
+        },
+        {
+            "startTime": 291.645,
+            "endTime": 292.03499999999997,
+            "body": "fish"
+        },
+        {
+            "startTime": 292.03499999999997,
+            "endTime": 292.155,
+            "body": "that"
+        },
+        {
+            "startTime": 292.155,
+            "endTime": 292.215,
+            "body": "a"
+        },
+        {
+            "startTime": 292.215,
+            "endTime": 292.48499999999996,
+            "body": "good"
+        },
+        {
+            "startTime": 292.48499999999996,
+            "endTime": 292.995,
+            "body": "fisherman"
+        },
+        {
+            "startTime": 292.995,
+            "endTime": 293.23499999999996,
+            "body": "puts"
+        },
+        {
+            "startTime": 293.23499999999996,
+            "endTime": 293.53499999999997,
+            "body": "back"
+        },
+        {
+            "startTime": 293.53499999999997,
+            "endTime": 293.685,
+            "body": "into"
+        },
+        {
+            "startTime": 293.685,
+            "endTime": 293.775,
+            "body": "the"
+        },
+        {
+            "startTime": 293.775,
+            "endTime": 294.22499999999997,
+            "body": "water"
+        },
+        {
+            "startTime": 294.405,
+            "endTime": 294.67499999999995,
+            "body": "so"
+        },
+        {
+            "startTime": 294.67499999999995,
+            "endTime": 294.79499999999996,
+            "body": "that"
+        },
+        {
+            "startTime": 294.79499999999996,
+            "endTime": 294.91499999999996,
+            "body": "it"
+        },
+        {
+            "startTime": 294.91499999999996,
+            "endTime": 295.065,
+            "body": "may"
+        },
+        {
+            "startTime": 295.065,
+            "endTime": 295.30499999999995,
+            "body": "grow"
+        },
+        {
+            "startTime": 295.30499999999995,
+            "endTime": 295.84499999999997,
+            "body": "fatter"
+        },
+        {
+            "startTime": 295.995,
+            "endTime": 296.205,
+            "body": "and"
+        },
+        {
+            "startTime": 296.205,
+            "endTime": 296.35499999999996,
+            "body": "be"
+        },
+        {
+            "startTime": 296.35499999999996,
+            "endTime": 296.655,
+            "body": "one"
+        },
+        {
+            "startTime": 296.655,
+            "endTime": 296.895,
+            "body": "day"
+        },
+        {
+            "startTime": 296.895,
+            "endTime": 297.22499999999997,
+            "body": "worth"
+        },
+        {
+            "startTime": 297.22499999999997,
+            "endTime": 297.765,
+            "body": "cooking"
+        },
+        {
+            "startTime": 297.765,
+            "endTime": 297.885,
+            "body": "and"
+        },
+        {
+            "startTime": 297.885,
+            "endTime": 298.275,
+            "body": "eating."
+        },
+        {
+            "startTime": 299.025,
+            "endTime": 299.17499999999995,
+            "body": "I"
+        },
+        {
+            "startTime": 299.17499999999995,
+            "endTime": 299.325,
+            "body": "will"
+        },
+        {
+            "startTime": 299.325,
+            "endTime": 299.565,
+            "body": "not"
+        },
+        {
+            "startTime": 299.565,
+            "endTime": 299.92499999999995,
+            "body": "trouble"
+        },
+        {
+            "startTime": 299.92499999999995,
+            "endTime": 300.10499999999996,
+            "body": "you"
+        },
+        {
+            "startTime": 300.10499999999996,
+            "endTime": 300.315,
+            "body": "with"
+        },
+        {
+            "startTime": 300.315,
+            "endTime": 300.585,
+            "body": "that"
+        },
+        {
+            "startTime": 300.585,
+            "endTime": 300.79499999999996,
+            "body": "thought"
+        },
+        {
+            "startTime": 300.79499999999996,
+            "endTime": 301.155,
+            "body": "now."
+        },
+        {
+            "startTime": 301.515,
+            "endTime": 301.695,
+            "body": "Though,"
+        },
+        {
+            "startTime": 301.695,
+            "endTime": 301.815,
+            "body": "if"
+        },
+        {
+            "startTime": 301.815,
+            "endTime": 301.935,
+            "body": "you"
+        },
+        {
+            "startTime": 301.935,
+            "endTime": 302.145,
+            "body": "look"
+        },
+        {
+            "startTime": 302.145,
+            "endTime": 302.685,
+            "body": "carefully,"
+        },
+        {
+            "startTime": 302.685,
+            "endTime": 302.80499999999995,
+            "body": "you"
+        },
+        {
+            "startTime": 302.80499999999995,
+            "endTime": 302.98499999999996,
+            "body": "may"
+        },
+        {
+            "startTime": 302.98499999999996,
+            "endTime": 303.315,
+            "body": "find"
+        },
+        {
+            "startTime": 303.315,
+            "endTime": 303.375,
+            "body": "it"
+        },
+        {
+            "startTime": 303.375,
+            "endTime": 303.525,
+            "body": "for"
+        },
+        {
+            "startTime": 303.525,
+            "endTime": 304.185,
+            "body": "yourselves"
+        },
+        {
+            "startTime": 304.30499999999995,
+            "endTime": 304.455,
+            "body": "in"
+        },
+        {
+            "startTime": 304.455,
+            "endTime": 304.515,
+            "body": "the"
+        },
+        {
+            "startTime": 304.515,
+            "endTime": 304.815,
+            "body": "course"
+        },
+        {
+            "startTime": 304.815,
+            "endTime": 304.935,
+            "body": "of"
+        },
+        {
+            "startTime": 304.935,
+            "endTime": 305.11499999999995,
+            "body": "what"
+        },
+        {
+            "startTime": 305.11499999999995,
+            "endTime": 305.205,
+            "body": "I"
+        },
+        {
+            "startTime": 305.205,
+            "endTime": 305.35499999999996,
+            "body": "am"
+        },
+        {
+            "startTime": 305.35499999999996,
+            "endTime": 305.565,
+            "body": "going"
+        },
+        {
+            "startTime": 305.565,
+            "endTime": 305.685,
+            "body": "to"
+        },
+        {
+            "startTime": 305.685,
+            "endTime": 306.015,
+            "body": "say"
+        }
+    ]
+}

@@ -107,8 +107,8 @@ Licensed under either of
 
 at your option.
 
-Test data in [validation-samples/](validation-samples/) is third-party
-material under its own terms; see its [README](validation-samples/README.md).
+The quoted texts in [validation-samples/](validation-samples/) keep their
+own terms; see its [README](validation-samples/README.md).
 
 ### Contribution
 

@@ -14,11 +14,10 @@ struct CharToken {
 /// Log-space penalty subtracted from a frame's best non-blank emission before
 /// it's allowed to compete for the filler state. Keeps ordinary silence/noise
 /// out of filler (which would otherwise fabricate spurious insertions) while
-/// letting genuine inserted speech win. Tuned empirically against a human
-/// reading where the reader says "Chapter" before a section numeral that is
-/// not in the text (should detect "chapter"; the reading is under copyright,
-/// so it is not in the repository) and the clean validation samples (should
-/// stay at zero insertions).
+/// letting genuine inserted speech win. Tuned empirically against a reading
+/// that says "Chapter" before a section numeral not in the text (should
+/// detect "chapter"; `validation-samples/room-one*` now covers this case)
+/// and the clean validation samples (should stay at zero insertions).
 const FILLER_PENALTY: f32 = 1.5;
 
 /// CTC emissions are "spiky" — even within a single real word, a letter's
