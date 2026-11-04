@@ -130,7 +130,7 @@ extent — a tradeoff against the false positives the old heuristic produced.
 Forced alignment assumes rough correspondence between the audio and the
 reference text and finds *when* each word was spoken — it has no way to
 express "none of this audio belongs to any of these words." Found via real
-production artifacts (see `artifacts/theory.md` for the full investigation):
+production artifacts:
 
 - **A wrong match can be confident, not just low-scoring.** The Viterbi DP
   always assigns every reference word *some* span, however badly it actually
@@ -154,7 +154,5 @@ production artifacts (see `artifacts/theory.md` for the full investigation):
 The one thing that reliably catches whole-sentence content mismatches is
 comparing an independent free transcription of the audio against the
 reference text — a fundamentally different signal ("what did the audio
-actually say") from anything forced alignment itself can produce. Not part
-of this crate — see `artifacts/asr-engine-comparison.md` and
-`artifacts/theory.md`'s "Free-transcription QA" section for the
-investigation and what was tried.
+actually say") from anything forced alignment itself can produce. That
+check is not part of this crate.
