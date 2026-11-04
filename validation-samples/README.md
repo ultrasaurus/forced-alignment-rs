@@ -11,3 +11,19 @@ Each sample consists of:
 The truth files are not output from this CLI. They are reference data:
 the implementation is considered correct when its output matches these
 timestamps within acceptable tolerance.
+
+## Attributions
+
+The files in this directory are third-party test data. They are not covered
+by the repository's MIT/Apache-2.0 license; each keeps the terms below.
+
+- **`hypertext`**: Ted Nelson's definition of "hypertext", from "A File
+  Structure for the Complex, the Changing and the Indeterminate" (ACM
+  National Conference, 1965). A short quotation, included as test data
+  under fair use.
+- **`memex-quote`**: from Vannevar Bush, "As We May Think", The Atlantic
+  Monthly, July 1945. The text is a short quotation, included as test data
+  under fair use. The audio is an excerpt of Professor Brooke Singer's
+  reading ([SoundCloud](https://soundcloud.com/audiodemics/001-as-we-may-think)),
+  licensed [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/);
+  the excerpt is shared under the same license.

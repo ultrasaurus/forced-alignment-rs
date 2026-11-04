@@ -2,6 +2,7 @@
 name = "forced-alignment"
 version = "0.3.4"
 edition = "2024"
+license = "MIT OR Apache-2.0"
 
 [lib]
 name = "forced_alignment"

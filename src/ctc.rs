@@ -14,9 +14,11 @@ struct CharToken {
 /// Log-space penalty subtracted from a frame's best non-blank emission before
 /// it's allowed to compete for the filler state. Keeps ordinary silence/noise
 /// out of filler (which would otherwise fabricate spurious insertions) while
-/// letting genuine inserted speech win. Tune empirically against
-/// `validation-samples/as-we-may-think-6*` (should detect "chapter") and the
-/// clean samples (should stay at zero insertions).
+/// letting genuine inserted speech win. Tuned empirically against a human
+/// reading where the reader says "Chapter" before a section numeral that is
+/// not in the text (should detect "chapter"; the reading is under copyright,
+/// so it is not in the repository) and the clean validation samples (should
+/// stay at zero insertions).
 const FILLER_PENALTY: f32 = 1.5;
 
 /// CTC emissions are "spiky" — even within a single real word, a letter's
@@ -25,15 +27,14 @@ const FILLER_PENALTY: f32 = 1.5;
 /// contiguous-frame requirement would fragment one insertion into several
 /// too-short bursts. Bridge filler bursts separated by a gap this small
 /// before applying [`MIN_FILLER_FRAMES`] — observed gaps within one inserted
-/// word ("chapter") topped out around 3 frames on real audio (see
-/// `debug_dump_chapter_six_frames` history / validation-samples).
+/// word ("chapter") topped out around 3 frames on real audio.
 const MAX_FILLER_GAP_FRAMES: usize = 4;
 
 /// Minimum contiguous filler frames to report as an insertion, rather than
 /// discarding as a short noise blip. wav2vec2-base's stride is ~20ms/frame;
 /// 6 frames (~120ms) is short enough to catch a quick "Chapter"/"Section"
 /// but long enough to reject the 1-2 frame consonant-boundary blips observed
-/// on real audio (see validation-samples/as-we-may-think-6*).
+/// on real audio.
 const MIN_FILLER_FRAMES: usize = 6;
 
 /// Viterbi forced alignment between CTC emissions and the reference text.
