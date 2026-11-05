@@ -1,6 +1,6 @@
 # forced-alignment
 
-Word-level forced alignment in Rust: given an audio recording and the known
+Word-level forced alignment in Rust: given an audio file and the known
 transcript text, produces start/end timestamps for each word.
 
 Unlike ASR-based timestamping, this doesn't rely on transcription accuracy —
@@ -8,6 +8,15 @@ the text is already known (e.g. a human reading or TTS narration of a
 document), and the model only needs to find *when* each word was spoken.
 
 For more details, see [overview.md](overview.md) and [report.md](report.md).
+
+Note: This repo is a library only. 
+
+For a command line that times each
+sentence (and optionally each word) of a markdown or plain-text document,
+see `speakable align` and `speakable demo --audio` in
+[speakable](https://github.com/ultrasaurus/speakable), whose
+`speakable-align` crate normalizes the text, calls this library and maps
+the times back to the document's words.
 
 ## How it works
 
@@ -32,18 +41,9 @@ cargo build --release
 The wav2vec2 model weights (~360MB) are downloaded from Hugging Face Hub on
 first run and cached locally.
 
-## CLI
-
-```sh
-./target/release/forced-alignment <audio> <text> -o <output.json>
-```
-
-Suspect words and filtered word counts are printed to stderr. Example:
-
-```sh
-./target/release/forced-alignment validation-samples/short-sentence.mp3 \
-  validation-samples/short-sentence.md -o out.json
-```
+The library aligns a whole recording in one pass, so see
+[overview.md](overview.md) on memory for recordings longer than a few
+minutes.
 
 ## GPU acceleration
 
@@ -57,10 +57,6 @@ cargo build --release --features metal,cuda     # both
 
 Device is selected at runtime via `FORCED_ALIGNMENT_DEVICE=cpu|metal|cuda`.
 If unset, auto-selects the best available: CUDA → Metal → CPU.
-
-```sh
-FORCED_ALIGNMENT_DEVICE=cpu ./target/release/forced-alignment ...
-```
 
 **On M1 Mac, Metal does not meaningfully speed up inference** —
 wav2vec2-base (95M params) is small enough that M1 CPU SIMD is competitive with
@@ -82,7 +78,21 @@ at service startup, before other models fill a shared GPU), call
 See `cargo doc --open` for full API documentation, and [report.md](report.md)
 for score interpretation.
 
-Note: Preprocessing is necessary. The aligner scores each word by how well
+To see the raw result on a file, run the `align` example. It passes the
+text to `align` as it is and writes `{"transcript": ..., "report": ...}`
+as JSON (to stdout without `-o`):
+
+```sh
+cargo run --release --example align -- validation-samples/short-sentence.mp3 \
+  validation-samples/short-sentence.md -o out.json
+```
+
+`align_with` takes `AlignOptions`. With `sentence_starts` (the index of
+each sentence's first word), speech that isn't in the text is placed
+between sentences in preference to inside one; `speakable-align` uses it.
+
+Note: Preprocessing is necessary (`speakable-align` does it for you). The
+aligner scores each word by how well
 the acoustic model finds its letters in the audio frames — scores are only
 meaningful when the text matches what was actually spoken.
 

@@ -1,5 +1,7 @@
 use anyhow::Result;
-use rubato::{Resampler, SincFixedIn, SincInterpolationParameters, SincInterpolationType, WindowFunction};
+use rubato::{
+    Resampler, SincFixedIn, SincInterpolationParameters, SincInterpolationType, WindowFunction,
+};
 use std::path::Path;
 use symphonia::core::audio::SampleBuffer;
 use symphonia::core::codecs::DecoderOptions;
@@ -37,8 +39,8 @@ pub fn load_audio(path: &Path, target_sample_rate: u32) -> Result<Vec<f32>> {
         .sample_rate
         .ok_or_else(|| anyhow::anyhow!("unknown sample rate"))?;
 
-    let mut decoder = symphonia::default::get_codecs()
-        .make(&track.codec_params, &DecoderOptions::default())?;
+    let mut decoder =
+        symphonia::default::get_codecs().make(&track.codec_params, &DecoderOptions::default())?;
 
     let mut mono: Vec<f32> = Vec::new();
     loop {
@@ -101,8 +103,13 @@ mod tests {
 
     #[test]
     fn decodes_short_sentence() {
-        let samples = load_audio(Path::new("validation-samples/short-sentence.mp3"), 16_000).unwrap();
+        let samples =
+            load_audio(Path::new("validation-samples/short-sentence.mp3"), 16_000).unwrap();
         assert!(!samples.is_empty());
-        println!("decoded {} samples ({:.2}s)", samples.len(), samples.len() as f32 / 16_000.0);
+        println!(
+            "decoded {} samples ({:.2}s)",
+            samples.len(),
+            samples.len() as f32 / 16_000.0
+        );
     }
 }

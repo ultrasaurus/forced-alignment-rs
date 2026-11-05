@@ -6,6 +6,7 @@ ground-truth text (human-read or TTS-generated), without relying on ASR
 transcription accuracy.
 
 Current implementation English-only, low footprint.
+
 Future: multilingual
 
 ## Additional concerns
@@ -41,6 +42,39 @@ No drop-in well-maintained, published Rust crate exists. Combine:
    the CTC-segmentation algorithm from the torchaudio CTC forced alignment
    tutorial.
    - https://docs.pytorch.org/audio/main/tutorials/ctc_forced_alignment_api_tutorial.html
+
+## Memory and long audio
+
+Two stages use memory differently:
+
+- **Model inference** runs in 20 s chunks (`CHUNK_SECONDS` in `model.rs`),
+  since self-attention is quadratic in length. Its memory doesn't grow with
+  the audio. It sets the peak on every audio recording we've run: 1.6–1.9 GB on
+  an M1, measured at 1.5, 3 and 5 minutes.
+- **The Viterbi DP** (`ctc_forced_align` in `ctc.rs`) runs on the whole
+  recording at once. It keeps four full tables of frames × tokens: two of
+  scores (`f32`) and two of back-pointers (1 byte each), about 10 bytes per
+  cell.
+  - Frames: 50 per second (320 samples per frame at 16 kHz).
+  - Tokens: the text's letters plus one separator per word. Read English
+    runs at about 16 per second of audio.
+  - So the tables grow with the square of the length: about 8,000 bytes per
+    second², or roughly 30 MB at one minute and 0.75 GB at five (room-one:
+    15,300 frames × 4,983 tokens).
+  - They pass inference's peak at around 7–8 minutes. A 25-minute audio 
+    recording would need about 18 GB.
+  - DP time grows the same way: room-one (5 min) takes 56 s, against 29 s
+    for a 3-minute audio recording.
+
+So align long audio in pieces of a few minutes or less: call `align` on
+each piece with its own text, and add the piece's start time to its word
+times. Cut where you know which text goes with each piece, and at a pause
+(sentence or paragraph ends are the usual places). A word whose audio
+crosses the cut, or whose text is on the wrong side of it, is crushed into
+too few frames or reported as an insertion. Memory and time then stay at the
+piece's size. When the audio is made in pieces (TTS per segment), align
+each one as it is. One long recording with no known boundaries can be
+aligned whole up to about 7–8 minutes before the DP sets the peak.
 
 ## Alternatives considered
 

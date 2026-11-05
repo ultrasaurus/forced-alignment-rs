@@ -1,5 +1,5 @@
 use anyhow::Result;
-use candle_core::{DType, Device, Tensor, D};
+use candle_core::{D, DType, Device, Tensor};
 
 /// Select the compute device.
 ///
@@ -18,7 +18,9 @@ pub fn best_device() -> Result<Device> {
         Ok("cuda") => return Ok(Device::new_cuda(0)?),
         #[cfg(feature = "metal")]
         Ok("metal") => return Ok(Device::new_metal(0)?),
-        Ok(other) => anyhow::bail!("unknown FORCED_ALIGNMENT_DEVICE={other:?}; expected cpu, metal, or cuda"),
+        Ok(other) => {
+            anyhow::bail!("unknown FORCED_ALIGNMENT_DEVICE={other:?}; expected cpu, metal, or cuda")
+        }
         Err(_) => {}
     }
     #[cfg(feature = "cuda")]
@@ -32,8 +34,8 @@ pub fn best_device() -> Result<Device> {
     Ok(Device::Cpu)
 }
 use candle_nn::{
-    conv1d_no_bias, group_norm, layer_norm, linear, ops::softmax_last_dim, Conv1d, Conv1dConfig,
-    GroupNorm, LayerNorm, Linear, Module, VarBuilder,
+    Conv1d, Conv1dConfig, GroupNorm, LayerNorm, Linear, Module, VarBuilder, conv1d_no_bias,
+    group_norm, layer_norm, linear, ops::softmax_last_dim,
 };
 use std::collections::HashMap;
 use std::sync::OnceLock;
@@ -132,7 +134,11 @@ impl PosConvEmbed {
         let bias = conv_vb.get(HIDDEN_SIZE, "bias")?;
 
         // weight = g * v / ||v|| computed per kernel position over (out, in) dims.
-        let norm = weight_v.sqr()?.sum((0, 1))?.sqrt()?.reshape((1, 1, POS_CONV_KERNEL))?;
+        let norm = weight_v
+            .sqr()?
+            .sum((0, 1))?
+            .sqrt()?
+            .reshape((1, 1, POS_CONV_KERNEL))?;
         let weight = weight_v.broadcast_div(&norm)?.broadcast_mul(&weight_g)?;
 
         let cfg = Conv1dConfig {
@@ -205,7 +211,11 @@ struct FeedForward {
 impl FeedForward {
     fn load(vb: VarBuilder) -> Result<Self> {
         Ok(Self {
-            intermediate_dense: linear(HIDDEN_SIZE, INTERMEDIATE_SIZE, vb.pp("intermediate_dense"))?,
+            intermediate_dense: linear(
+                HIDDEN_SIZE,
+                INTERMEDIATE_SIZE,
+                vb.pp("intermediate_dense"),
+            )?,
             output_dense: linear(INTERMEDIATE_SIZE, HIDDEN_SIZE, vb.pp("output_dense"))?,
         })
     }
@@ -307,9 +317,8 @@ impl Wav2Vec2Ctc {
         }
 
         let device = best_device()?;
-        let vb = unsafe {
-            VarBuilder::from_mmaped_safetensors(&[weights_path], DType::F32, &device)?
-        };
+        let vb =
+            unsafe { VarBuilder::from_mmaped_safetensors(&[weights_path], DType::F32, &device)? };
         let vb = vb.pp("wav2vec2");
 
         Ok(Self {
@@ -418,7 +427,11 @@ pub fn run_inference(samples: &[f32]) -> Result<Emissions> {
         let n = emissions.log_probs.len();
         let half_overlap = overlap_frames / 2;
         let trim_start = if is_first { 0 } else { half_overlap };
-        let trim_end = if is_last { n } else { n.saturating_sub(half_overlap) };
+        let trim_end = if is_last {
+            n
+        } else {
+            n.saturating_sub(half_overlap)
+        };
         log_probs.extend(emissions.log_probs[trim_start..trim_end].iter().cloned());
 
         if is_last {
@@ -439,15 +452,24 @@ mod tests {
     #[test]
     #[ignore = "slow in debug builds (~90s); run with `cargo test --release -- --ignored`"]
     fn runs_on_short_sentence() {
-        let samples = load_audio(Path::new("validation-samples/short-sentence.mp3"), 16_000).unwrap();
+        let samples =
+            load_audio(Path::new("validation-samples/short-sentence.mp3"), 16_000).unwrap();
         let emissions = run_inference(&samples).unwrap();
-        println!("frames={} vocab={}", emissions.log_probs.len(), emissions.vocab.len());
+        println!(
+            "frames={} vocab={}",
+            emissions.log_probs.len(),
+            emissions.vocab.len()
+        );
 
         // Greedy CTC decode for a sanity check.
         let mut prev = usize::MAX;
         let mut out = String::new();
         for frame in &emissions.log_probs {
-            let (idx, _) = frame.iter().enumerate().max_by(|a, b| a.1.partial_cmp(b.1).unwrap()).unwrap();
+            let (idx, _) = frame
+                .iter()
+                .enumerate()
+                .max_by(|a, b| a.1.partial_cmp(b.1).unwrap())
+                .unwrap();
             if idx != prev {
                 let tok = &emissions.vocab[idx];
                 if tok != "<pad>" {
@@ -466,7 +488,8 @@ mod tests {
         preload().unwrap();
         let first = MODEL.get().unwrap() as *const Wav2Vec2Ctc;
         preload().unwrap();
-        let samples = load_audio(Path::new("validation-samples/short-sentence.mp3"), 16_000).unwrap();
+        let samples =
+            load_audio(Path::new("validation-samples/short-sentence.mp3"), 16_000).unwrap();
         run_inference(&samples).unwrap();
         assert_eq!(first, MODEL.get().unwrap() as *const Wav2Vec2Ctc);
     }

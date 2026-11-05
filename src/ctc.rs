@@ -1,6 +1,6 @@
 use crate::model::Emissions;
 use crate::transcript::{FilteredWord, Insertion, Word};
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use std::collections::HashMap;
 
 /// One character of the normalized transcript, mapped to a vocab token id.
@@ -36,11 +36,32 @@ const MAX_FILLER_GAP_FRAMES: usize = 4;
 /// on real audio.
 const MIN_FILLER_FRAMES: usize = 6;
 
+/// Log-space cost, charged once each time the filler state is entered, for
+/// entering it anywhere but between two sentences, when the caller gives
+/// sentence boundaries. Speech that isn't in the text (a preamble, an
+/// announced chapter title) usually sits between sentences, but a short word
+/// inside the inserted speech ("the", "to") can match a text word, putting
+/// the rest of the insertion inside the sentence. Charged per entry, not per
+/// frame, so a long insertion between sentences costs no more than before.
+const MID_SENTENCE_FILLER_ENTRY_PENALTY: f32 = 3.0;
+
+/// Taken off [`FILLER_PENALTY`] for filler before the first word, when the
+/// caller gives sentence boundaries. A recording's lead-in (a title, a
+/// LibriVox preamble) often says the opening words too; without this the
+/// text's opening sentence can match either place at about the same cost.
+/// The reading proper comes last, so this makes the lead-in take everything
+/// up to the last match.
+const LEAD_IN_FILLER_DISCOUNT: f32 = 0.5;
+
 /// Viterbi forced alignment between CTC emissions and the reference text.
 ///
 /// Frames that don't match the reference text (e.g. a reader-inserted
 /// "Chapter" before a numeral) are routed into an optional filler state
 /// instead of corrupting a neighboring word's span; see [`Insertion`].
+///
+/// `sentence_starts`, when given, holds the indexes (into
+/// `text.split_whitespace()`) of the words that start a sentence; entering
+/// filler anywhere else then costs [`MID_SENTENCE_FILLER_ENTRY_PENALTY`].
 ///
 /// Returns the aligned words, words dropped before alignment because they
 /// contained no characters in the wav2vec2 vocabulary, and detected
@@ -49,6 +70,7 @@ pub fn viterbi_align(
     emissions: &Emissions,
     text: &str,
     audio_duration_secs: f32,
+    sentence_starts: Option<&[usize]>,
 ) -> Result<(Vec<Word>, Vec<FilteredWord>, Vec<Insertion>)> {
     let vocab_map: HashMap<&str, usize> = emissions
         .vocab
@@ -66,6 +88,8 @@ pub fn viterbi_align(
     // Drop words with no alignable characters (e.g. markdown artifacts like "##" or "---").
     // Record filtered words with their original position for the AlignReport.
     let mut filtered: Vec<FilteredWord> = Vec::new();
+    // Original index of each kept word.
+    let mut kept_index: Vec<usize> = Vec::new();
     let words: Vec<&str> = text
         .split_whitespace()
         .enumerate()
@@ -74,9 +98,13 @@ pub fn viterbi_align(
                 .chars()
                 .any(|ch| vocab_map.contains_key(ch.to_string().as_str()))
             {
+                kept_index.push(i);
                 Some(w)
             } else {
-                filtered.push(FilteredWord { word: w.to_string(), original_index: i });
+                filtered.push(FilteredWord {
+                    word: w.to_string(),
+                    original_index: i,
+                });
                 None
             }
         })
@@ -88,18 +116,36 @@ pub fn viterbi_align(
     let mut tokens: Vec<CharToken> = Vec::new();
     for (wi, word) in words.iter().enumerate() {
         if wi > 0 {
-            tokens.push(CharToken { id: word_sep_id, word_idx: None });
+            tokens.push(CharToken {
+                id: word_sep_id,
+                word_idx: None,
+            });
         }
         for ch in word.to_uppercase().chars() {
             if let Some(&id) = vocab_map.get(ch.to_string().as_str()) {
-                tokens.push(CharToken { id, word_idx: Some(wi) });
+                tokens.push(CharToken {
+                    id,
+                    word_idx: Some(wi),
+                });
             }
         }
     }
     let label_ids: Vec<usize> = tokens.iter().map(|t| t.id).collect();
 
-    let (frame_spans, filler_spans) =
-        ctc_forced_align(&emissions.log_probs, &label_ids, blank_id)?;
+    let lead_in_discount = if sentence_starts.is_some() {
+        LEAD_IN_FILLER_DISCOUNT
+    } else {
+        0.0
+    };
+    let enter_penalty = filler_entry_penalties(&tokens, &kept_index, sentence_starts);
+
+    let (frame_spans, filler_spans) = ctc_forced_align(
+        &emissions.log_probs,
+        &label_ids,
+        blank_id,
+        &enter_penalty,
+        lead_in_discount,
+    )?;
 
     // Group per-token frame spans into per-word spans.
     let mut word_spans: Vec<Option<(usize, usize, f32, usize)>> = vec![None; words.len()];
@@ -117,7 +163,7 @@ pub fn viterbi_align(
     let seconds_per_frame = audio_duration_secs / num_frames as f32;
 
     let mut out = Vec::with_capacity(words.len());
-    for (word, span) in words.iter().zip(word_spans.into_iter()) {
+    for (word, span) in words.iter().zip(word_spans) {
         let (start, end, score_sum, count) =
             span.ok_or_else(|| anyhow!("word '{word}' produced no alignable characters"))?;
         out.push(Word {
@@ -149,7 +195,13 @@ pub fn viterbi_align(
         .into_iter()
         .filter(|s| s.end_frame - s.start_frame >= MIN_FILLER_FRAMES)
         .filter_map(|s| {
-            let decoded_text = decode_filler(&emissions.log_probs, &emissions.vocab, s.start_frame, s.end_frame, blank_id);
+            let decoded_text = decode_filler(
+                &emissions.log_probs,
+                &emissions.vocab,
+                s.start_frame,
+                s.end_frame,
+                blank_id,
+            );
             if decoded_text.0.trim().is_empty() {
                 // An empty greedy decode means the filler span didn't
                 // resolve to any character, not even a low-confidence one —
@@ -170,6 +222,47 @@ pub fn viterbi_align(
         .collect();
 
     Ok((out, filtered, insertions))
+}
+
+/// The cost of entering filler at each column (tokens consumed): zero
+/// everywhere without `sentence_starts` (original word indexes), and
+/// otherwise [`MID_SENTENCE_FILLER_ENTRY_PENALTY`] except between sentences:
+/// at either end, or beside a word separator whose next word starts a
+/// sentence. `kept_index[k]` is the original index of kept word `k`.
+fn filler_entry_penalties(
+    tokens: &[CharToken],
+    kept_index: &[usize],
+    sentence_starts: Option<&[usize]>,
+) -> Vec<f32> {
+    let Some(starts) = sentence_starts else {
+        return vec![0.0; tokens.len() + 1];
+    };
+    // A kept word starts a sentence if a sentence starts at it, or at
+    // filtered words just before it.
+    let mut starts_sentence = vec![false; kept_index.len()];
+    for &s in starts {
+        if let Some(k) = kept_index.iter().position(|&i| i >= s) {
+            starts_sentence[k] = true;
+        }
+    }
+    (0..=tokens.len())
+        .map(|j| {
+            let next_word = tokens[j..].iter().find_map(|t| t.word_idx);
+            let at_gap = j == 0
+                || j == tokens.len()
+                || tokens[j - 1].word_idx.is_none()
+                || tokens[j].word_idx.is_none();
+            let between_sentences = match next_word {
+                None => true,
+                Some(w) => at_gap && starts_sentence[w],
+            };
+            if between_sentences {
+                0.0
+            } else {
+                MID_SENTENCE_FILLER_ENTRY_PENALTY
+            }
+        })
+        .collect()
 }
 
 /// Greedy CTC decode of an unconstrained frame span: argmax per frame,
@@ -202,9 +295,17 @@ fn decode_filler(
             prev = Some(best_id);
         }
     }
-    let score = if prob_count > 0 { prob_sum / prob_count as f64 } else { 0.0 };
+    let score = if prob_count > 0 {
+        prob_sum / prob_count as f64
+    } else {
+        0.0
+    };
     (out.trim().to_lowercase(), score)
 }
+
+/// A reference token's frames: the first, one past the last, and its mean
+/// probability over them.
+type TokenSpan = (usize, usize, f32);
 
 /// A contiguous run of frames routed into the filler (non-reference) state.
 /// `gap_index` is the reference-token column the filler sits at — i.e. the
@@ -246,12 +347,17 @@ enum FillerFrom {
 /// speech get flagged as an [`Insertion`] instead of corrupting the
 /// timestamps of adjacent reference words.
 ///
+/// `enter_penalty[j]` is subtracted each time filler is entered at column
+/// `j`, and `lead_in_discount` is added to each filler frame at column 0.
+///
 /// Returns per-token frame spans (as before) plus detected filler spans.
 fn ctc_forced_align(
     log_probs: &[Vec<f32>],
     tokens: &[usize],
     blank_id: usize,
-) -> Result<(Vec<(usize, usize, f32)>, Vec<FillerSpan>)> {
+    enter_penalty: &[f32],
+    lead_in_discount: f32,
+) -> Result<(Vec<TokenSpan>, Vec<FillerSpan>)> {
     let t_len = log_probs.len();
     let l_len = tokens.len();
     if t_len < l_len {
@@ -288,20 +394,31 @@ fn ctc_forced_align(
             // Ref cell.
             let stay_ref = dp_ref[t - 1][j] + stay_emit;
             let from_filler = dp_filler[t - 1][j] + stay_emit;
-            let mv = if j > 0 { dp_ref[t - 1][j - 1] + frame[tokens[j - 1]] } else { NEG_INF };
+            let mv = if j > 0 {
+                dp_ref[t - 1][j - 1] + frame[tokens[j - 1]]
+            } else {
+                NEG_INF
+            };
             let (best_ref, from) = [
                 (stay_ref, RefFrom::StayRef),
                 (from_filler, RefFrom::FromFiller),
                 (mv, RefFrom::Move),
             ]
             .into_iter()
-            .fold((NEG_INF, RefFrom::StayRef), |acc, cand| if cand.0 >= acc.0 { cand } else { acc });
+            .fold((NEG_INF, RefFrom::StayRef), |acc, cand| {
+                if cand.0 >= acc.0 { cand } else { acc }
+            });
             dp_ref[t][j] = best_ref;
             back_ref[t][j] = Some(from);
 
             // Filler cell.
+            let filler_emit = if j == 0 {
+                filler_emit + lead_in_discount
+            } else {
+                filler_emit
+            };
             let stay_filler = dp_filler[t - 1][j] + filler_emit;
-            let enter = dp_ref[t - 1][j] + filler_emit;
+            let enter = dp_ref[t - 1][j] + filler_emit - enter_penalty[j];
             let (best_filler, ffrom) = if stay_filler >= enter {
                 (stay_filler, FillerFrom::StayFiller)
             } else {
@@ -314,7 +431,11 @@ fn ctc_forced_align(
 
     // Allow ending in either mode, so a trailing insertion after the last
     // reference word is representable too.
-    let mut mode = if dp_ref[t_len][l_len] >= dp_filler[t_len][l_len] { Mode::Ref } else { Mode::Filler };
+    let mut mode = if dp_ref[t_len][l_len] >= dp_filler[t_len][l_len] {
+        Mode::Ref
+    } else {
+        Mode::Filler
+    };
 
     let mut spans = vec![(usize::MAX, 0usize, 0.0f32, 0usize); l_len];
     // Reverse-chronological (frame_index, gap_index) pairs for filler frames;
@@ -350,6 +471,18 @@ fn ctc_forced_align(
                             }
                         }
                         if from == RefFrom::FromFiller {
+                            // Filler is entered and left at the same column,
+                            // so the token before it is the one the stay
+                            // frames since then (later in time) were given
+                            // to. Its own frames are the ones before the
+                            // filler, ending at its Move frame; the later
+                            // ones are only its letter recurring in the
+                            // inserted speech, or in the stretch after it,
+                            // and would stretch the token over the
+                            // insertion. Drop them.
+                            if j > 0 {
+                                spans[j - 1] = (usize::MAX, 0, 0.0, 0);
+                            }
                             mode = Mode::Filler;
                         }
                     }
@@ -376,7 +509,11 @@ fn ctc_forced_align(
             {
                 last.end_frame = frame_idx + 1;
             }
-            _ => filler_spans.push(FillerSpan { gap_index, start_frame: frame_idx, end_frame: frame_idx + 1 }),
+            _ => filler_spans.push(FillerSpan {
+                gap_index,
+                start_frame: frame_idx,
+                end_frame: frame_idx + 1,
+            }),
         }
     }
 
@@ -384,10 +521,53 @@ fn ctc_forced_align(
         spans
             .into_iter()
             .map(|(start, end, score_sum, count)| {
-                let score = if count > 0 { score_sum / count as f32 } else { 0.0 };
+                let score = if count > 0 {
+                    score_sum / count as f32
+                } else {
+                    0.0
+                };
                 (start, end, score)
             })
             .collect(),
         filler_spans,
     ))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn filler_entry_is_free_only_between_sentences() {
+        // "ab cd ef": tokens A B | C D | E F. Sentences start at words 0
+        // and 2; word 1 ("cd") is mid-sentence.
+        let tok = |word_idx: Option<usize>| CharToken { id: 0, word_idx };
+        let tokens = [
+            tok(Some(0)),
+            tok(Some(0)),
+            tok(None),
+            tok(Some(1)),
+            tok(Some(1)),
+            tok(None),
+            tok(Some(2)),
+            tok(Some(2)),
+        ];
+        let p = MID_SENTENCE_FILLER_ENTRY_PENALTY;
+        assert_eq!(
+            filler_entry_penalties(&tokens, &[0, 1, 2], None),
+            vec![0.0; 9]
+        );
+        assert_eq!(
+            filler_entry_penalties(&tokens, &[0, 1, 2], Some(&[0, 2])),
+            // Columns: before A, in "ab", before |, after | (before "cd"),
+            // in "cd", before |, after | (before "ef"), in "ef", the end.
+            vec![0.0, p, p, p, p, 0.0, 0.0, p, 0.0]
+        );
+        // A sentence that starts at a filtered word (original index 2,
+        // dropped) starts at the next kept word.
+        assert_eq!(
+            filler_entry_penalties(&tokens, &[0, 1, 3], Some(&[0, 2]))[5..7],
+            [0.0, 0.0]
+        );
+    }
 }

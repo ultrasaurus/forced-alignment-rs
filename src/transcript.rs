@@ -44,7 +44,7 @@ pub enum SuspectReason {
     /// suspect threshold AND pace-collapsed relative to the segment's median
     /// (see [`TRUNCATION_PACE_RATIO`]) — the DP running out of audio frames
     /// before it runs out of reference text. A single late low-score word is
-    /// [`LowScore`] instead; truncation crushes a run, not one word.
+    /// [`LowScore`](Self::LowScore) instead; truncation crushes a run, not one word.
     Truncated,
     /// Duration far exceeds the segment's typical per-character pace (or
     /// exceeds an absolute cap), even though the score is above threshold —
