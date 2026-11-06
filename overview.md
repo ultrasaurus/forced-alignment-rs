@@ -43,6 +43,29 @@ No drop-in well-maintained, published Rust crate exists. Combine:
    tutorial.
    - https://docs.pytorch.org/audio/main/tutorials/ctc_forced_alignment_api_tutorial.html
 
+## Speech that isn't in the text
+
+A reader adds words, a recording has an intro or outro, and a TTS clip can
+leak audio from its reference voice. The DP has a filler state for such
+speech: frames in it match no text, are reported as an insertion, and
+don't stretch the neighboring words.
+
+`align` treats every point between words alike. `align_with` takes
+`AlignOptions::sentence_starts` (each sentence's first word index), and
+then prefers to place extra speech between sentences:
+
+- Entering filler anywhere but between sentences costs
+  `MID_SENTENCE_FILLER_ENTRY_PENALTY` once per entry. Without it, a short
+  word in a preamble ("the") matched a text word and put the rest of the
+  preamble inside the first sentence.
+- Filler before the first word costs `LEAD_IN_FILLER_DISCOUNT` less per
+  frame. A lead-in often says the opening words too (LibriVox reads the
+  title in its preamble), and either match costs about the same; the
+  discount makes the opening sentence take the last match.
+
+Without sentence starts, entering filler costs the same everywhere, which
+suits a TTS clip checked for leaked audio inside a sentence.
+
 ## Memory and long audio
 
 Two stages use memory differently:
