@@ -50,31 +50,31 @@ Two stages use memory differently:
 - **Model inference** runs in 20 s chunks (`CHUNK_SECONDS` in `model.rs`),
   since self-attention is quadratic in length. Its memory doesn't grow with
   the audio. It sets the peak on every audio recording we've run: 1.6–1.9 GB on
-  an M1, measured at 1.5, 3 and 5 minutes.
+  an M1, measured at 1.5, 3, 5 and 17 minutes.
 - **The Viterbi DP** (`ctc_forced_align` in `ctc.rs`) runs on the whole
-  recording at once. It keeps four full tables of frames × tokens: two of
-  scores (`f32`) and two of back-pointers (1 byte each), about 10 bytes per
-  cell.
+  recording at once, over a grid of frames × tokens.
   - Frames: 50 per second (320 samples per frame at 16 kHz).
   - Tokens: the text's letters plus one separator per word. Read English
     runs at about 16 per second of audio.
-  - So the tables grow with the square of the length: about 8,000 bytes per
-    second², or roughly 30 MB at one minute and 0.75 GB at five (room-one:
-    15,300 frames × 4,983 tokens).
-  - They pass inference's peak at around 7–8 minutes. A 25-minute audio 
-    recording would need about 18 GB.
-  - DP time grows the same way: room-one (5 min) takes 56 s, against 29 s
-    for a 3-minute audio recording.
+  - Scores are kept for two frames only, since each frame's scores depend
+    only on the frame before. The back-pointers the backtrace walks are kept
+    for every cell, packed two cells per byte (`BackPointers`).
+  - So memory grows with the square of the length: about 400 bytes per
+    second², or roughly 40 MB at room-one's 5 minutes (15,300 frames ×
+    4,983 tokens), 0.4 GB at 17 minutes, 5 GB at 60 and 21 GB at two hours.
+  - It passes inference's peak at around 35 minutes. On a 16 GB machine,
+    a recording of up to about 80 minutes aligns whole.
+  - DP time grows with the square of the length too: the whole alignment
+    takes 67 s for room-one and 224 s for a 17-minute recording.
 
-So align long audio in pieces of a few minutes or less: call `align` on
+Past that, or to save time, align long audio in pieces: call `align` on
 each piece with its own text, and add the piece's start time to its word
 times. Cut where you know which text goes with each piece, and at a pause
 (sentence or paragraph ends are the usual places). A word whose audio
 crosses the cut, or whose text is on the wrong side of it, is crushed into
 too few frames or reported as an insertion. Memory and time then stay at the
 piece's size. When the audio is made in pieces (TTS per segment), align
-each one as it is. One long recording with no known boundaries can be
-aligned whole up to about 7–8 minutes before the DP sets the peak.
+each one as it is.
 
 ## Alternatives considered
 

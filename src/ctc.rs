@@ -337,6 +337,67 @@ enum FillerFrom {
     EnterFromRef,
 }
 
+/// Both back-pointers of every `(t, j)` cell for frames `t` in `1..=t_len`,
+/// two cells per byte, since they are the one table that grows with frames
+/// × tokens. A cell takes 3 bits of its 4-bit half: [`RefFrom`] in bits 0–1
+/// and [`FillerFrom`] in bit 2. Frame 0 has no back-pointers (the backtrace
+/// stops before it), so it isn't stored.
+struct BackPointers {
+    bytes: Vec<u8>,
+    width: usize,
+}
+
+impl BackPointers {
+    fn new(t_len: usize, width: usize) -> Self {
+        Self {
+            bytes: vec![0; (t_len * width).div_ceil(2)],
+            width,
+        }
+    }
+
+    /// The byte holding cell `(t, j)` and the shift of its half (0 or 4).
+    fn slot(&self, t: usize, j: usize) -> (usize, u32) {
+        let i = (t - 1) * self.width + j;
+        (i / 2, (i % 2) as u32 * 4)
+    }
+
+    /// Records cell `(t, j)`. Each cell is set once, and every half starts
+    /// at zero, so OR-ing it in is enough.
+    fn set(&mut self, t: usize, j: usize, from: RefFrom, ffrom: FillerFrom) {
+        let code = match from {
+            RefFrom::StayRef => 0,
+            RefFrom::FromFiller => 1,
+            RefFrom::Move => 2,
+        } | match ffrom {
+            FillerFrom::StayFiller => 0,
+            FillerFrom::EnterFromRef => 4,
+        };
+        let (byte, shift) = self.slot(t, j);
+        self.bytes[byte] |= code << shift;
+    }
+
+    fn code(&self, t: usize, j: usize) -> u8 {
+        let (byte, shift) = self.slot(t, j);
+        (self.bytes[byte] >> shift) & 0xF
+    }
+
+    fn ref_from(&self, t: usize, j: usize) -> RefFrom {
+        match self.code(t, j) & 0b11 {
+            0 => RefFrom::StayRef,
+            1 => RefFrom::FromFiller,
+            _ => RefFrom::Move,
+        }
+    }
+
+    fn filler_from(&self, t: usize, j: usize) -> FillerFrom {
+        if self.code(t, j) & 0b100 == 0 {
+            FillerFrom::StayFiller
+        } else {
+            FillerFrom::EnterFromRef
+        }
+    }
+}
+
 /// Forced alignment via dynamic programming over (frame, token, mode) states.
 ///
 /// Each reference-token column `j` (number of tokens consumed so far) has two
@@ -368,11 +429,17 @@ fn ctc_forced_align(
 
     const NEG_INF: f32 = f32::NEG_INFINITY;
 
-    let mut dp_ref = vec![vec![NEG_INF; l_len + 1]; t_len + 1];
-    let mut dp_filler = vec![vec![NEG_INF; l_len + 1]; t_len + 1];
-    let mut back_ref: Vec<Vec<Option<RefFrom>>> = vec![vec![None; l_len + 1]; t_len + 1];
-    let mut back_filler: Vec<Vec<Option<FillerFrom>>> = vec![vec![None; l_len + 1]; t_len + 1];
-    dp_ref[0][0] = 0.0;
+    // Scores are kept for two frames only (`prev_*` for t - 1, `cur_*` for
+    // t): a cell reads nothing older than the frame before it, and the
+    // backtrace needs only the last frame's final scores. Back-pointers are
+    // kept for every frame, since the backtrace walks all of them.
+    let width = l_len + 1;
+    let mut prev_ref = vec![NEG_INF; width];
+    let mut prev_filler = vec![NEG_INF; width];
+    let mut cur_ref = vec![NEG_INF; width];
+    let mut cur_filler = vec![NEG_INF; width];
+    let mut back = BackPointers::new(t_len, width);
+    prev_ref[0] = 0.0;
 
     for t in 1..=t_len {
         let frame = &log_probs[t - 1];
@@ -392,10 +459,10 @@ fn ctc_forced_align(
             };
 
             // Ref cell.
-            let stay_ref = dp_ref[t - 1][j] + stay_emit;
-            let from_filler = dp_filler[t - 1][j] + stay_emit;
+            let stay_ref = prev_ref[j] + stay_emit;
+            let from_filler = prev_filler[j] + stay_emit;
             let mv = if j > 0 {
-                dp_ref[t - 1][j - 1] + frame[tokens[j - 1]]
+                prev_ref[j - 1] + frame[tokens[j - 1]]
             } else {
                 NEG_INF
             };
@@ -408,8 +475,7 @@ fn ctc_forced_align(
             .fold((NEG_INF, RefFrom::StayRef), |acc, cand| {
                 if cand.0 >= acc.0 { cand } else { acc }
             });
-            dp_ref[t][j] = best_ref;
-            back_ref[t][j] = Some(from);
+            cur_ref[j] = best_ref;
 
             // Filler cell.
             let filler_emit = if j == 0 {
@@ -417,21 +483,24 @@ fn ctc_forced_align(
             } else {
                 filler_emit
             };
-            let stay_filler = dp_filler[t - 1][j] + filler_emit;
-            let enter = dp_ref[t - 1][j] + filler_emit - enter_penalty[j];
+            let stay_filler = prev_filler[j] + filler_emit;
+            let enter = prev_ref[j] + filler_emit - enter_penalty[j];
             let (best_filler, ffrom) = if stay_filler >= enter {
                 (stay_filler, FillerFrom::StayFiller)
             } else {
                 (enter, FillerFrom::EnterFromRef)
             };
-            dp_filler[t][j] = best_filler;
-            back_filler[t][j] = Some(ffrom);
+            cur_filler[j] = best_filler;
+            back.set(t, j, from, ffrom);
         }
+        std::mem::swap(&mut prev_ref, &mut cur_ref);
+        std::mem::swap(&mut prev_filler, &mut cur_filler);
     }
 
     // Allow ending in either mode, so a trailing insertion after the last
-    // reference word is representable too.
-    let mut mode = if dp_ref[t_len][l_len] >= dp_filler[t_len][l_len] {
+    // reference word is representable too. After the last swap, `prev_*`
+    // holds frame `t_len`.
+    let mut mode = if prev_ref[l_len] >= prev_filler[l_len] {
         Mode::Ref
     } else {
         Mode::Filler
@@ -448,7 +517,7 @@ fn ctc_forced_align(
         let frame = &log_probs[t - 1];
         match mode {
             Mode::Ref => {
-                let from = back_ref[t][j].unwrap();
+                let from = back.ref_from(t, j);
                 match from {
                     RefFrom::Move => {
                         let tok = tokens[j - 1];
@@ -490,7 +559,7 @@ fn ctc_forced_align(
             }
             Mode::Filler => {
                 filler_frames.push((t - 1, j));
-                let from = back_filler[t][j].unwrap();
+                let from = back.filler_from(t, j);
                 if from == FillerFrom::EnterFromRef {
                     mode = Mode::Ref;
                 }
@@ -536,6 +605,29 @@ fn ctc_forced_align(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn back_pointers_round_trip() {
+        // An odd width puts cells of one frame in both halves of a byte, and
+        // an odd cell count leaves the last byte half-used.
+        let refs = [RefFrom::StayRef, RefFrom::FromFiller, RefFrom::Move];
+        let fillers = [FillerFrom::StayFiller, FillerFrom::EnterFromRef];
+        let combo = |t: usize, j: usize| (refs[(t + j) % 3], fillers[(t * 7 + j) % 2]);
+        let (t_len, width) = (5, 7);
+        let mut back = BackPointers::new(t_len, width);
+        for t in 1..=t_len {
+            for j in 0..width {
+                let (r, f) = combo(t, j);
+                back.set(t, j, r, f);
+            }
+        }
+        for t in 1..=t_len {
+            for j in 0..width {
+                let (r, f) = combo(t, j);
+                assert!(back.ref_from(t, j) == r && back.filler_from(t, j) == f);
+            }
+        }
+    }
 
     #[test]
     fn filler_entry_is_free_only_between_sentences() {

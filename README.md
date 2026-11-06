@@ -42,8 +42,8 @@ The wav2vec2 model weights (~360MB) are downloaded from Hugging Face Hub on
 first run and cached locally.
 
 The library aligns a whole recording in one pass, so see
-[overview.md](overview.md) on memory for recordings longer than a few
-minutes.
+[overview.md](overview.md) on memory for recordings longer than about
+35 minutes.
 
 ## GPU acceleration
 
