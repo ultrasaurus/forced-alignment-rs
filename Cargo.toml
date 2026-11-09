@@ -1,8 +1,15 @@
 [package]
 name = "forced-alignment"
-version = "0.5.0"
+version = "0.5.1"
 edition = "2024"
+description = "Word-level forced alignment: start and end times for each word of a known text in an audio file (wav2vec2 CTC on candle)"
 license = "MIT OR Apache-2.0"
+repository = "https://github.com/ultrasaurus/forced-alignment-rs"
+readme = "README.md"
+keywords = ["forced-alignment", "speech", "audio", "wav2vec2", "timestamps"]
+categories = ["multimedia::audio", "accessibility"]
+# Test recordings and evaluation notes: dev material, not needed to build.
+exclude = ["validation-samples/", "align-report-eval/", "notes.md"]
 
 [lib]
 name = "forced_alignment"

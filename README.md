@@ -66,7 +66,7 @@ and has not yet been benchmarked.
 
 ## Library API
 
-```rust
+```rust,ignore
 let samples = forced_alignment::audio::load_audio(&path, forced_alignment::SAMPLE_RATE)?;
 let (transcript, report) = forced_alignment::align(&samples, &text)?;
 ```
@@ -108,6 +108,15 @@ meaningful when the text matches what was actually spoken.
 - **Strip leading/trailing punctuation per token** — the wav2vec2 vocab
   contains only letters and `|`; punctuation attached to a word token
   (e.g. `"Or,"`) deflates its score even when the word itself is present.
+
+## Development
+
+A pre-commit hook checks `cargo fmt` and `cargo clippy` (warnings fail it).
+Turn it on once per clone:
+
+```sh
+git config core.hooksPath .githooks
+```
 
 ## License
 

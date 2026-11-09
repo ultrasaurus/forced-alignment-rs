@@ -1,3 +1,6 @@
+// README.md with its relative links pointed at this version's tag (build.rs).
+#![doc = include_str!(concat!(env!("OUT_DIR"), "/README.md"))]
+
 pub mod audio;
 pub mod transcript;
 
