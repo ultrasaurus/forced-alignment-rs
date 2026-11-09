@@ -89,7 +89,10 @@ cargo run --release --example align -- validation-samples/short-sentence.mp3 \
 
 `align_with` takes `AlignOptions`. With `sentence_starts` (the index of
 each sentence's first word), speech that isn't in the text is placed
-between sentences in preference to inside one; `speakable-align` uses it.
+between sentences in preference to inside one, and a whole sentence the
+audio doesn't contain is skipped (left untimed, and listed in
+`AlignReport::skipped`) rather than crushed into the speech around it;
+`speakable-align` uses it. See [overview.md](overview.md).
 
 Note: Preprocessing is necessary (`speakable-align` does it for you). The
 aligner scores each word by how well

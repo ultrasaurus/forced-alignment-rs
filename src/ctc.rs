@@ -1,5 +1,5 @@
 use crate::model::Emissions;
-use crate::transcript::{FilteredWord, Insertion, Word};
+use crate::transcript::{FilteredWord, Insertion, Skip, Word};
 use anyhow::{Result, anyhow};
 use std::collections::HashMap;
 
@@ -53,6 +53,15 @@ const MID_SENTENCE_FILLER_ENTRY_PENALTY: f32 = 3.0;
 /// up to the last match.
 const LEAD_IN_FILLER_DISCOUNT: f32 = 0.5;
 
+/// Log-space cost per letter of skipping a sentence, when the caller gives
+/// sentence boundaries: the aligner may then leave out a whole sentence the
+/// reader never said, taking no frames for it, rather than crushing its
+/// letters into the speech around it. Squeezing an unsaid letter onto a
+/// frame of other speech costs about 4–5 (scores near 0.01), and spoken
+/// letters pushed into filler cost [`FILLER_PENALTY`] each, so a cost
+/// between the two skips unsaid text while keeping spoken text aligned.
+const SKIP_PENALTY_PER_LETTER: f32 = 2.0;
+
 /// Viterbi forced alignment between CTC emissions and the reference text.
 ///
 /// Frames that don't match the reference text (e.g. a reader-inserted
@@ -61,17 +70,20 @@ const LEAD_IN_FILLER_DISCOUNT: f32 = 0.5;
 ///
 /// `sentence_starts`, when given, holds the indexes (into
 /// `text.split_whitespace()`) of the words that start a sentence; entering
-/// filler anywhere else then costs [`MID_SENTENCE_FILLER_ENTRY_PENALTY`].
+/// filler anywhere else then costs [`MID_SENTENCE_FILLER_ENTRY_PENALTY`],
+/// and whole sentences the audio doesn't contain may be skipped (see
+/// [`SKIP_PENALTY_PER_LETTER`]). A skipped word is returned without times or
+/// score.
 ///
 /// Returns the aligned words, words dropped before alignment because they
-/// contained no characters in the wav2vec2 vocabulary, and detected
-/// insertions.
+/// contained no characters in the wav2vec2 vocabulary, detected insertions,
+/// and skipped runs of words.
 pub fn viterbi_align(
     emissions: &Emissions,
     text: &str,
     audio_duration_secs: f32,
     sentence_starts: Option<&[usize]>,
-) -> Result<(Vec<Word>, Vec<FilteredWord>, Vec<Insertion>)> {
+) -> Result<Alignment> {
     let vocab_map: HashMap<&str, usize> = emissions
         .vocab
         .iter()
@@ -110,7 +122,7 @@ pub fn viterbi_align(
         })
         .collect();
     if words.is_empty() {
-        return Ok((vec![], filtered, vec![]));
+        return Ok((vec![], filtered, vec![], vec![]));
     }
 
     let mut tokens: Vec<CharToken> = Vec::new();
@@ -138,19 +150,49 @@ pub fn viterbi_align(
         0.0
     };
     let enter_penalty = filler_entry_penalties(&tokens, &kept_index, sentence_starts);
+    let skip_from = sentence_skips(&tokens, &kept_index, sentence_starts);
 
-    let (frame_spans, filler_spans) = ctc_forced_align(
+    let (frame_spans, filler_spans, skipped_columns) = ctc_forced_align(
         &emissions.log_probs,
         &label_ids,
         blank_id,
         &enter_penalty,
         lead_in_discount,
+        &skip_from,
     )?;
+
+    let num_frames = emissions.log_probs.len().max(1);
+    let seconds_per_frame = audio_duration_secs / num_frames as f32;
+
+    // Skipped columns cover whole words: each skip runs from one sentence's
+    // first letter to the next one's.
+    let mut skipped_word = vec![false; words.len()];
+    let mut skips: Vec<Skip> = Vec::new();
+    for (from, to, frame) in skipped_columns {
+        let mut word_range = tokens[from..to].iter().filter_map(|t| t.word_idx);
+        let Some(first) = word_range.next() else {
+            continue;
+        };
+        let last = word_range.next_back().unwrap_or(first);
+        skipped_word[first..=last]
+            .iter_mut()
+            .for_each(|s| *s = true);
+        let at = (frame as f32 * seconds_per_frame) as f64;
+        match skips.last_mut() {
+            // Back-to-back skips at the same place are one run.
+            Some(prev) if prev.end_word_index == first => prev.end_word_index = last + 1,
+            _ => skips.push(Skip {
+                start_word_index: first,
+                end_word_index: last + 1,
+                at,
+            }),
+        }
+    }
 
     // Group per-token frame spans into per-word spans.
     let mut word_spans: Vec<Option<(usize, usize, f32, usize)>> = vec![None; words.len()];
     for (token, (start, end, score)) in tokens.iter().zip(frame_spans.iter()) {
-        if let Some(wi) = token.word_idx {
+        if let Some(wi) = token.word_idx.filter(|&wi| !skipped_word[wi]) {
             let entry = word_spans[wi].get_or_insert((*start, *end, 0.0, 0));
             entry.0 = entry.0.min(*start);
             entry.1 = entry.1.max(*end);
@@ -159,11 +201,18 @@ pub fn viterbi_align(
         }
     }
 
-    let num_frames = emissions.log_probs.len().max(1);
-    let seconds_per_frame = audio_duration_secs / num_frames as f32;
-
     let mut out = Vec::with_capacity(words.len());
-    for (word, span) in words.iter().zip(word_spans) {
+    for ((word, span), skipped) in words.iter().zip(word_spans).zip(skipped_word) {
+        if skipped {
+            out.push(Word {
+                word: word.to_string(),
+                start: None,
+                end: None,
+                score: None,
+                speaker: None,
+            });
+            continue;
+        }
         let (start, end, score_sum, count) =
             span.ok_or_else(|| anyhow!("word '{word}' produced no alignable characters"))?;
         out.push(Word {
@@ -221,7 +270,51 @@ pub fn viterbi_align(
         })
         .collect();
 
-    Ok((out, filtered, insertions))
+    Ok((out, filtered, insertions, skips))
+}
+
+/// Per kept word, whether it starts a sentence: a sentence starts at it, or
+/// at filtered words just before it. `kept_index[k]` is the original index
+/// of kept word `k`.
+fn starts_sentence(kept_index: &[usize], starts: &[usize]) -> Vec<bool> {
+    let mut out = vec![false; kept_index.len()];
+    for &s in starts {
+        if let Some(k) = kept_index.iter().position(|&i| i >= s) {
+            out[k] = true;
+        }
+    }
+    out
+}
+
+/// Per column (tokens consumed), the skip that may end there: from the
+/// previous sentence boundary, at a cost of [`SKIP_PENALTY_PER_LETTER`] per
+/// letter skipped. Boundaries are the start, the column just after each
+/// word separator whose next word starts a sentence, and the end. All
+/// `None` without `sentence_starts`.
+fn sentence_skips(
+    tokens: &[CharToken],
+    kept_index: &[usize],
+    sentence_starts: Option<&[usize]>,
+) -> Vec<Option<(usize, f32)>> {
+    let mut out = vec![None; tokens.len() + 1];
+    let Some(starts) = sentence_starts else {
+        return out;
+    };
+    let starts_sentence = starts_sentence(kept_index, starts);
+    let mut boundaries = vec![0];
+    boundaries.extend((1..tokens.len()).filter(|&j| {
+        tokens[j - 1].word_idx.is_none() && tokens[j].word_idx.is_some_and(|w| starts_sentence[w])
+    }));
+    boundaries.push(tokens.len());
+    for pair in boundaries.windows(2) {
+        let (from, to) = (pair[0], pair[1]);
+        let letters = tokens[from..to]
+            .iter()
+            .filter(|t| t.word_idx.is_some())
+            .count();
+        out[to] = Some((from, letters as f32 * SKIP_PENALTY_PER_LETTER));
+    }
+    out
 }
 
 /// The cost of entering filler at each column (tokens consumed): zero
@@ -237,14 +330,7 @@ fn filler_entry_penalties(
     let Some(starts) = sentence_starts else {
         return vec![0.0; tokens.len() + 1];
     };
-    // A kept word starts a sentence if a sentence starts at it, or at
-    // filtered words just before it.
-    let mut starts_sentence = vec![false; kept_index.len()];
-    for &s in starts {
-        if let Some(k) = kept_index.iter().position(|&i| i >= s) {
-            starts_sentence[k] = true;
-        }
-    }
+    let starts_sentence = starts_sentence(kept_index, starts);
     (0..=tokens.len())
         .map(|j| {
             let next_word = tokens[j..].iter().find_map(|t| t.word_idx);
@@ -307,6 +393,14 @@ fn decode_filler(
 /// probability over them.
 type TokenSpan = (usize, usize, f32);
 
+/// A skip in the DP: the column it starts at, the column it ends at, and
+/// the frame it happens in.
+type SkippedColumns = (usize, usize, usize);
+
+/// What [`viterbi_align`] returns: the words, the filtered words, the
+/// insertions and the skipped runs.
+pub type Alignment = (Vec<Word>, Vec<FilteredWord>, Vec<Insertion>, Vec<Skip>);
+
 /// A contiguous run of frames routed into the filler (non-reference) state.
 /// `gap_index` is the reference-token column the filler sits at — i.e. the
 /// number of reference tokens already consumed when the filler began.
@@ -323,11 +417,14 @@ enum Mode {
 }
 
 /// How a `(t, j, Ref)` cell's optimum was reached.
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Clone, Copy, PartialEq, Debug)]
 enum RefFrom {
     StayRef,
     FromFiller,
     Move,
+    /// A sentence skipped in this same frame, from the column its skip
+    /// starts at (see [`sentence_skips`]).
+    Skip,
 }
 
 /// How a `(t, j, Filler)` cell's optimum was reached.
@@ -340,7 +437,7 @@ enum FillerFrom {
 /// Both back-pointers of every `(t, j)` cell for frames `t` in `1..=t_len`,
 /// two cells per byte, since they are the one table that grows with frames
 /// × tokens. A cell takes 3 bits of its 4-bit half: [`RefFrom`] in bits 0–1
-/// and [`FillerFrom`] in bit 2. Frame 0 has no back-pointers (the backtrace
+/// (all four values) and [`FillerFrom`] in bit 2. Frame 0 has no back-pointers (the backtrace
 /// stops before it), so it isn't stored.
 struct BackPointers {
     bytes: Vec<u8>,
@@ -368,6 +465,7 @@ impl BackPointers {
             RefFrom::StayRef => 0,
             RefFrom::FromFiller => 1,
             RefFrom::Move => 2,
+            RefFrom::Skip => 3,
         } | match ffrom {
             FillerFrom::StayFiller => 0,
             FillerFrom::EnterFromRef => 4,
@@ -385,7 +483,8 @@ impl BackPointers {
         match self.code(t, j) & 0b11 {
             0 => RefFrom::StayRef,
             1 => RefFrom::FromFiller,
-            _ => RefFrom::Move,
+            2 => RefFrom::Move,
+            _ => RefFrom::Skip,
         }
     }
 
@@ -411,17 +510,28 @@ impl BackPointers {
 /// `enter_penalty[j]` is subtracted each time filler is entered at column
 /// `j`, and `lead_in_discount` is added to each filler frame at column 0.
 ///
-/// Returns per-token frame spans (as before) plus detected filler spans.
+/// `skip_from[j]`, when set to `(i, cost)`, lets the `Ref` cell at column
+/// `j` be reached from the one at column `i < j` in the same frame, for
+/// `cost`: tokens `i..j` (a whole sentence) then take no frames. Columns
+/// are visited in order, so skips chain across several sentences.
+///
+/// Returns per-token frame spans (as before; a skipped token's is empty),
+/// detected filler spans, and each skip as `(from column, to column,
+/// frame)`, in order.
 fn ctc_forced_align(
     log_probs: &[Vec<f32>],
     tokens: &[usize],
     blank_id: usize,
     enter_penalty: &[f32],
     lead_in_discount: f32,
-) -> Result<(Vec<TokenSpan>, Vec<FillerSpan>)> {
+    skip_from: &[Option<(usize, f32)>],
+) -> Result<(Vec<TokenSpan>, Vec<FillerSpan>, Vec<SkippedColumns>)> {
     let t_len = log_probs.len();
     let l_len = tokens.len();
-    if t_len < l_len {
+    // With skips, text longer than the audio can still align: the rest is
+    // skipped.
+    let can_skip = skip_from.iter().any(Option::is_some);
+    if t_len < l_len && !can_skip {
         return Err(anyhow!(
             "audio too short ({t_len} frames) to align {l_len} characters"
         ));
@@ -475,6 +585,13 @@ fn ctc_forced_align(
             .fold((NEG_INF, RefFrom::StayRef), |acc, cand| {
                 if cand.0 >= acc.0 { cand } else { acc }
             });
+            let (best_ref, from) = match skip_from[j] {
+                // `cur_ref[i]` is already final for this frame: `i < j`.
+                Some((i, cost)) if cur_ref[i] - cost > best_ref => {
+                    (cur_ref[i] - cost, RefFrom::Skip)
+                }
+                _ => (best_ref, from),
+            };
             cur_ref[j] = best_ref;
 
             // Filler cell.
@@ -510,6 +627,8 @@ fn ctc_forced_align(
     // Reverse-chronological (frame_index, gap_index) pairs for filler frames;
     // reversed into chronological order and grouped into spans below.
     let mut filler_frames: Vec<(usize, usize)> = Vec::new();
+    // Reverse-chronological skips.
+    let mut skips: Vec<SkippedColumns> = Vec::new();
 
     let mut t = t_len;
     let mut j = l_len;
@@ -519,6 +638,14 @@ fn ctc_forced_align(
             Mode::Ref => {
                 let from = back.ref_from(t, j);
                 match from {
+                    RefFrom::Skip => {
+                        let (i, _) = skip_from[j].expect("a skip ends only where one may");
+                        skips.push((i, j, t));
+                        j = i;
+                        // The skip took no frame: read column `i` at this
+                        // same frame next.
+                        continue;
+                    }
                     RefFrom::Move => {
                         let tok = tokens[j - 1];
                         let entry = &mut spans[j - 1];
@@ -568,6 +695,7 @@ fn ctc_forced_align(
         t -= 1;
     }
 
+    skips.reverse();
     filler_frames.reverse();
     let mut filler_spans: Vec<FillerSpan> = Vec::new();
     for (frame_idx, gap_index) in filler_frames {
@@ -599,6 +727,7 @@ fn ctc_forced_align(
             })
             .collect(),
         filler_spans,
+        skips,
     ))
 }
 
@@ -610,9 +739,14 @@ mod tests {
     fn back_pointers_round_trip() {
         // An odd width puts cells of one frame in both halves of a byte, and
         // an odd cell count leaves the last byte half-used.
-        let refs = [RefFrom::StayRef, RefFrom::FromFiller, RefFrom::Move];
+        let refs = [
+            RefFrom::StayRef,
+            RefFrom::FromFiller,
+            RefFrom::Move,
+            RefFrom::Skip,
+        ];
         let fillers = [FillerFrom::StayFiller, FillerFrom::EnterFromRef];
-        let combo = |t: usize, j: usize| (refs[(t + j) % 3], fillers[(t * 7 + j) % 2]);
+        let combo = |t: usize, j: usize| (refs[(t + j) % 4], fillers[(t * 7 + j) % 2]);
         let (t_len, width) = (5, 7);
         let mut back = BackPointers::new(t_len, width);
         for t in 1..=t_len {

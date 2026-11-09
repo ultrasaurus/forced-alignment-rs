@@ -66,6 +66,34 @@ then prefers to place extra speech between sentences:
 Without sentence starts, entering filler costs the same everywhere, which
 suits a TTS clip checked for leaked audio inside a sentence.
 
+## Text that isn't in the audio
+
+The DP must give every letter at least one frame, so text the audio doesn't
+contain still gets times: a reader who skips a passage, or a recording that
+stops before the text does. The unsaid letters are crushed into the speech
+around them, at 350–500 words a minute, and the sentences around the gap
+are pulled toward it too. On one reading that left out nine sentences, the
+four sentences before the gap were timed up to 15 seconds early.
+
+With `sentence_starts`, the DP may instead skip a whole sentence: a
+transition from one sentence's first letter to the next one's, within the
+same frame, costing `SKIP_PENALTY_PER_LETTER` per letter skipped. Skips
+chain, so a run of sentences is skipped together, and they're allowed at
+the start and the end.
+
+- The cost sits between the two alternatives. An unsaid letter crushed onto
+  a frame of other speech scores about 0.01 (log ≈ −4.6). A said letter
+  pushed into filler costs `FILLER_PENALTY` (1.5). At 2.0 per letter,
+  skipping beats crushing, and aligning said text beats skipping it.
+- Skipped words stay in the transcript in place, with no `start`, `end` or
+  `score`, and `AlignReport::skipped` lists each run with where in the
+  audio it happens.
+- Only whole sentences are skipped. A few skipped words inside a sentence
+  are still crushed, and show as low-score suspects.
+
+Without sentence starts nothing is skipped, and audio that stops early
+shows as `Truncated` suspects instead.
+
 ## Memory and long audio
 
 Two stages use memory differently:

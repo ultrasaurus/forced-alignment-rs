@@ -114,11 +114,17 @@ pub fn preload() -> Result<()> {
 #[derive(Debug, Clone, Default)]
 pub struct AlignOptions {
     /// Indexes into `text.split_whitespace()` of the words that start a
-    /// sentence. When given, speech that isn't in the text is placed between
-    /// sentences in preference to inside one: entering it inside a sentence
-    /// carries a one-off cost. `None` (the default) makes no such
-    /// distinction, which suits text whose insertions may fall anywhere,
-    /// such as a TTS clip checked for leaked audio.
+    /// sentence. When given:
+    /// - speech that isn't in the text is placed between sentences in
+    ///   preference to inside one: entering it inside a sentence carries a
+    ///   one-off cost;
+    /// - a whole sentence the audio doesn't contain (left out by the reader,
+    ///   or past where the recording stops) is skipped rather than crushed
+    ///   into the speech around it: its words get no times, and
+    ///   [`AlignReport::skipped`] lists the run.
+    ///
+    /// `None` (the default) does neither: every word is timed, and audio
+    /// that stops early shows as [`transcript::SuspectReason::Truncated`].
     pub sentence_starts: Option<Vec<usize>>,
 }
 
@@ -165,17 +171,19 @@ pub fn align_with(
 ) -> Result<(Transcript, AlignReport)> {
     let duration_secs = samples.len() as f32 / SAMPLE_RATE as f32;
     let emissions = model::run_inference(samples)?;
-    let (words, filtered, insertions) = ctc::viterbi_align(
+    let (words, filtered, insertions, skipped) = ctc::viterbi_align(
         &emissions,
         text,
         duration_secs,
         options.sentence_starts.as_deref(),
     )?;
 
-    let start = words.first().and_then(|w| w.start).unwrap_or(0.0);
+    // Skipped words have no times: the segment spans the timed ones.
+    let start = words.iter().find_map(|w| w.start).unwrap_or(0.0);
     let end = words
-        .last()
-        .and_then(|w| w.end)
+        .iter()
+        .rev()
+        .find_map(|w| w.end)
         .unwrap_or(duration_secs as f64);
 
     let suspect = detect_suspects(&words);
@@ -183,6 +191,7 @@ pub fn align_with(
         filtered,
         suspect,
         insertions,
+        skipped,
         threshold: SUSPECT_THRESHOLD,
     };
 
@@ -231,7 +240,7 @@ mod tests {
     fn filtered_words_recorded_with_correct_index() {
         // "hello ## world" — "##" has no alignable chars and should be filtered.
         let emissions = fake_emissions(200, base_vocab());
-        let (words, filtered, _insertions) =
+        let (words, filtered, _insertions, _) =
             crate::ctc::viterbi_align(&emissions, "hello ## world", 2.0, None).unwrap();
         assert_eq!(filtered.len(), 1);
         assert_eq!(filtered[0].word, "##");
@@ -244,7 +253,7 @@ mod tests {
     #[test]
     fn no_filtered_words_for_clean_text() {
         let emissions = fake_emissions(200, base_vocab());
-        let (_words, filtered, _insertions) =
+        let (_words, filtered, _insertions, _) =
             crate::ctc::viterbi_align(&emissions, "hello world", 2.0, None).unwrap();
         assert!(filtered.is_empty());
     }
@@ -379,7 +388,7 @@ mod tests {
         ];
         let emissions = crate::model::Emissions { log_probs, vocab };
 
-        let (words, filtered, insertions) =
+        let (words, filtered, insertions, _) =
             crate::ctc::viterbi_align(&emissions, "hi ok", 1.0, None).unwrap();
 
         assert!(filtered.is_empty());
@@ -434,7 +443,7 @@ mod tests {
         // last word): the K frames after the insertion are only the letter
         // recurring, not more of the word.
         let frames = "OK-XXXXXXKK-";
-        let (words, _, insertions) =
+        let (words, _, insertions, _) =
             crate::ctc::viterbi_align(&emissions_for(frames), "ok", frames.len() as f32, None)
                 .unwrap();
         assert_eq!(insertions.len(), 1, "{insertions:?}");
@@ -445,7 +454,7 @@ mod tests {
     fn with_sentence_starts_a_lead_in_takes_the_opening_words_up_to_their_last_match() {
         // The lead-in says "ok" too, before the reading's own "ok".
         let frames = "OK-XXXXXX-OK-";
-        let (words, _, insertions) = crate::ctc::viterbi_align(
+        let (words, _, insertions, _) = crate::ctc::viterbi_align(
             &emissions_for(frames),
             "ok",
             frames.len() as f32,
@@ -455,6 +464,76 @@ mod tests {
         assert_eq!(words[0].start, Some(10.0), "{words:?}");
         assert_eq!(insertions.len(), 1, "{insertions:?}");
         assert_eq!(insertions[0].before_word_index, 0);
+    }
+
+    /// Aligns `text`, one sentence per word, against `frames` (one second
+    /// each): each word's start, and the skips.
+    fn align_sentences(
+        frames: &str,
+        text: &str,
+        sentence_starts: Option<&[usize]>,
+    ) -> (Vec<Option<f64>>, Vec<transcript::Skip>) {
+        let (words, _, _, skips) = crate::ctc::viterbi_align(
+            &emissions_for(frames),
+            text,
+            frames.len() as f32,
+            sentence_starts,
+        )
+        .unwrap();
+        (words.iter().map(|w| w.start).collect(), skips)
+    }
+
+    fn skip(start_word_index: usize, end_word_index: usize, at: f64) -> transcript::Skip {
+        transcript::Skip {
+            start_word_index,
+            end_word_index,
+            at,
+        }
+    }
+
+    #[test]
+    fn with_sentence_starts_an_unsaid_sentence_is_skipped() {
+        // "no" isn't said: "hi" keeps its own frames, not pulled early.
+        let (starts, skips) = align_sentences("OK--HI-", "ok no hi", Some(&[0, 1, 2]));
+        assert_eq!(starts, vec![Some(0.0), None, Some(4.0)]);
+        assert_eq!(skips.len(), 1, "{skips:?}");
+        assert_eq!((skips[0].start_word_index, skips[0].end_word_index), (1, 2));
+        assert!((2.0..=4.0).contains(&skips[0].at), "{skips:?}");
+    }
+
+    #[test]
+    fn back_to_back_skipped_sentences_are_one_run() {
+        let (starts, skips) = align_sentences("OK--HI-", "ok no so hi", Some(&[0, 1, 2, 3]));
+        assert_eq!(starts, vec![Some(0.0), None, None, Some(4.0)]);
+        assert_eq!(skips.len(), 1, "{skips:?}");
+        assert_eq!((skips[0].start_word_index, skips[0].end_word_index), (1, 3));
+    }
+
+    #[test]
+    fn opening_and_closing_sentences_can_be_skipped() {
+        let (starts, skips) = align_sentences("-OK-", "no ok", Some(&[0, 1]));
+        assert_eq!(starts, vec![None, Some(1.0)]);
+        assert_eq!(skips, vec![skip(0, 1, 1.0)]);
+
+        // The audio stops before the text does, and is shorter than it.
+        let (starts, skips) = align_sentences("OK-", "ok no hi", Some(&[0, 1, 2]));
+        assert_eq!(starts, vec![Some(0.0), None, None]);
+        assert_eq!(skips.len(), 1, "{skips:?}");
+        assert_eq!((skips[0].start_word_index, skips[0].end_word_index), (1, 3));
+    }
+
+    #[test]
+    fn said_sentences_are_not_skipped() {
+        let (starts, skips) = align_sentences("OK-NO-HI-", "ok no hi", Some(&[0, 1, 2]));
+        assert_eq!(starts, vec![Some(0.0), Some(3.0), Some(6.0)]);
+        assert!(skips.is_empty(), "{skips:?}");
+    }
+
+    #[test]
+    fn without_sentence_starts_nothing_is_skipped() {
+        let (starts, skips) = align_sentences("OK---HI-", "ok no hi", None);
+        assert!(starts.iter().all(Option::is_some), "{starts:?}");
+        assert!(skips.is_empty());
     }
 
     /// Requires model weights (~360MB) downloaded from HuggingFace.

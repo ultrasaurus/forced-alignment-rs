@@ -93,6 +93,23 @@ pub struct Insertion {
     pub score: f64,
 }
 
+/// A run of whole sentences the audio doesn't contain — e.g. a passage the
+/// reader left out, or text past where the recording stops. Only found when
+/// the caller gives sentence boundaries (`AlignOptions::sentence_starts`):
+/// the aligner then leaves such sentences out, rather than crushing them into
+/// the speech around them. Their words stay in the transcript, in place,
+/// with no `start`, `end` or `score`.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Skip {
+    /// Index into the aligned word list of the run's first word.
+    pub start_word_index: usize,
+    /// Index into the aligned word list one past the run's last word.
+    pub end_word_index: usize,
+    /// Where in the audio the skip happens, in seconds: the words before
+    /// the run end about here, and the words after it start after it.
+    pub at: f64,
+}
+
 /// Diagnostic report returned alongside the [`Transcript`] from `align()`.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AlignReport {
@@ -102,6 +119,9 @@ pub struct AlignReport {
     pub suspect: Vec<SuspectWord>,
     /// Speech detected outside the reference text (see [`Insertion`]).
     pub insertions: Vec<Insertion>,
+    /// Runs of sentences not found in the audio, left untimed (see [`Skip`]).
+    #[serde(default)]
+    pub skipped: Vec<Skip>,
     /// Score threshold used to classify suspects.
     pub threshold: f64,
 }
