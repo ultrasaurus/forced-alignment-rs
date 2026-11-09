@@ -1,6 +1,6 @@
 [package]
 name = "forced-alignment"
-version = "0.5.1"
+version = "0.5.2"
 edition = "2024"
 description = "Word-level forced alignment: start and end times for each word of a known text in an audio file (wav2vec2 CTC on candle)"
 license = "MIT OR Apache-2.0"
