@@ -1,5 +1,8 @@
 # forced-alignment
 
+[![crates.io](https://img.shields.io/crates/v/forced-alignment.svg)](https://crates.io/crates/forced-alignment)
+[![docs.rs](https://img.shields.io/docsrs/forced-alignment)](https://docs.rs/forced-alignment/latest/forced_alignment/)
+
 Word-level forced alignment in Rust: given an audio file and the known
 transcript text, produces start/end timestamps for each word.
 
@@ -75,8 +78,9 @@ The model loads on the first `align` call. To load it up front instead (e.g.
 at service startup, before other models fill a shared GPU), call
 `forced_alignment::preload()?`.
 
-See `cargo doc --open` for full API documentation, and [report.md](report.md)
-for score interpretation.
+The full API is documented on
+[docs.rs](https://docs.rs/forced-alignment/latest/forced_alignment/). See
+[report.md](report.md) for what the scores mean.
 
 To see the raw result on a file, run the `align` example. It passes the
 text to `align` as it is and writes `{"transcript": ..., "report": ...}`
